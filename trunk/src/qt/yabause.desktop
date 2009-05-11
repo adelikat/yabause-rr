@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Yabause (Qt port)
+Comment=Sega Saturn emulator
+TryExec=yabause
+Exec=yabause
+Icon=yabause
+Categories=KDE;Qt;Game;
