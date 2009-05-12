@@ -186,7 +186,7 @@ int InsertWatchHwnd(const struct AddressWatcher *Watch, HWND parent)
 
 	rswatches[WatchCount] = *Watch;
 	rswatches[WatchCount].CurValue = GetCurrentValue(&rswatches[WatchCount]);
-	//	DialogBox(hAppInst, MAKEINTRESOURCE(IDD_PROMPT), parent, (DLGPROC) PromptWatchNameProc); TODO
+	DialogBox(y_hInstance, MAKEINTRESOURCE(IDD_PROMPT), parent, (DLGPROC) PromptWatchNameProc);
 
 	return WatchCount > prevWatchCount;
 }

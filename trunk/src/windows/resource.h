@@ -41,6 +41,8 @@
 #define IDD_PADCONFIG1                  135
 #define IDD_MOUSECONFIG                 135
 #define IDR_ACCELERATOR1                138
+#define IDD_DIALOG2                     139
+#define IDD_PROMPT                      139
 #define MENU_RECORD_MOVIE               141
 #define MENU_PLAY_MOVIE                 142
 #define MENU_STOP_MOVIE                 143
@@ -326,6 +328,8 @@
 #define IDC_SAVEMD2                     1116
 #define IDC_BUTTON5                     1117
 #define IDC_SAVEMD3                     1117
+#define ID_CANCEL                       1118
+#define IDC_EDIT1                       1119
 #define IDM_CHOOSEBIOS                  40001
 #define IDM_CHOOSECDROM                 40002
 #define IDM_MEMTRANSFER                 40004
@@ -406,9 +410,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        139
+#define _APS_NEXT_RESOURCE_VALUE        140
 #define _APS_NEXT_COMMAND_VALUE         40106
-#define _APS_NEXT_CONTROL_VALUE         1118
+#define _APS_NEXT_CONTROL_VALUE         1120
 #define _APS_NEXT_SYMED_VALUE           133
 #endif
 #endif
