@@ -28,9 +28,9 @@ static HACCEL RamWatchAccels = NULL;
 char rw_recent_files[MAX_RECENT_WATCHES][1024];
 char Watch_Dir[1024]="";
 const unsigned int RW_MENU_FIRST_RECENT_FILE = 600;
-int RWfileChanged = 0;		//Keeps track of whether the current watch file has been changed, if so, ramwatch will prompt to save changes
-int AutoRWLoad = 0;			//Keeps track of whether Auto-load is checked
-int RWSaveWindowPos = 0;	//Keeps track of whether Save Window position is checked
+bool RWfileChanged = false;		//Keeps track of whether the current watch file has been changed, if so, ramwatch will prompt to save changes
+bool AutoRWLoad = false;			//Keeps track of whether Auto-load is checked
+bool RWSaveWindowPos = false;	//Keeps track of whether Save Window position is checked
 char currentWatch[1024];
 int ramw_x, ramw_y;			//Used to store ramwatch dialog window positions
 struct AddressWatcher rswatches[MAX_WATCH_COUNT];
@@ -241,7 +241,7 @@ void Update_RAM_Watch()
 	}
 }
 
-int AskSave()
+bool AskSave()
 {
 	//This function asks to save changes if the watch file contents have changed
 	//returns 0 only if a save was attempted but failed or was cancelled
@@ -250,10 +250,10 @@ int AskSave()
 		int answer = MessageBox(MESSAGEBOXPARENT, (LPCWSTR)_16("Save Changes?"), (LPCWSTR)_16("Ram Watch"), MB_YESNOCANCEL);
 		if(answer == IDYES)
 			if(!QuickSaveWatches())
-				return 0;
+				return false;
 		return (answer != IDCANCEL);
 	}
-	return 1;
+	return true;
 }
 
 
@@ -358,13 +358,6 @@ void UpdateRWRecentArray(const char* addString, unsigned int arrayLen, HMENU men
 	// Update the recent files menu
 	UpdateRW_RMenu(menu, menuItem, baseId);
 	
-	// Write to the ini
-	for(int i = 0; i < MAX_RECENT_WATCHES; i++)
-	{
-		char str[256];
-		sprintf(str, "Recent Watch %d", i+1);
-		WritePrivateProfileStringA("Watches", str, &rw_recent_files[i][0], inifilename);	
-	}
 	return;
 }
 
@@ -1190,13 +1183,11 @@ LRESULT CALLBACK RamWatchProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 			{
 				AutoRWLoad ^= 1;
 				CheckMenuItem(ramwatchmenu, RAMMENU_FILE_AUTOLOAD, AutoRWLoad ? MF_CHECKED : MF_UNCHECKED);
-				WritePrivateProfileStringA("RamWatch", "AutoLoad", AutoRWLoad ? "1" : "0", inifilename);
 				break;
 			}
 		case RAMMENU_FILE_SAVEWINDOW:
 			{
 				RWSaveWindowPos ^=1;
-				WritePrivateProfileStringA("RamWatch", "SaveWindowPos", RWSaveWindowPos ? "1" : "0", inifilename);
 				CheckMenuItem(ramwatchmenu, RAMMENU_FILE_SAVEWINDOW, RWSaveWindowPos ? MF_CHECKED : MF_UNCHECKED);
 				break;
 			}
