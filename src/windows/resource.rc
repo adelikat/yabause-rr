@@ -12,6 +12,38 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_ACCELERATOR1 ACCELERATORS 
+BEGIN
+    "N",            RAMMENU_FILE_NEW,       VIRTKEY, CONTROL, NOINVERT
+    "O",            RAMMENU_FILE_OPEN,      VIRTKEY, CONTROL, NOINVERT
+    "S",            RAMMENU_FILE_SAVE,      VIRTKEY, CONTROL, NOINVERT
+    "S",            RAMMENU_FILE_SAVEAS,    VIRTKEY, SHIFT, CONTROL, NOINVERT
+    "A",            IDC_C_WATCH_DUPLICATE,  VIRTKEY, NOINVERT
+    "E",            IDC_C_WATCH_EDIT,       VIRTKEY, NOINVERT
+    "D",            IDC_C_WATCH_DOWN,       VIRTKEY, NOINVERT
+    "U",            IDC_C_WATCH_UP,         VIRTKEY, NOINVERT
+    "N",            IDC_C_WATCH,            VIRTKEY, NOINVERT
+    "R",            IDC_C_WATCH_REMOVE,     VIRTKEY, NOINVERT
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
 // English (Canada) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENC)
