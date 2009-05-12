@@ -39,6 +39,41 @@ BEGIN
     "R",            IDC_C_WATCH_REMOVE,     VIRTKEY, NOINVERT
 END
 
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_PROMPT DIALOGEX 0, 0, 159, 68
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Input Prompt"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    PUSHBUTTON      "Ok",IDOK,20,34,50,14
+    PUSHBUTTON      "Cancel",ID_CANCEL,89,34,50,14
+    EDITTEXT        IDC_EDIT1,20,12,119,14,ES_AUTOHSCROLL
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_PROMPT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 152
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 61
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -54,131 +89,39 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_CAN
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// Menu
+// Accelerator
 //
 
-IDR_MENU MENU 
+IDR_MAIN_ACCEL ACCELERATORS 
 BEGIN
-    POPUP "&File"
-    BEGIN
-        MENUITEM "&Memory Transfer",            IDM_MEMTRANSFER
-        MENUITEM SEPARATOR
-        MENUITEM "&Settings",                   IDM_SETTINGS
-        MENUITEM "&Backup Ram Manager",         IDM_BACKUPRAMMANAGER
-        POPUP "Language", GRAYED
-        BEGIN
-            MENUITEM "Deutsch ",                    IDM_GERMAN
-            MENUITEM "English",                     IDM_ENGLISH
-            MENUITEM "Espanol",                     IDM_SPANISH
-            MENUITEM "Francais",                    IDM_FRENCH
-            MENUITEM "Italiano",                    IDM_ITALIAN
-            MENUITEM "Portugues",                   IDM_PORTUGUESE
-            MENUITEM "Portugues Brasileiro",        IDM_PORTUGUESEBRAZIL
-            MENUITEM "Svenska",                     IDM_SWEDISH
-        END
-        MENUITEM SEPARATOR
-        POPUP "Save State"
-        BEGIN
-            MENUITEM "1",                           IDM_SAVESTATE_F2
-            MENUITEM "2",                           IDM_SAVESTATE_F3
-            MENUITEM "3",                           IDM_SAVESTATE_F4
-            MENUITEM "4",                           IDM_SAVESTATE_F5
-            MENUITEM "5",                           IDM_SAVESTATE_F6
-            MENUITEM "6",                           IDM_SAVESTATE_F7
-            MENUITEM "7",                           IDM_SAVESTATE_F8
-            MENUITEM "8",                           IDM_SAVESTATE_F9
-            MENUITEM "9",                           IDM_SAVESTATE_F10
-        END
-        POPUP "Load State"
-        BEGIN
-            MENUITEM "1",                           IDM_LOADSTATE_F2
-            MENUITEM "2",                           IDM_LOADSTATE_F3
-            MENUITEM "3",                           IDM_LOADSTATE_F4
-            MENUITEM "4",                           IDM_LOADSTATE_F5
-            MENUITEM "5",                           IDM_LOADSTATE_F6
-            MENUITEM "6",                           IDM_LOADSTATE_F7
-            MENUITEM "7",                           IDM_LOADSTATE_F8
-            MENUITEM "8",                           IDM_LOADSTATE_F9
-            MENUITEM "9",                           IDM_LOADSTATE_F10
-        END
-        MENUITEM "Save State As...",            IDM_SAVESTATEAS
-        MENUITEM "Load State As...",            IDM_LOADSTATEAS
-        MENUITEM SEPARATOR
-        MENUITEM "&Capture Screen",             IDM_CAPTURESCREEN
-        MENUITEM SEPARATOR
-        MENUITEM "Record Movie...",             MENU_RECORD_MOVIE
-        MENUITEM "Replay Movie...",             MENU_PLAY_MOVIE
-        MENUITEM "Stop Movie",                  MENU_STOP_MOVIE
-        MENUITEM SEPARATOR
-        MENUITEM "Record AVI...",               IDM_FILE_RECORDAVI
-        MENUITEM "Stop AVI",                    IDM_FILE_STOPAVI
-        MENUITEM SEPARATOR
-        MENUITEM "&Quit",                       IDM_EXIT
-    END
-    POPUP "&Emulation"
-    BEGIN
-        MENUITEM "Run",                         IDM_RUN
-        MENUITEM "Pause",                       IDM_PAUSE
-        MENUITEM SEPARATOR
-        MENUITEM "Reset",                       IDM_RESET
-        MENUITEM "Hard Reset",                  IDM_HARDRESET
-    END
-    POPUP "&Cheats"
-    BEGIN
-        MENUITEM "&Cheat List...",              IDM_CHEATLIST
-        MENUITEM "Cheat &Search...",            IDM_CHEATSEARCH
-    END
-    POPUP "&Debug"
-    BEGIN
-        MENUITEM "Master SH2...",               IDM_MSH2DEBUG
-        MENUITEM "Slave SH2...",                IDM_SSH2DEBUG
-        MENUITEM "VDP1...",                     IDM_VDP1DEBUG
-        MENUITEM "VDP2...",                     IDM_VDP2DEBUG
-        MENUITEM "68K...",                      IDM_M68KDEBUG
-        MENUITEM "SCU DSP...",                  IDM_SCUDSPDEBUG
-        MENUITEM "SCSP...",                     IDM_SCSPDEBUG
-        MENUITEM "SMPC...",                     IDM_SMPCDEBUG
-        MENUITEM "Memory Editor...",            IDM_MEMORYEDITOR
-        MENUITEM "RAM Watch...",                ID_RAM_WATCH
-        MENUITEM "RAM Search...",               ID_RAM_SEARCH
-    END
-    POPUP "&Help"
-    BEGIN
-        MENUITEM "&Website",                    IDM_WEBSITE, INACTIVE
-        MENUITEM "&Forum",                      IDM_FORUM, INACTIVE
-        MENUITEM "&Submit a bug report",        IDM_SUBMITBUGREPORT, INACTIVE
-        MENUITEM "&Donate to Yabause",          IDM_DONATE, INACTIVE
-        MENUITEM "EC &Compatibility list",      IDM_COMPATLIST, INACTIVE
-        MENUITEM "&About Yabause",              IDM_ABOUT
-    END
-END
-
-RAMWATCH_MENU MENU 
-BEGIN
-    POPUP "File"
-    BEGIN
-        MENUITEM "&New list\tCtrl N",           RAMMENU_FILE_NEW
-        MENUITEM "&Open...\tCtrl O",            RAMMENU_FILE_OPEN
-        MENUITEM "&Save\tCtrl S",               RAMMENU_FILE_SAVE
-        MENUITEM "Sa&ve As...\tCtrl Shift S",   RAMMENU_FILE_SAVEAS
-        MENUITEM "&Append file...",             RAMMENU_FILE_APPEND
-        MENUITEM "Recent",                      RAMMENU_FILE_RECENT
-        MENUITEM SEPARATOR
-        MENUITEM "Auto-&load",                  RAMMENU_FILE_AUTOLOAD
-        MENUITEM "Save Window Position",        RAMMENU_FILE_SAVEWINDOW
-        MENUITEM SEPARATOR
-        MENUITEM "&Close\tAlt F4",              IDCANCEL
-    END
-    POPUP "Watches"
-    BEGIN
-        MENUITEM "&New Watch\tN",               IDC_C_WATCH
-        MENUITEM "&Edit Watch\tE",              IDC_C_WATCH_EDIT
-        MENUITEM "&Remove Watch\tR",            IDC_C_WATCH_REMOVE
-        MENUITEM "Duplicate Watch\tA",          IDC_C_WATCH_DUPLICATE
-        MENUITEM SEPARATOR
-        MENUITEM "Move Up\tU",                  IDC_C_WATCH_UP
-        MENUITEM "Move Down\tD",                IDC_C_WATCH_DOWN
-    END
+    VK_RETURN,      IDM_TOGGLEFULLSCREEN,   VIRTKEY, ALT, NOINVERT
+    "1",            IDM_TOGGLENBG0,         ASCII,  NOINVERT
+    "2",            IDM_TOGGLENBG1,         ASCII,  NOINVERT
+    "3",            IDM_TOGGLENBG2,         ASCII,  NOINVERT
+    "4",            IDM_TOGGLENBG3,         ASCII,  NOINVERT
+    "5",            IDM_TOGGLERBG0,         ASCII,  NOINVERT
+    "6",            IDM_TOGGLEVDP1,         ASCII,  NOINVERT
+    VK_F1,          IDM_TOGGLEFPS,          VIRTKEY, NOINVERT
+    VK_F2,          IDM_SAVESTATE_F2,       VIRTKEY, SHIFT, NOINVERT
+    VK_F3,          IDM_SAVESTATE_F3,       VIRTKEY, SHIFT, NOINVERT
+    VK_F4,          IDM_SAVESTATE_F4,       VIRTKEY, SHIFT, NOINVERT
+    VK_F5,          IDM_SAVESTATE_F5,       VIRTKEY, SHIFT, NOINVERT
+    VK_F6,          IDM_SAVESTATE_F6,       VIRTKEY, SHIFT, NOINVERT
+    VK_F7,          IDM_SAVESTATE_F7,       VIRTKEY, SHIFT, NOINVERT
+    VK_F8,          IDM_SAVESTATE_F8,       VIRTKEY, SHIFT, NOINVERT
+    VK_F9,          IDM_SAVESTATE_F9,       VIRTKEY, SHIFT, NOINVERT
+    VK_F10,         IDM_SAVESTATE_F10,      VIRTKEY, SHIFT, NOINVERT
+    VK_F2,          IDM_LOADSTATE_F2,       VIRTKEY, NOINVERT
+    VK_F3,          IDM_LOADSTATE_F3,       VIRTKEY, NOINVERT
+    VK_F4,          IDM_LOADSTATE_F4,       VIRTKEY, NOINVERT
+    VK_F5,          IDM_LOADSTATE_F5,       VIRTKEY, NOINVERT
+    VK_F6,          IDM_LOADSTATE_F6,       VIRTKEY, NOINVERT
+    VK_F7,          IDM_LOADSTATE_F7,       VIRTKEY, NOINVERT
+    VK_F8,          IDM_LOADSTATE_F8,       VIRTKEY, NOINVERT
+    VK_F9,          IDM_LOADSTATE_F9,       VIRTKEY, NOINVERT
+    VK_F10,         IDM_LOADSTATE_F10,      VIRTKEY, NOINVERT
+    VK_F12,         IDM_FRAMEADVANCEPAUSE,  VIRTKEY, NOINVERT
+    "T",            IDM_TOGGLEREADONLY,     ASCII,  NOINVERT
 END
 
 
@@ -863,84 +806,6 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// Accelerator
-//
-
-IDR_MAIN_ACCEL ACCELERATORS 
-BEGIN
-    VK_RETURN,      IDM_TOGGLEFULLSCREEN,   VIRTKEY, ALT, NOINVERT
-    "1",            IDM_TOGGLENBG0,         ASCII,  NOINVERT
-    "2",            IDM_TOGGLENBG1,         ASCII,  NOINVERT
-    "3",            IDM_TOGGLENBG2,         ASCII,  NOINVERT
-    "4",            IDM_TOGGLENBG3,         ASCII,  NOINVERT
-    "5",            IDM_TOGGLERBG0,         ASCII,  NOINVERT
-    "6",            IDM_TOGGLEVDP1,         ASCII,  NOINVERT
-    VK_F1,          IDM_TOGGLEFPS,          VIRTKEY, NOINVERT
-    VK_F2,          IDM_SAVESTATE_F2,       VIRTKEY, SHIFT, NOINVERT
-    VK_F3,          IDM_SAVESTATE_F3,       VIRTKEY, SHIFT, NOINVERT
-    VK_F4,          IDM_SAVESTATE_F4,       VIRTKEY, SHIFT, NOINVERT
-    VK_F5,          IDM_SAVESTATE_F5,       VIRTKEY, SHIFT, NOINVERT
-    VK_F6,          IDM_SAVESTATE_F6,       VIRTKEY, SHIFT, NOINVERT
-    VK_F7,          IDM_SAVESTATE_F7,       VIRTKEY, SHIFT, NOINVERT
-    VK_F8,          IDM_SAVESTATE_F8,       VIRTKEY, SHIFT, NOINVERT
-    VK_F9,          IDM_SAVESTATE_F9,       VIRTKEY, SHIFT, NOINVERT
-    VK_F10,         IDM_SAVESTATE_F10,      VIRTKEY, SHIFT, NOINVERT
-    VK_F2,          IDM_LOADSTATE_F2,       VIRTKEY, NOINVERT
-    VK_F3,          IDM_LOADSTATE_F3,       VIRTKEY, NOINVERT
-    VK_F4,          IDM_LOADSTATE_F4,       VIRTKEY, NOINVERT
-    VK_F5,          IDM_LOADSTATE_F5,       VIRTKEY, NOINVERT
-    VK_F6,          IDM_LOADSTATE_F6,       VIRTKEY, NOINVERT
-    VK_F7,          IDM_LOADSTATE_F7,       VIRTKEY, NOINVERT
-    VK_F8,          IDM_LOADSTATE_F8,       VIRTKEY, NOINVERT
-    VK_F9,          IDM_LOADSTATE_F9,       VIRTKEY, NOINVERT
-    VK_F10,         IDM_LOADSTATE_F10,      VIRTKEY, NOINVERT
-    VK_F12,         IDM_FRAMEADVANCEPAUSE,  VIRTKEY, NOINVERT
-    "T",            IDM_TOGGLEREADONLY,     ASCII,  NOINVERT
-END
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Icon
-//
-
-// Icon with lowest ID value placed first to ensure application icon
-// remains consistent on all systems.
-IDI_ICON                ICON                    "logo.ico"
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Bitmap
-//
-
-IDB_BITMAP              BITMAP                  "yabause_logo.bmp"
-
-#ifdef APSTUDIO_INVOKED
-/////////////////////////////////////////////////////////////////////////////
-//
-// TEXTINCLUDE
-//
-
-1 TEXTINCLUDE 
-BEGIN
-    "resource.h\0"
-END
-
-2 TEXTINCLUDE 
-BEGIN
-    "#include <windows.h>\r\0"
-END
-
-3 TEXTINCLUDE 
-BEGIN
-    "\r\0"
-END
-
-#endif    // APSTUDIO_INVOKED
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
 // DESIGNINFO
 //
 
@@ -1182,6 +1047,176 @@ BEGIN
         BOTTOMMARGIN, 101
     END
 END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU MENU 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&Memory Transfer",            IDM_MEMTRANSFER
+        MENUITEM SEPARATOR
+        MENUITEM "&Settings",                   IDM_SETTINGS
+        MENUITEM "&Backup Ram Manager",         IDM_BACKUPRAMMANAGER
+        POPUP "Language", GRAYED
+        BEGIN
+            MENUITEM "Deutsch ",                    IDM_GERMAN
+            MENUITEM "English",                     IDM_ENGLISH
+            MENUITEM "Espanol",                     IDM_SPANISH
+            MENUITEM "Francais",                    IDM_FRENCH
+            MENUITEM "Italiano",                    IDM_ITALIAN
+            MENUITEM "Portugues",                   IDM_PORTUGUESE
+            MENUITEM "Portugues Brasileiro",        IDM_PORTUGUESEBRAZIL
+            MENUITEM "Svenska",                     IDM_SWEDISH
+        END
+        MENUITEM SEPARATOR
+        POPUP "Save State"
+        BEGIN
+            MENUITEM "1",                           IDM_SAVESTATE_F2
+            MENUITEM "2",                           IDM_SAVESTATE_F3
+            MENUITEM "3",                           IDM_SAVESTATE_F4
+            MENUITEM "4",                           IDM_SAVESTATE_F5
+            MENUITEM "5",                           IDM_SAVESTATE_F6
+            MENUITEM "6",                           IDM_SAVESTATE_F7
+            MENUITEM "7",                           IDM_SAVESTATE_F8
+            MENUITEM "8",                           IDM_SAVESTATE_F9
+            MENUITEM "9",                           IDM_SAVESTATE_F10
+        END
+        POPUP "Load State"
+        BEGIN
+            MENUITEM "1",                           IDM_LOADSTATE_F2
+            MENUITEM "2",                           IDM_LOADSTATE_F3
+            MENUITEM "3",                           IDM_LOADSTATE_F4
+            MENUITEM "4",                           IDM_LOADSTATE_F5
+            MENUITEM "5",                           IDM_LOADSTATE_F6
+            MENUITEM "6",                           IDM_LOADSTATE_F7
+            MENUITEM "7",                           IDM_LOADSTATE_F8
+            MENUITEM "8",                           IDM_LOADSTATE_F9
+            MENUITEM "9",                           IDM_LOADSTATE_F10
+        END
+        MENUITEM "Save State As...",            IDM_SAVESTATEAS
+        MENUITEM "Load State As...",            IDM_LOADSTATEAS
+        MENUITEM SEPARATOR
+        MENUITEM "&Capture Screen",             IDM_CAPTURESCREEN
+        MENUITEM SEPARATOR
+        MENUITEM "Record Movie...",             MENU_RECORD_MOVIE
+        MENUITEM "Replay Movie...",             MENU_PLAY_MOVIE
+        MENUITEM "Stop Movie",                  MENU_STOP_MOVIE
+        MENUITEM SEPARATOR
+        MENUITEM "Record AVI...",               IDM_FILE_RECORDAVI
+        MENUITEM "Stop AVI",                    IDM_FILE_STOPAVI
+        MENUITEM SEPARATOR
+        MENUITEM "&Quit",                       IDM_EXIT
+    END
+    POPUP "&Emulation"
+    BEGIN
+        MENUITEM "Run",                         IDM_RUN
+        MENUITEM "Pause",                       IDM_PAUSE
+        MENUITEM SEPARATOR
+        MENUITEM "Reset",                       IDM_RESET
+        MENUITEM "Hard Reset",                  IDM_HARDRESET
+    END
+    POPUP "&Cheats"
+    BEGIN
+        MENUITEM "&Cheat List...",              IDM_CHEATLIST
+        MENUITEM "Cheat &Search...",            IDM_CHEATSEARCH
+    END
+    POPUP "&Debug"
+    BEGIN
+        MENUITEM "Master SH2...",               IDM_MSH2DEBUG
+        MENUITEM "Slave SH2...",                IDM_SSH2DEBUG
+        MENUITEM "VDP1...",                     IDM_VDP1DEBUG
+        MENUITEM "VDP2...",                     IDM_VDP2DEBUG
+        MENUITEM "68K...",                      IDM_M68KDEBUG
+        MENUITEM "SCU DSP...",                  IDM_SCUDSPDEBUG
+        MENUITEM "SCSP...",                     IDM_SCSPDEBUG
+        MENUITEM "SMPC...",                     IDM_SMPCDEBUG
+        MENUITEM "Memory Editor...",            IDM_MEMORYEDITOR
+        MENUITEM "RAM Watch...",                ID_RAM_WATCH
+        MENUITEM "RAM Search...",               ID_RAM_SEARCH
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&Website",                    IDM_WEBSITE, INACTIVE
+        MENUITEM "&Forum",                      IDM_FORUM, INACTIVE
+        MENUITEM "&Submit a bug report",        IDM_SUBMITBUGREPORT, INACTIVE
+        MENUITEM "&Donate to Yabause",          IDM_DONATE, INACTIVE
+        MENUITEM "EC &Compatibility list",      IDM_COMPATLIST, INACTIVE
+        MENUITEM "&About Yabause",              IDM_ABOUT
+    END
+END
+
+RAMWATCH_MENU MENU 
+BEGIN
+    POPUP "File"
+    BEGIN
+        MENUITEM "&New list\tCtrl N",           RAMMENU_FILE_NEW
+        MENUITEM "&Open...\tCtrl O",            RAMMENU_FILE_OPEN
+        MENUITEM "&Save\tCtrl S",               RAMMENU_FILE_SAVE
+        MENUITEM "Sa&ve As...\tCtrl Shift S",   RAMMENU_FILE_SAVEAS
+        MENUITEM "&Append file...",             RAMMENU_FILE_APPEND
+        MENUITEM "Recent",                      RAMMENU_FILE_RECENT
+        MENUITEM SEPARATOR
+        MENUITEM "Auto-&load",                  RAMMENU_FILE_AUTOLOAD
+        MENUITEM "Save Window Position",        RAMMENU_FILE_SAVEWINDOW
+        MENUITEM SEPARATOR
+        MENUITEM "&Close\tAlt F4",              IDCANCEL
+    END
+    POPUP "Watches"
+    BEGIN
+        MENUITEM "&New Watch\tN",               IDC_C_WATCH
+        MENUITEM "&Edit Watch\tE",              IDC_C_WATCH_EDIT
+        MENUITEM "&Remove Watch\tR",            IDC_C_WATCH_REMOVE
+        MENUITEM "Duplicate Watch\tA",          IDC_C_WATCH_DUPLICATE
+        MENUITEM SEPARATOR
+        MENUITEM "Move Up\tU",                  IDC_C_WATCH_UP
+        MENUITEM "Move Down\tD",                IDC_C_WATCH_DOWN
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON                ICON                    "logo.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_BITMAP              BITMAP                  "yabause_logo.bmp"
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include <windows.h>\r\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\0"
+END
+
 #endif    // APSTUDIO_INVOKED
 
 #endif    // English (Canada) resources
