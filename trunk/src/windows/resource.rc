@@ -7,8 +7,7 @@
 //
 // Generated from the TEXTINCLUDE 2 resource.
 //
-#include <windows.h>
-
+#include <windows.h>
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
 
@@ -74,13 +73,12 @@ BEGIN
         MENUITEM "Load State As",               IDM_LOADSTATEAS
         MENUITEM SEPARATOR
         MENUITEM "&Capture Screen",             IDM_CAPTURESCREEN
-		MENUITEM SEPARATOR
-        MENUITEM "Record Movie",                MENU_RECORD_MOVIE
-//		MENUITEM "Record From Now",             MENU_RECORD_MOVIE_FROM_NOW
-        MENUITEM "Replay Movie",                MENU_PLAY_MOVIE
-		MENUITEM "Stop Movie",                  MENU_STOP_MOVIE
         MENUITEM SEPARATOR
-  	    MENUITEM "Record AVI",                  IDM_FILE_RECORDAVI
+        MENUITEM "Record Movie",                MENU_RECORD_MOVIE
+        MENUITEM "Replay Movie",                MENU_PLAY_MOVIE
+        MENUITEM "Stop Movie",                  MENU_STOP_MOVIE
+        MENUITEM SEPARATOR
+        MENUITEM "Record AVI",                  IDM_FILE_RECORDAVI
         MENUITEM "Stop AVI",                    IDM_FILE_STOPAVI
         MENUITEM SEPARATOR
         MENUITEM "&Quit",                       IDM_EXIT
@@ -113,12 +111,40 @@ BEGIN
     END
     POPUP "&Help"
     BEGIN
-        MENUITEM "&Website",                    IDM_WEBSITE
-        MENUITEM "&Forum",                      IDM_FORUM
-        MENUITEM "&Submit a bug report",        IDM_SUBMITBUGREPORT
-        MENUITEM "&Donate to Yabause",          IDM_DONATE
-        MENUITEM "EC &Compatibility list",      IDM_COMPATLIST
+        MENUITEM "&Website",                    IDM_WEBSITE, INACTIVE
+        MENUITEM "&Forum",                      IDM_FORUM, INACTIVE
+        MENUITEM "&Submit a bug report",        IDM_SUBMITBUGREPORT, INACTIVE
+        MENUITEM "&Donate to Yabause",          IDM_DONATE, INACTIVE
+        MENUITEM "EC &Compatibility list",      IDM_COMPATLIST, INACTIVE
         MENUITEM "&About Yabause",              IDM_ABOUT
+    END
+END
+
+RAMWATCH_MENU MENU 
+BEGIN
+    POPUP "File"
+    BEGIN
+        MENUITEM "&New list\tCtrl N",           RAMMENU_FILE_NEW
+        MENUITEM "&Open...\tCtrl O",            RAMMENU_FILE_OPEN
+        MENUITEM "&Save\tCtrl S",               RAMMENU_FILE_SAVE
+        MENUITEM "Sa&ve As...\tCtrl Shift S",   RAMMENU_FILE_SAVEAS
+        MENUITEM "&Append file...",             RAMMENU_FILE_APPEND
+        MENUITEM "Recent",                      RAMMENU_FILE_RECENT
+        MENUITEM SEPARATOR
+        MENUITEM "Auto-&load",                  RAMMENU_FILE_AUTOLOAD
+        MENUITEM "Save Window Position",        RAMMENU_FILE_SAVEWINDOW
+        MENUITEM SEPARATOR
+        MENUITEM "&Close\tAlt F4",              IDCANCEL
+    END
+    POPUP "Watches"
+    BEGIN
+        MENUITEM "&New Watch\tN",               IDC_C_WATCH
+        MENUITEM "&Edit Watch\tE",              IDC_C_WATCH_EDIT
+        MENUITEM "&Remove Watch\tR",            IDC_C_WATCH_REMOVE
+        MENUITEM "Duplicate Watch\tA",          IDC_C_WATCH_DUPLICATE
+        MENUITEM SEPARATOR
+        MENUITEM "Move Up\tU",                  IDC_C_WATCH_UP
+        MENUITEM "Move Down\tD",                IDC_C_WATCH_DOWN
     END
 END
 
@@ -163,34 +189,6 @@ BEGIN
     PUSHBUTTON      "Add Cheat",IDC_C_ADDCHEAT,222,140,42,16,WS_DISABLED
     GROUPBOX        "Watches",IDC_STATIC,222,11,42,125
     CONTROL         "",ID_WATCHES_UPDOWN,"msctls_updown32",WS_TABSTOP,232,23,19,36
-END
-
-RAMWATCH_MENU MENU 
-BEGIN
-    POPUP "File"
-    BEGIN
-        MENUITEM "&New list\tCtrl N",           RAMMENU_FILE_NEW
-        MENUITEM "&Open...\tCtrl O",            RAMMENU_FILE_OPEN
-        MENUITEM "&Save\tCtrl S",               RAMMENU_FILE_SAVE
-        MENUITEM "Sa&ve As...\tCtrl Shift S",   RAMMENU_FILE_SAVEAS
-        MENUITEM "&Append file...",             RAMMENU_FILE_APPEND
-        MENUITEM "Recent",                      RAMMENU_FILE_RECENT
-        MENUITEM SEPARATOR
-        MENUITEM "Auto-&load",                  RAMMENU_FILE_AUTOLOAD
-        MENUITEM "Save Window Position",        RAMMENU_FILE_SAVEWINDOW
-        MENUITEM SEPARATOR
-        MENUITEM "&Close\tAlt F4",              IDCANCEL
-    END
-    POPUP "Watches"
-    BEGIN
-        MENUITEM "&New Watch\tN",               IDC_C_WATCH
-        MENUITEM "&Edit Watch\tE",              IDC_C_WATCH_EDIT
-        MENUITEM "&Remove Watch\tR",            IDC_C_WATCH_REMOVE
-        MENUITEM "Duplicate Watch\tA",          IDC_C_WATCH_DUPLICATE
-        MENUITEM SEPARATOR
-        MENUITEM "Move Up\tU",                  IDC_C_WATCH_UP
-        MENUITEM "Move Down\tD",                IDC_C_WATCH_DOWN
-    END
 END
 
 IDD_MEMTRANSFER DIALOGEX 100, 100, 174, 90
@@ -351,7 +349,7 @@ BEGIN
     PUSHBUTTON      "Save slot registers",IDC_SCSPSLOTREGSAVE,115,212,83,14
     GROUPBOX        "Slot Info",-1,3,0,153,208
     LTEXT           "Slot Number",-1,8,9,70,10
-    COMBOBOX        IDC_SCSPSLOTCB,58,7,35,87,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP,0x8000000L
+    COMBOBOX        IDC_SCSPSLOTCB,58,7,35,87,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP,WS_EX_NOACTIVATE
     EDITTEXT        IDC_SCSPSLOTET,7,24,144,172,ES_MULTILINE | ES_READONLY | WS_VSCROLL | WS_HSCROLL
     GROUPBOX        "Common Control Registers",-1,159,0,182,208
     EDITTEXT        IDC_SCSPCOMMONREGET,163,10,174,195,ES_MULTILINE | ES_READONLY | WS_VSCROLL | WS_HSCROLL
@@ -384,7 +382,7 @@ BEGIN
     LTEXT           "Address:",-1,7,24,36,11
     EDITTEXT        IDC_OFFSETET,42,23,36,12,ES_UPPERCASE
     GROUPBOX        "",-1,85,16,101,22
-    COMBOBOX        IDC_PRESETLISTCB,88,23,96,87,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP,0x8000000L
+    COMBOBOX        IDC_PRESETLISTCB,88,23,96,87,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP,WS_EX_NOACTIVATE
     DEFPUSHBUTTON   "&OK",IDOK,52,42,40,14
     PUSHBUTTON      "&Cancel",IDCANCEL,97,42,40,14
 END
@@ -397,7 +395,7 @@ BEGIN
     GROUPBOX        "Search criteria",-1,4,4,182,41
     LTEXT           "Type:",-1,9,14,36,11
     LTEXT           "Value:",-1,9,31,36,11
-    COMBOBOX        IDC_SEARCHTYPECB,34,13,96,87,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP,0x8000000L
+    COMBOBOX        IDC_SEARCHTYPECB,34,13,96,87,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP,WS_EX_NOACTIVATE
     EDITTEXT        IDC_SEARCHMEMET,34,29,148,12
     GROUPBOX        "Options",-1,4,49,182,36
     LTEXT           "Start Address:",-1,9,59,58,11
@@ -454,7 +452,7 @@ BEGIN
     EDITTEXT        IDC_IMAGEEDIT,10,38,189,13,ES_AUTOHSCROLL
     PUSHBUTTON      "Browse",IDC_IMAGEBROWSE,203,38,33,12
     LTEXT           "SH2 Core",-1,10,55,60,10
-    COMBOBOX        IDC_SH2CORECB,10,64,92,87,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP,0x8000000L
+    COMBOBOX        IDC_SH2CORECB,10,64,92,87,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP,WS_EX_NOACTIVATE
     LTEXT           "Region",-1,109,55,115,10
     COMBOBOX        IDC_REGIONCB,109,64,127,87,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
     LTEXT           "Bios ROM File",-1,10,81,73,10
@@ -818,9 +816,8 @@ BEGIN
     VK_F8,          IDM_LOADSTATE_F8,       VIRTKEY, NOINVERT
     VK_F9,          IDM_LOADSTATE_F9,       VIRTKEY, NOINVERT
     VK_F10,         IDM_LOADSTATE_F10,      VIRTKEY, NOINVERT
-	VK_F12,         IDM_FRAMEADVANCEPAUSE,  VIRTKEY, NOINVERT
-	"T",            IDM_TOGGLEREADONLY,     ASCII,   NOINVERT
-
+    VK_F12,         IDM_FRAMEADVANCEPAUSE,  VIRTKEY, NOINVERT
+    "T",            IDM_TOGGLEREADONLY,     ASCII,  NOINVERT
 END
 
 
@@ -1119,8 +1116,7 @@ END
 //
 // Generated from the TEXTINCLUDE 3 resource.
 //
-
-
+
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
 
