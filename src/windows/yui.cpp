@@ -18,6 +18,7 @@
     along with Yabause; if not, write to the Free Software
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
 */
+#include "hotkey.h"
 #include <windows.h>
 #include <commctrl.h>
 #include <GL/gl.h>
@@ -1449,6 +1450,35 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 					SetForegroundWindow(RamSearchHWnd);
 				break;
 
+			case WM_KEYDOWN:
+				if(wParam != VK_PAUSE)
+					break;
+			case WM_SYSKEYDOWN:
+//			case WM_CUSTKEYDOWN:
+				{
+					int modifiers = GetModifiers(wParam);
+					if(!HandleKeyMessage(wParam,lParam, modifiers))
+						return 0;
+					break;
+				}
+			case WM_KEYUP:
+				if(wParam != VK_PAUSE)
+					break;
+			case WM_SYSKEYUP:
+//			case WM_CUSTKEYUP:
+				{
+					int modifiers = GetModifiers(wParam);
+					HandleKeyUp(wParam, lParam, modifiers);
+				}
+				break;
+
+			case IDM_HOTKEY_CONFIG:
+				{
+
+					DialogBox(y_hInstance, MAKEINTRESOURCE(IDD_KEYCUSTOM), hWnd, DlgHotkeyConfig);
+
+				}
+				break;
 			case IDM_BACKUPRAMMANAGER:
 				{
 					YuiTempPause();

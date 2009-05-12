@@ -615,6 +615,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\hotkey.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\perdx.cpp"
 					>
 				</File>
@@ -866,6 +870,10 @@
 				</File>
 				<File
 					RelativePath=".\cheats.h"
+					>
+				</File>
+				<File
+					RelativePath=".\hotkey.h"
 					>
 				</File>
 				<File
