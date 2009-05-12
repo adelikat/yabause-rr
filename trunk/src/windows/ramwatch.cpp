@@ -338,8 +338,6 @@ void UpdateRWRecentArray(const char* addString, unsigned int arrayLen, HMENU men
 
 				// Update the recent files menu
 				UpdateRW_RMenu(menu, menuItem, baseId);
-
-				return;
 			}
 		}
 	}
@@ -357,12 +355,21 @@ void UpdateRWRecentArray(const char* addString, unsigned int arrayLen, HMENU men
 
 	// Update the recent files menu
 	UpdateRW_RMenu(menu, menuItem, baseId);
+	
+	// Write to the ini
+	for(int i = 0; i < MAX_RECENT_WATCHES; i++)
+	{
+		char str[256];
+		sprintf(str, "Recent Watch %d", i+1);
+		WritePrivateProfileStringA("Watches", str, &rw_recent_files[i][0], inifilename);	
+	}
+	return;
 }
 
 
 void RWAddRecentFile(const char *filename)
 {
-	//	UpdateRWRecentArray(filename, MAX_RECENT_WATCHES, rwrecentmenu, RAMMENU_FILE_RECENT, RW_MENU_FIRST_RECENT_FILE);
+	UpdateRWRecentArray(filename, MAX_RECENT_WATCHES, rwrecentmenu, RAMMENU_FILE_RECENT, RW_MENU_FIRST_RECENT_FILE);
 }
 
 void OpenRWRecentFile(int memwRFileNumber)
