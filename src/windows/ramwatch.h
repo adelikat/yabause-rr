@@ -1,5 +1,5 @@
 #ifndef RAMWATCH_H
-#define RAMWATCH_H
+#define RAMWATCH_H 
 #include "windows.h"
 int ResetWatches();
 void OpenRWRecentFile(int memwRFileNumber);
