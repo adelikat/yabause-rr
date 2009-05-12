@@ -1,6 +1,7 @@
 // Microsoft Visual C++ generated resource script.
 //
 #include "resource.h"
+#include "commctrl.h"
 
 #define APSTUDIO_READONLY_SYMBOLS
 /////////////////////////////////////////////////////////////////////////////
@@ -487,7 +488,7 @@ END
 
 IDD_BASICSETTINGS DIALOGEX 0, 0, 246, 206
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
-FONT 8, "Courier New", 0, 0, 0x0
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
     GROUPBOX        "Yabause Basic Settings",-1,3,2,240,200
     LTEXT           "Disc Type",-1,10,14,40,10
