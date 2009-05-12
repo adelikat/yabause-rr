@@ -1018,7 +1018,7 @@ LRESULT CALLBACK RamWatchProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 		//			if (!noMisalign) SendDlgItemMessage(hDlg, IDC_MISALIGN, BM_SETCHECK, BST_CHECKED, 0);
 		//			if (littleEndian) SendDlgItemMessage(hDlg, IDC_ENDIAN, BM_SETCHECK, BST_CHECKED, 0);
 
-		//TODO			RamWatchAccels = LoadAccelerators(hAppInst, MAKEINTRESOURCE(IDR_ACCELERATOR1));
+		RamWatchAccels = LoadAccelerators(y_hInstance, MAKEINTRESOURCE(IDR_ACCELERATOR1));
 
 		// due to some bug in windows, the arrow button width from the resource gets ignored, so we have to set it here
 		SetWindowPos(GetDlgItem(hDlg,ID_WATCHES_UPDOWN), 0,0,0, 30,60, SWP_NOMOVE);
