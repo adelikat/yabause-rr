@@ -81,8 +81,9 @@ static BOOL s_itemIndicesInvalid = true; // if true, the link from listbox items
 static BOOL s_prevValuesNeedUpdate = true; // if true, the "prev" values should be updated using the "cur" values on the next frame update signaled
 static unsigned int s_maxItemIndex = 0; // max currently valid item index, the listbox sometimes tries to update things past the end of the list so we need to know this to ignore those attempts
 
-static const MemoryRegion s_prgRegion    = {  0x06000000, 0x100000, (unsigned char*)HighWram,     false};
+static const MemoryRegion s_prgRegion    = {  0x06000000, 0x100000, (unsigned char*)&HighWram, false};//0x100000
 //static const MemoryRegion s_prgRegion2    = {  0x02000000, 0x400000, (unsigned char*)HighWram,     false};
+
 /*
 static const MemoryRegion s_prgRegion    = {  0x020000, SEGACD_RAM_PRG_SIZE, (unsigned char*)Ram_Prg,     true};
 static const MemoryRegion s_word1MRegion = {  0x200000, SEGACD_1M_RAM_SIZE,  (unsigned char*)Ram_Word_1M, true};
@@ -1474,7 +1475,7 @@ LRESULT CALLBACK RamSearchProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 						{
 							int addr = CALL_WITH_T_SIZE_TYPES(GetHardwareAddressFromItemIndex, rs_type_size,rs_t=='s',noMisalign, iNum);
 							sprintf(num,"%08X",addr);
-							Item->item.pszText = (LPWSTR)num;
+							Item->item.pszText = (LPWSTR)_16(num);
 						}	return true;
 						case 1:
 						{
@@ -1487,7 +1488,7 @@ LRESULT CALLBACK RamSearchProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 								case 'w': sprintf(num, formatString, rs_t=='s' ? (short)(i&0xffff) : (unsigned short)(i&0xffff)); break;
 								case 'd': sprintf(num, formatString, rs_t=='s' ? (long)(i&0xffffffff) : (unsigned long)(i&0xffffffff)); break;
 							}
-							Item->item.pszText = (LPWSTR)num;
+							Item->item.pszText = (LPWSTR)_16(num);
 						}	return true;
 						case 2:
 						{
@@ -1500,14 +1501,14 @@ LRESULT CALLBACK RamSearchProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 								case 'w': sprintf(num, formatString, rs_t=='s' ? (short)(i&0xffff) : (unsigned short)(i&0xffff)); break;
 								case 'd': sprintf(num, formatString, rs_t=='s' ? (long)(i&0xffffffff) : (unsigned long)(i&0xffffffff)); break;
 							}
-							Item->item.pszText = (LPWSTR)num;
+							Item->item.pszText = (LPWSTR)_16(num);
 						}	return true;
 						case 3:
 						{
 							int i = CALL_WITH_T_SIZE_TYPES(GetNumChangesFromItemIndex, rs_type_size,rs_t=='s',noMisalign, iNum);
 							sprintf(num,"%d",i);
 
-							Item->item.pszText = (LPWSTR)num;
+							Item->item.pszText = (LPWSTR)_16(num);
 						}	return true;
 						//case 4:
 						//	Item->item.pszText = rsaddrs[rsresults[iNum].Index].comment ? rsaddrs[rsresults[iNum].Index].comment : "";
@@ -1907,12 +1908,12 @@ void UpdateRamSearchTitleBar(int percent)
 	int poss = last_rs_possible;
 	int regions = last_rs_regions;
 	if(poss <= 0)
-		strcpy((char*)Str_Tmp," RAM Search");
+		strcpy((char*)Str_Tmp, "RAM Search");
 	else if(percent <= 0)
 		sprintf((char*)Str_Tmp, HEADER_STR STATUS_STR, poss, poss==1?"y":"ies", regions, regions==1?"":"s");
 	else
 		sprintf((char*)Str_Tmp, PROGRESS_STR STATUS_STR, percent, poss, poss==1?"y":"ies", regions, regions==1?"":"s");
-	SetWindowText(RamSearchHWnd, Str_Tmp);
+	SetWindowText(RamSearchHWnd, (LPCWSTR)_16((const char*)Str_Tmp));
 }
 
 void UpdatePossibilities(int rs_possible, int regions)
