@@ -108,6 +108,8 @@ int DRV_AviBegin(const char* fname, HWND HWnd);
 //void DRV_AviVideoUpdate(const u16* buffer, HWND HWnd);
 void DRV_AviEnd();
 
+void WriteToINI();
+
 extern "C" SH2Interface_struct *SH2CoreList[] = {
 &SH2Interpreter,
 &SH2DebugInterpreter,
@@ -1014,10 +1016,12 @@ int YuiInit(LPSTR lpCmdLine)
 	// Grab RamWatch Settings
 	GetPrivateProfileStringA("RamWatch", "AutoLoad", "0", tempstr, MAX_PATH, inifilename);
 	AutoRWLoad = atoi(tempstr);
-	
 	GetPrivateProfileStringA("RamWatch", "SaveWindowPos", "0", tempstr, MAX_PATH, inifilename);
 	RWSaveWindowPos = atoi(tempstr);
-
+	GetPrivateProfileStringA("RamWatch", "Ram_x", "0", tempstr, MAX_PATH, inifilename);
+	ramw_x = atoi(tempstr);
+	GetPrivateProfileStringA("RamWatch", "Ram_y", "0", tempstr, MAX_PATH, inifilename);
+	ramw_y = atoi(tempstr);
 	for(int i = 0; i < MAX_RECENT_WATCHES; i++)
 		{
 			char str[256];
@@ -1926,7 +1930,8 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
       {
          stop = 1;
          PostQuitMessage(0);
-         return 0L;
+         WriteToINI();
+		 return 0L;
       }
       case WM_SIZE:
       {
@@ -1941,7 +1946,10 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
          return 0L;
       }
       case WM_DESTROY:
-         return 0L;
+         stop = 1;
+         PostQuitMessage(0);
+         WriteToINI();
+		 return 0L;
     }
 
     return DefWindowProc(hWnd, uMsg, wParam, lParam);
@@ -2018,6 +2026,27 @@ int PASCAL WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
    }
 #endif
    return 0;
+}
+
+//adelikat
+//All WritePrivateProfile calls should go here and be called only on Yabause close (or a possible save config menu option)
+void WriteToINI()
+{
+	char text[10];
+	
+	//RamWatch
+	WritePrivateProfileStringA("RamWatch", "AutoLoad", AutoRWLoad ? "1" : "0", inifilename);
+	WritePrivateProfileStringA("RamWatch", "SaveWindowPos", RWSaveWindowPos ? "1" : "0", inifilename);
+	sprintf(text, "%ld", ramw_x);
+	WritePrivateProfileStringA("RamWatch", "Ram_x", text, inifilename);
+	sprintf(text, "%ld", ramw_y);
+	WritePrivateProfileStringA("RamWatch", "Ram_y", text, inifilename);
+	for(int i = 0; i < MAX_RECENT_WATCHES; i++)
+	{
+		char str[256];
+		sprintf(str, "Recent Watch %d", i+1);
+		WritePrivateProfileStringA("Watches", str, &rw_recent_files[i][0], inifilename);	
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////

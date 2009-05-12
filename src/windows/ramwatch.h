@@ -3,14 +3,14 @@
 #include "windows.h"
 int ResetWatches();
 void OpenRWRecentFile(int memwRFileNumber);
-extern int AutoRWLoad;
-extern int RWSaveWindowPos;
+extern bool AutoRWLoad;
+extern bool RWSaveWindowPos;
 #define MAX_RECENT_WATCHES 5
 extern char rw_recent_files[MAX_RECENT_WATCHES][1024];
-extern int AskSave();
+extern bool AskSave();
 extern int ramw_x;
 extern int ramw_y;
-extern int RWfileChanged;
+extern bool RWfileChanged;
 
 // AddressWatcher is self-contained now
 struct AddressWatcher
