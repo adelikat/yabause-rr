@@ -804,7 +804,7 @@ static LRESULT CALLBACK HotInputCustomWndProc(HWND hwnd, UINT msg, WPARAM wParam
 		}
 		icp->crForeGnd = ((~col) & 0x00ffffff);
 		icp->crBackGnd = col;
-		SetWindowText(hwnd,(LPCWSTR)temp);
+		SetWindowText(hwnd,(LPCWSTR)_16(temp));
 		InvalidateRect(icp->hwnd, NULL, FALSE);
 		UpdateWindow(icp->hwnd);
 		}
@@ -944,7 +944,7 @@ switch(msg)
 //	case WM_SETFONT:
 	case WM_INITDIALOG:
 		//if(DirectX.Clipped) S9xReRefresh();
-		SetWindowText(hDlg,(LPCWSTR)HOTKEYS_TITLE);
+		SetWindowText(hDlg,(LPCWSTR)_16(HOTKEYS_TITLE));
 
 		// insert hotkey page list items
 		for(i = 0 ; i < NUM_HOTKEY_PAGE ; i++)
