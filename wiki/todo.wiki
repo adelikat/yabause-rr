@@ -1,8 +1,9 @@
+  * Snes9x Hotkeys  
+
   * Make background input optional
   * Make it so that it can start without an ini
   * No setup menu when you first start it, just go to the main window
   * File->Open ISO option
-  * Snes9x Hotkeys
   * Gens Ram Search
   * Save slot system 
   * Auto-hold 
