@@ -311,8 +311,8 @@
 #define IDM_SAVESTATEAS                 40010
 #define IDM_LOADSTATEAS                 40011
 #define IDM_EXIT                        40012
-#define IDM_FILE_RECORDAVI              40015
-#define IDM_FILE_STOPAVI                40016
+#define IDM_FILE_RECORDAVI              40013
+#define IDM_FILE_STOPAVI                40014
 #define IDM_CHEATSEARCH                 40020
 #define IDM_CHEATLIST                   40021
 #define IDM_MSH2DEBUG                   40030

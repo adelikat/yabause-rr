@@ -31,7 +31,7 @@ LRESULT InitCustomCtl(HWND hwnd, WPARAM wParam, LPARAM lParam, int customsize)
       return FALSE;
 
    cc->hwnd = hwnd;
-   cc->font = GetStockObject(DEFAULT_GUI_FONT);
+   cc->font = (HFONT)GetStockObject(DEFAULT_GUI_FONT);
    cc->text_color = GetSysColor(COLOR_WINDOWTEXT);
    cc->bg_color = GetSysColor(COLOR_WINDOW);
    cc->hasfocus = FALSE;
@@ -66,7 +66,7 @@ LRESULT CustomCtl_SetFont(CustomCtl_struct *cc, WPARAM wParam, LPARAM lParam)
 
    cc->font = (HFONT)wParam;
    hdc = GetDC(cc->hwnd);
-   oldfont = SelectObject(hdc, cc->font);
+   oldfont = (HFONT)SelectObject(hdc, cc->font);
    GetTextMetrics(hdc, &cc->fontmetric);
    SelectObject(hdc, oldfont);
    ReleaseDC(cc->hwnd, hdc);

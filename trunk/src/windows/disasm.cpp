@@ -119,6 +119,7 @@ LRESULT DisasmCtl_SetScrollPos(DisasmCtl_struct *cc)
    GetScrollRange(cc->hwnd, SB_VERT, &min, &max);
    pos = ((u64)cc->addr) * (u64)max / (u64)(cc->e_addr-DISASMLINES);
    SetScrollPos(cc->hwnd, SB_VERT, (int)pos, TRUE);
+   return 1; //TODO
 }
 
 //////////////////////////////////////////////////////////////////////////////

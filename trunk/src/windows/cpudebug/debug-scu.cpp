@@ -23,10 +23,13 @@
 #undef FASTCALL
 #include "../disasm.h"
 #include "../resource.h"
+extern "C" {
 #include "../../scsp.h"
 #include "../../scu.h"
+}
 #include "yuidebug.h"
 #include "../yuiwin.h"
+#include "../settings/settings.h"
 
 void SCUDSPUpdateRegList(HWND hDlg, scudspregs_struct *regs)
 {
@@ -105,7 +108,7 @@ void SCUDSPUpdateCodeList(HWND hDlg, u8 addr)
 void SCUDSPBreakpointHandler (u32 addr)
 {
    ScspMuteAudio();
-   MessageBox (YabWin, _16("Breakpoint Reached"), _16("Notice"),  MB_OK | MB_ICONINFORMATION);
+   MessageBox (YabWin, (LPCWSTR)_16("Breakpoint Reached"), (LPCWSTR)_16("Notice"),  MB_OK | MB_ICONINFORMATION);
    DialogBox(y_hInstance, MAKEINTRESOURCE(IDD_SCUDSPDEBUG), YabWin, (DLGPROC)SCUDSPDebugDlgProc);
    ScspUnMuteAudio();
 }
@@ -191,7 +194,7 @@ LRESULT CALLBACK SCUDSPDebugDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
 
                // setup ofn structure
                SetupOFN(&ofn, OFN_DEFAULTSAVE, hDlg, filter, tempstr2, sizeof(tempstr2)/sizeof(TCHAR));
-               ofn.lpstrDefExt = _16("BIN");
+               ofn.lpstrDefExt = (LPCWSTR)_16("BIN");
 
                if (GetSaveFileName(&ofn))
                {
@@ -216,7 +219,7 @@ LRESULT CALLBACK SCUDSPDebugDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
 
                // setup ofn structure
                SetupOFN(&ofn, OFN_DEFAULTSAVE, hDlg, filter, tempstr2, sizeof(tempstr2)/sizeof(TCHAR));
-               ofn.lpstrDefExt = _16("BIN");
+               ofn.lpstrDefExt = (LPCWSTR)_16("BIN");
 
                if (GetSaveFileName(&ofn))
                {

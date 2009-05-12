@@ -17,16 +17,23 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
 */
 
+
+
 #include <windows.h>
+
+extern "C" {
 #include "../debug.h"
 #include "../peripheral.h"
-#include "perdx.h"
 #include "../vdp1.h"
 #include "../vdp2.h"
 #include "../yui.h"
+#include "../movie.h"
+}
+
+#include "perdx.h"
 #include "settings/settings.h"
 #include "resource.h"
-#include "../movie.h"
+#include "ramwatch.h"
 
 int PERDXInit(void);
 void PERDXDeInit(void);
@@ -85,7 +92,7 @@ BOOL CALLBACK EnumPeripheralsCallback (LPCDIDEVICEINSTANCE lpddi, LPVOID pvRef)
        GET_DIDEVICE_TYPE(lpddi->dwDevType) == DI8DEVTYPE_JOYSTICK ||
        GET_DIDEVICE_TYPE(lpddi->dwDevType) == DI8DEVTYPE_KEYBOARD)
    {     
-      if (IDirectInput8_CreateDevice(lpDI8, &lpddi->guidInstance, &lpDIDevice[numdevices],
+      if (IDirectInput8_CreateDevice(lpDI8, lpddi->guidInstance, &lpDIDevice[numdevices],
           NULL) == DI_OK)
          numdevices++;
    }
@@ -129,28 +136,28 @@ int PERDXInit(void)
    memset(paddevice, 0, sizeof(paddevice));
 
    if ((ret = DirectInput8Create(GetModuleHandle(NULL), DIRECTINPUT_VERSION,
-       &IID_IDirectInput8, (LPVOID *)&lpDI8, NULL)) != DI_OK)
+       IID_IDirectInput8, (LPVOID *)&lpDI8, NULL)) != DI_OK)
    {
       sprintf(tempstr, "DirectInput8Create error: %s - %s", DXGetErrorString8(ret), DXGetErrorDescription8(ret));
-      MessageBox (NULL, _16(tempstr), _16("Error"),  MB_OK | MB_ICONINFORMATION);
+      MessageBox (NULL, (LPCWSTR)_16(tempstr), (LPCWSTR)_16("Error"),  MB_OK | MB_ICONINFORMATION);
       return -1;
    }
 
    IDirectInput8_EnumDevices(lpDI8, DI8DEVCLASS_ALL, EnumPeripheralsCallback,
                       NULL, DIEDFL_ATTACHEDONLY);
 
-   if ((ret = IDirectInput8_CreateDevice(lpDI8, &GUID_SysKeyboard, &lpDIDevice[0],
+   if ((ret = IDirectInput8_CreateDevice(lpDI8, GUID_SysKeyboard, &lpDIDevice[0],
        NULL)) != DI_OK)
    {
       sprintf(tempstr, "IDirectInput8_CreateDevice error: %s - %s", DXGetErrorString8(ret), DXGetErrorDescription8(ret));
-      MessageBox (NULL, _16(tempstr), _16("Error"),  MB_OK | MB_ICONINFORMATION);
+      MessageBox (NULL, (LPCWSTR)_16(tempstr), (LPCWSTR)_16("Error"),  MB_OK | MB_ICONINFORMATION);
       return -1;
    }
 
    if ((ret = IDirectInputDevice8_SetDataFormat(lpDIDevice[0], &c_dfDIKeyboard)) != DI_OK)
    {
       sprintf(tempstr, "IDirectInputDevice8_SetDataFormat error: %s - %s", DXGetErrorString8(ret), DXGetErrorDescription8(ret));
-      MessageBox (NULL, _16(tempstr), _16("Error"),  MB_OK | MB_ICONINFORMATION);
+      MessageBox (NULL, (LPCWSTR)_16(tempstr), (LPCWSTR)_16("Error"),  MB_OK | MB_ICONINFORMATION);
       return -1;
    }
 
@@ -158,7 +165,7 @@ int PERDXInit(void)
        DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY)) != DI_OK)
    {
       sprintf(tempstr, "IDirectInputDevice8_SetCooperativeLevel error: %s - %s", DXGetErrorString8(ret), DXGetErrorDescription8(ret));
-      MessageBox (NULL, _16(tempstr), _16("Error"),  MB_OK | MB_ICONINFORMATION);
+      MessageBox (NULL, (LPCWSTR)_16(tempstr), (LPCWSTR)_16("Error"),  MB_OK | MB_ICONINFORMATION);
       return -1;
    }
 
@@ -172,7 +179,7 @@ int PERDXInit(void)
    if ((ret = IDirectInputDevice8_SetProperty(lpDIDevice[0], DIPROP_BUFFERSIZE, &dipdw.diph)) != DI_OK)
    {
       sprintf(tempstr, "IDirectInputDevice8_SetProperty error: %s - %s", DXGetErrorString8(ret), DXGetErrorDescription8(ret));
-      MessageBox (NULL, _16(tempstr), _16("Error"),  MB_OK | MB_ICONINFORMATION);
+      MessageBox (NULL, (LPCWSTR)_16(tempstr), (LPCWSTR)_16("Error"),  MB_OK | MB_ICONINFORMATION);
       return -1;
    }
 
@@ -321,7 +328,7 @@ void PERDXLoadDevices(char *inifilename)
             StringToGUID(tempstr, &guid);
 
             // Ok, now that we've got the GUID of the device, let's set it up
-            if (IDirectInput8_CreateDevice(lpDI8, &guid, &lpDIDevice[padindex],
+            if (IDirectInput8_CreateDevice(lpDI8, guid, &lpDIDevice[padindex],
                NULL) != DI_OK)
             {
                curdevice->lpDIDevice = NULL;
@@ -392,9 +399,9 @@ void PERDXLoadDevices(char *inifilename)
 
             // Make sure we're added to the smpc list
             if (i == 0)
-               pad[padindex] = PerAddPeripheral(&PORTDATA1, id);
+               pad[padindex] = (PerPad_struct*)PerAddPeripheral(&PORTDATA1, id);
             else
-               pad[padindex] = PerAddPeripheral(&PORTDATA2, id);
+               pad[padindex] = (PerPad_struct*)PerAddPeripheral(&PORTDATA2, id);
 
             // Now that we're all setup, let's fetch the controls from the ini
             if (curdevice->emulatetype != 3 &&
@@ -639,7 +646,7 @@ void PollKeys(void)
 }
 
 //////////////////////////////////////////////////////////////////////////////
-
+int Check_Skip_Key();
 int FrameAdvanceKeyDown=0;
 static DWORD tgtime;
 
@@ -752,7 +759,7 @@ void PERDXListDevices(HWND control, int emulatetype)
    LPDIRECTINPUT8 lpDI8temp = NULL;
 
    if (DirectInput8Create(GetModuleHandle(NULL), DIRECTINPUT_VERSION,
-       &IID_IDirectInput8, (LPVOID *)&lpDI8temp, NULL) != DI_OK)
+       IID_IDirectInput8, (LPVOID *)&lpDI8temp, NULL) != DI_OK)
       return;
 
    numguids = 0;
@@ -884,7 +891,7 @@ int PERDXInitControlConfig(HWND hWnd, u8 padnum, int *controlmap, const char *in
          for (i = 0; i < 13; i++)
          {
             ConvertKBIDToName(controlmap[i], tempstr);
-            SetDlgItemText(hWnd, idlist[i], _16(tempstr));
+            SetDlgItemText(hWnd, idlist[i], (LPCWSTR)_16(tempstr));
          }
       }
       else
@@ -913,10 +920,10 @@ int PERDXInitControlConfig(HWND hWnd, u8 padnum, int *controlmap, const char *in
       }
 
       if (DirectInput8Create(GetModuleHandle(NULL), DIRECTINPUT_VERSION,
-          &IID_IDirectInput8, (LPVOID *)&lpDI8temp, NULL) != DI_OK)
+          IID_IDirectInput8, (LPVOID *)&lpDI8temp, NULL) != DI_OK)
          return -1;
 
-      if (IDirectInput8_CreateDevice(lpDI8temp, &GUIDDevice[i], &lpDIDevicetemp,
+      if (IDirectInput8_CreateDevice(lpDI8temp, GUIDDevice[i], &lpDIDevicetemp,
           NULL) != DI_OK)
       {
          IDirectInput8_Release(lpDI8temp);
@@ -942,7 +949,7 @@ int PERDXInitControlConfig(HWND hWnd, u8 padnum, int *controlmap, const char *in
             printf("%2d: %d\n", i, buttonid);
             controlmap[i] = buttonid;
             ConvertKBIDToName(buttonid, tempstr);
-            SetDlgItemText(hWnd, idlist[i], _16(tempstr));
+            SetDlgItemText(hWnd, idlist[i], (LPCWSTR)_16(tempstr));
          }
       }       
       else if (GET_DIDEVICE_TYPE(didc.dwDevType) == DI8DEVTYPE_GAMEPAD ||
@@ -955,7 +962,7 @@ int PERDXInitControlConfig(HWND hWnd, u8 padnum, int *controlmap, const char *in
             buttonid = GetPrivateProfileIntA(string1, PerPadNames[i], 0, inifilename);
             controlmap[i] = buttonid;
             ConvertJoyIDToName(buttonid, tempstr);
-            SetDlgItemText(hWnd, idlist[i], _16(tempstr));
+            SetDlgItemText(hWnd, idlist[i], (LPCWSTR)_16(tempstr));
          }
       }
       else if (GET_DIDEVICE_TYPE(didc.dwDevType) == DI8DEVTYPE_MOUSE)
@@ -965,7 +972,7 @@ int PERDXInitControlConfig(HWND hWnd, u8 padnum, int *controlmap, const char *in
             buttonid = GetPrivateProfileIntA(string1, PerPadNames[i], 0, inifilename);
             controlmap[i] = buttonid;
             ConvertMouseIDToName(buttonid, tempstr);
-            SetDlgItemText(hWnd, idlist[i], _16(tempstr));
+            SetDlgItemText(hWnd, idlist[i], (LPCWSTR)_16(tempstr));
          }
       }
 
@@ -988,10 +995,10 @@ int PERDXFetchNextPress(HWND hWnd, u32 guidnum, char *buttonname)
    int buttonid=-1;
 
    if (DirectInput8Create(GetModuleHandle(NULL), DIRECTINPUT_VERSION,
-       &IID_IDirectInput8, (LPVOID *)&lpDI8temp, NULL) != DI_OK)
+       IID_IDirectInput8, (LPVOID *)&lpDI8temp, NULL) != DI_OK)
       return -1;
 
-   if (IDirectInput8_CreateDevice(lpDI8temp, &GUIDDevice[guidnum], &lpDIDevicetemp,
+   if (IDirectInput8_CreateDevice(lpDI8temp, GUIDDevice[guidnum], &lpDIDevicetemp,
        NULL) != DI_OK)
    {
       IDirectInput8_Release(lpDI8temp);
