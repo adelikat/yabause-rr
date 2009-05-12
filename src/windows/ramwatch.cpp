@@ -1,3 +1,6 @@
+//RamWatch dialog was copied and adapted from GENS11: http://code.google.com/p/gens-rerecording/
+//Authors: Upthorn, Nitsuja, adelikat
+
 #include "resource.h"
 #include "ramwatch.h"
 
@@ -25,9 +28,9 @@ static HACCEL RamWatchAccels = NULL;
 char rw_recent_files[MAX_RECENT_WATCHES][1024];
 char Watch_Dir[1024]="";
 const unsigned int RW_MENU_FIRST_RECENT_FILE = 600;
-int RWfileChanged = 0; //Keeps track of whether the current watch file has been changed, if so, ramwatch will prompt to save changes
-int AutoRWLoad = 0;    //Keeps track of whether Auto-load is checked
-int RWSaveWindowPos = 0; //Keeps track of whether Save Window position is checked
+int RWfileChanged = 0;		//Keeps track of whether the current watch file has been changed, if so, ramwatch will prompt to save changes
+int AutoRWLoad = 0;			//Keeps track of whether Auto-load is checked
+int RWSaveWindowPos = 0;	//Keeps track of whether Save Window position is checked
 char currentWatch[1024];
 int ramw_x, ramw_y;			//Used to store ramwatch dialog window positions
 struct AddressWatcher rswatches[MAX_WATCH_COUNT];

@@ -1788,7 +1788,10 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
                PostMessage(hWnd, WM_CLOSE, 0, 0);
                break;
             }
-            case IDM_WEBSITE:
+            
+			//adelikat: These don't apply anymoer
+			/* 
+			case IDM_WEBSITE:
             {
                ShellExecuteA(NULL, "open", "http://yabause.sourceforge.net", NULL, NULL, SW_SHOWNORMAL);
                break;
@@ -1813,6 +1816,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
                ShellExecuteA(NULL, "open", "http://www.emu-compatibility.com/yabause/index.php?lang=uk", NULL, NULL, SW_SHOWNORMAL);
                break;
             }
+			*/
             case IDM_ABOUT:
             {
                YuiTempPause();
