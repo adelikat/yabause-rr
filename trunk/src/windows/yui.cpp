@@ -1028,7 +1028,6 @@ int YuiInit(LPSTR lpCmdLine)
 			sprintf(str, "Recent Watch %d", i+1);
 			GetPrivateProfileStringA("Watches", str, "", &rw_recent_files[i][0], 1024, inifilename);
 		}
-	//Window position (x,y)
 
 #if DEBUG
    // Grab Logging settings
@@ -1257,6 +1256,13 @@ YabauseSetup:
       ShowWindow(YabWin,SW_SHOW);
       SetForegroundWindow(YabWin);
       SetFocus(YabWin);
+   }
+
+   if (AutoRWLoad)
+   {
+	  //Open Ram Watch if its auto-load setting is checked
+	  OpenRWRecentFile(0);	
+	  RamWatchHWnd = CreateDialog(y_hInstance, MAKEINTRESOURCE(IDD_RAMWATCH), YabWin, (DLGPROC) RamWatchProc);	
    }
 
    if (loadexec)
