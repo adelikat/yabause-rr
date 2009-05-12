@@ -42,7 +42,7 @@ extern "C" {
 #include "settings/settings.h"
 #include "cd.h"
 #include "ram_search.h"
-
+#include "aviout.h"
 #include "cheats.h"
 
 #ifdef NOC68K
@@ -1896,6 +1896,9 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
                   IDirectInputDevice8_Unacquire(paddevice[i].lpDIDevice);
             }
          }
+
+		 DRV_AviIsRecording();
+
          return 0L;
       }
       case WM_EXITMENULOOP:
