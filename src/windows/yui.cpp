@@ -104,10 +104,6 @@ TCHAR bmpfilename[MAX_PATH] = TEXT("\0");
 LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam);
 void YuiReleaseVideo(void);
 
-int DRV_AviBegin(const char* fname, HWND HWnd);
-//void DRV_AviVideoUpdate(const u16* buffer, HWND HWnd);
-void DRV_AviEnd();
-
 void WriteToINI();
 
 extern "C" SH2Interface_struct *SH2CoreList[] = {
@@ -1367,7 +1363,6 @@ void ChangeLanguage(int id)
 }
 
 //////////////////////////////////////////////////////////////////////////////
-int DRV_AviBegin(const char* fname, HWND HWnd);
 LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 {
    DIDEVCAPS didc;
@@ -1897,7 +1892,9 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
             }
          }
 
-		 DRV_AviIsRecording();
+		EnableMenuItem(YabMenu, IDM_FILE_RECORDAVI, MF_BYCOMMAND | (!DRV_AviIsRecording()) ? MF_ENABLED : MF_GRAYED);
+		EnableMenuItem(YabMenu, IDM_FILE_STOPAVI,   MF_BYCOMMAND | (DRV_AviIsRecording()) ? MF_ENABLED : MF_GRAYED);
+
 
          return 0L;
       }
