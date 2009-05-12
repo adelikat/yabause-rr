@@ -139,6 +139,7 @@
 #define SCSP_DECAY_R		(u32) (12 * SCSP_ATTACK_R)
 
 ////////////////////////////////////////////////////////////////
+void DRV_AviSoundUpdate(void* soundData, int soundLen);
 
 typedef struct slot_t
 {
