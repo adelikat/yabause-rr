@@ -2051,6 +2051,8 @@ int PASCAL WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
    mini18n_set_domain("trans"); //TODO
 #endif
 
+   InitCustomControls();
+
    if (YuiInit(lpCmdLine) != 0)
       fprintf(stderr, "Error running Yabause\n");
 

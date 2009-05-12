@@ -103,6 +103,7 @@ int GetModifiers(int key);
 int HandleKeyMessage(WPARAM wParam, LPARAM lParam, int modifiers);
 int HandleKeyUp(WPARAM wParam, LPARAM lParam, int modifiers);
 INT_PTR CALLBACK DlgHotkeyConfig(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam);
+void InitCustomControls();
 
 //HOTKEY HANDLERS
 void HK_PrintScreen(int);

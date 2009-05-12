@@ -24,6 +24,7 @@
 #include "ramwatch.h"		//In order to call UpdateRamWatch (for loadstate functions)
 #include "ram_search.h"		//In order to call UpdateRamSearch (for loadstate functions)
 #include "./settings/settings.h"
+#include <commctrl.h>
 
 extern HWND YabWin;
 extern HINSTANCE y_hInstance;
@@ -184,6 +185,8 @@ typedef struct
 } InputCust;
 InputCust * GetInputCustom(HWND hwnd);
 
+static TCHAR szClassName[] = _T("InputCustom");
+
 /////////////
 
 bool IsReserved (WORD Key, int modifiers)
@@ -259,6 +262,45 @@ int GetModifiers(int key)
 	if(GetAsyncKeyState(VK_CONTROL)&0x8000) modifiers |= CUSTKEY_CTRL_MASK;
 	if(GetAsyncKeyState(VK_SHIFT  )&0x8000) modifiers |= CUSTKEY_SHIFT_MASK;
 	return modifiers;
+}
+
+void InitCustomControls()
+{
+
+    WNDCLASSEX wc;
+/*
+    wc.cbSize         = sizeof(wc);
+    wc.lpszClassName  = szClassName;
+    wc.hInstance      = GetModuleHandle(0);
+    wc.lpfnWndProc    = InputCustomWndProc;
+    wc.hCursor        = LoadCursor (NULL, IDC_ARROW);
+    wc.hIcon          = 0;
+    wc.lpszMenuName   = 0;
+    wc.hbrBackground  = (HBRUSH)GetSysColorBrush(COLOR_BTNFACE);
+    wc.style          = 0;
+    wc.cbClsExtra     = 0;
+    wc.cbWndExtra     = sizeof(InputCust *);
+    wc.hIconSm        = 0;
+*/
+
+ //   RegisterClassEx(&wc);
+
+    wc.cbSize         = sizeof(wc);
+    wc.lpszClassName  = szHotkeysClassName;
+    wc.hInstance      = GetModuleHandle(0);
+    wc.lpfnWndProc    = HotInputCustomWndProc;
+    wc.hCursor        = LoadCursor (NULL, IDC_ARROW);
+    wc.hIcon          = 0;
+    wc.lpszMenuName   = 0;
+    wc.hbrBackground  = (HBRUSH)GetSysColorBrush(COLOR_BTNFACE);
+    wc.style          = 0;
+    wc.cbClsExtra     = 0;
+    wc.cbWndExtra     = sizeof(InputCust *);
+    wc.hIconSm        = 0;
+
+
+    RegisterClassEx(&wc);
+
 }
 
 int GetNumHotKeysAssignedTo (WORD Key, int modifiers)
@@ -899,7 +941,7 @@ switch(msg)
 			EndPaint (hDlg, &ps);
 		}
 		return true;
-	case 48:
+//	case WM_SETFONT:
 	case WM_INITDIALOG:
 		//if(DirectX.Clipped) S9xReRefresh();
 		SetWindowText(hDlg,(LPCWSTR)HOTKEYS_TITLE);
