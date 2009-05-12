@@ -23,6 +23,7 @@
 #include "resource.h"
 #include "ramwatch.h"		//In order to call UpdateRamWatch (for loadstate functions)
 #include "ram_search.h"		//In order to call UpdateRamSearch (for loadstate functions)
+#include "./settings/settings.h"
 
 extern HWND YabWin;
 extern HINSTANCE y_hInstance;
@@ -36,8 +37,6 @@ static LRESULT CALLBACK HotInputCustomWndProc(HWND hwnd, UINT msg, WPARAM wParam
 SCustomKeys CustomKeys;
 
 bool AutoHoldPressed=false;
-
-
 
 ///////////////////////////
 
@@ -158,9 +157,6 @@ bool AutoHoldPressed=false;
 #define CUSTKEY_ALT_MASK   0x01
 #define CUSTKEY_CTRL_MASK  0x02
 #define CUSTKEY_SHIFT_MASK 0x04
-
-#define WM_CUSTKEYDOWN	(WM_USER+50)
-#define WM_CUSTKEYUP	(WM_USER+51)
 
 #define NUM_HOTKEY_CONTROLS 20
 
@@ -882,59 +878,6 @@ static void SaveHotkeyConfig()//TODO
 		key++;
 	}*/
 }
-/*
-int GetNumHotKeysAssignedTo (WORD Key, int modifiers)
-{
-	int count = 0;
-	{
-		#define MATCHES_KEY(k) \
-			(Key != 0 && Key != VK_ESCAPE \
-		   && ((Key == k->key && modifiers == k->modifiers) \
-		   || (Key == VK_SHIFT   && k->modifiers & CUSTKEY_SHIFT_MASK) \
-		   || (Key == VK_MENU    && k->modifiers & CUSTKEY_ALT_MASK) \
-		   || (Key == VK_CONTROL && k->modifiers & CUSTKEY_CTRL_MASK) \
-		   || (k->key == VK_SHIFT   && modifiers & CUSTKEY_SHIFT_MASK) \
-		   || (k->key == VK_MENU    && modifiers & CUSTKEY_ALT_MASK) \
-		   || (k->key == VK_CONTROL && modifiers & CUSTKEY_CTRL_MASK)))
-
-		SCustomKey *key = &CustomKeys.key(0);
-		while (!IsLastCustomKey(key)) {
-			if (MATCHES_KEY(key)) {
-				count++;
-			}
-			key++;
-		}
-
-
-		#undef MATCHES_KEY
-	}
-	return count;
-}*/
-
-int hotkeyinfo(HWND hDlg)//TODO
-{
-	HotkeyPage page = (HotkeyPage) SendDlgItemMessage(hDlg,IDC_HKCOMBO,CB_GETCURSEL,0,0);
-	SCustomKey *key = &CustomKeys.key(0);//TODO
-	int i = 0;
-
-	while (!IsLastCustomKey(key) && i < NUM_HOTKEY_CONTROLS) {
-		if (page == key->page) {
-			SendDlgItemMessage(hDlg, IDC_HOTKEY_Table[i], WM_USER+44, key->key, key->modifiers);
-//			SetDlgItemText(hDlg, IDC_LABEL_HK_Table[i], (LPCWSTR)key->name); TODO TODO
-			ShowWindow(GetDlgItem(hDlg, IDC_HOTKEY_Table[i]), SW_SHOW);
-			i++;
-		}
-		key++;
-	}
-	// disable unused controls
-	for (; i < NUM_HOTKEY_CONTROLS; i++) {
-		SendDlgItemMessage(hDlg, IDC_HOTKEY_Table[i], WM_USER+44, 0, 0);
-		SetDlgItemText(hDlg, IDC_LABEL_HK_Table[i], (LPCWSTR)INPUTCONFIG_LABEL_UNUSED);
-		ShowWindow(GetDlgItem(hDlg, IDC_HOTKEY_Table[i]), SW_HIDE);
-	}
-	return 0;//TODO
-}
-
 
 // DlgHotkeyConfig
 INT_PTR CALLBACK DlgHotkeyConfig(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -970,13 +913,13 @@ switch(msg)
 		SendDlgItemMessage(hDlg,IDC_HKCOMBO,CB_SETCURSEL,(WPARAM)0,0);
 
 		InitCustomKeys(&keys);
-		CopyCustomKeys(&keys, &CustomKeys);
+	//	CopyCustomKeys(&keys, &CustomKeys); TODO
 		for( i=0;i<256;i++)
 		{
 			GetAsyncKeyState(i);
 		}
 
-		SetDlgItemText(hDlg,IDC_LABEL_BLUE,(LPCWSTR)HOTKEYS_LABEL_BLUE);
+		SetDlgItemText(hDlg,IDC_LABEL_BLUE,(LPCWSTR)_16(HOTKEYS_LABEL_BLUE));
 
 		set_hotkeyinfo(hDlg);
 
