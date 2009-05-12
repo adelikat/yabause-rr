@@ -41,6 +41,7 @@ extern "C" {
 #include "resource.h"
 #include "settings/settings.h"
 #include "cd.h"
+#include "ram_search.h"
 
 #include "cheats.h"
 
@@ -78,6 +79,7 @@ BOOL isfullscreenset=FALSE;
 int yabwinx = 0;
 int yabwiny = 0;
 psp_struct settingspsp;
+extern HWND RamSearchHWnd;
 
 int oldbpp = 0;
 static int redsize = 0;
@@ -1422,11 +1424,21 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
                memset(&settingspsp, 0, sizeof(settingspsp));
                YuiTempUnPause();
                break;
-            }
-            case IDM_BACKUPRAMMANAGER:
-            {
-               YuiTempPause();
-               DialogBox(y_hInstance, MAKEINTRESOURCE(IDD_BACKUPRAM), hWnd, (DLGPROC)BackupRamDlgProc);
+			}
+			case ID_RAM_SEARCH:
+				if(!RamSearchHWnd)
+				{
+					InitRamSearch();
+					RamSearchHWnd = CreateDialog(y_hInstance, MAKEINTRESOURCE(IDD_RAMSEARCH), hWnd, (DLGPROC) RamSearchProc);
+				}
+				else
+					SetForegroundWindow(RamSearchHWnd);
+				break;
+
+			case IDM_BACKUPRAMMANAGER:
+				{
+					YuiTempPause();
+					DialogBox(y_hInstance, MAKEINTRESOURCE(IDD_BACKUPRAM), hWnd, (DLGPROC)BackupRamDlgProc);
                YuiTempUnPause();
                break;
             }
