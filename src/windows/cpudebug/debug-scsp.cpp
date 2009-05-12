@@ -23,7 +23,9 @@
 #include <stdio.h>
 #include <tchar.h>
 #undef FASTCALL
+extern "C" {
 #include "../../scsp.h"
+}
 #include "../resource.h"
 #include "../settings/settings.h"
 #include "yuidebug.h"
@@ -51,11 +53,11 @@ LRESULT CALLBACK SCSPDebugDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
 
          // Setup Slot Info
          ScspSlotDebugStats(0, tempstr);
-         SetDlgItemText(hDlg, IDC_SCSPSLOTET, _16(tempstr));
+         SetDlgItemText(hDlg, IDC_SCSPSLOTET, (LPCWSTR)_16(tempstr));
 
          // Setup Common Control registers
          ScspCommonControlRegisterDebugStats(tempstr);
-         SetDlgItemText(hDlg, IDC_SCSPCOMMONREGET, _16(tempstr));
+         SetDlgItemText(hDlg, IDC_SCSPCOMMONREGET, (LPCWSTR)_16(tempstr));
 
          return TRUE;
       }
@@ -75,7 +77,7 @@ LRESULT CALLBACK SCSPDebugDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
                      cursel = (u8)SendDlgItemMessage(hDlg, IDC_SCSPSLOTCB, CB_GETCURSEL, 0, 0);
 
                      ScspSlotDebugStats(cursel, tempstr);
-                     SetDlgItemText(hDlg, IDC_SCSPSLOTET, _16(tempstr));
+                     SetDlgItemText(hDlg, IDC_SCSPSLOTET, (LPCWSTR)_16(tempstr));
 
                      return TRUE;
                   }
@@ -99,7 +101,7 @@ LRESULT CALLBACK SCSPDebugDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
 
                // setup ofn structure
                SetupOFN(&ofn, OFN_DEFAULTSAVE, hDlg, filter, tempstr2, sizeof(tempstr2)/sizeof(TCHAR));
-               ofn.lpstrDefExt = _16("WAV");
+               ofn.lpstrDefExt = (LPCWSTR)_16("WAV");
 
                if (GetSaveFileName(&ofn))
                {
@@ -124,7 +126,7 @@ LRESULT CALLBACK SCSPDebugDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
 
                // setup ofn structure
                SetupOFN(&ofn, OFN_DEFAULTSAVE, hDlg, filter, tempstr2, sizeof(tempstr2)/sizeof(TCHAR));
-               ofn.lpstrDefExt = _16("BIN");
+               ofn.lpstrDefExt = (LPCWSTR)_16("BIN");
 
                if (GetSaveFileName(&ofn))
                {

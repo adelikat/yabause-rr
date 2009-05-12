@@ -48,7 +48,7 @@ LRESULT CALLBACK LogSettingsDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
          SendDlgItemMessage(hDlg, IDC_LOGTYPECB, CB_SETCURSEL, logtype, 0);
 
          // Setup log filename setting
-         SetDlgItemText(hDlg, IDC_LOGFILENAMEET, _16(logfilename));
+         SetDlgItemText(hDlg, IDC_LOGFILENAMEET, (LPCWSTR)_16(logfilename));
 
          // mini18n log settings
          SendDlgItemMessage(hDlg, IDC_USEMINI18NLOG, BM_SETCHECK, usemini18nlog ? BST_CHECKED : BST_UNCHECKED, 0);
@@ -120,7 +120,7 @@ LRESULT CALLBACK LogSettingsDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
                ofn.lpstrFile = tempwstr;
                ofn.nMaxFile = sizeof(tempwstr)/sizeof(WCHAR);
                ofn.Flags = OFN_OVERWRITEPROMPT;
-               ofn.lpstrDefExt = _16("TXT");
+               ofn.lpstrDefExt = (LPCWSTR)_16("TXT");
 
                if (GetSaveFileName(&ofn))
                {
@@ -162,7 +162,7 @@ LRESULT CALLBACK LogSettingsDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
                ofn.lpstrFile = tempwstr;
                ofn.nMaxFile = sizeof(tempwstr)/sizeof(WCHAR);
                ofn.Flags = OFN_OVERWRITEPROMPT;
-               ofn.lpstrDefExt = _16("YTS");
+               ofn.lpstrDefExt = (LPCWSTR)_16("YTS");
 
                if (GetSaveFileName(&ofn))
                {

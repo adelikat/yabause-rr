@@ -399,7 +399,7 @@ void DRV_AviVideoUpdate(const u16* buffer, HWND HWnd)
 	if(!avi_file || !avi_file->valid)
 		return;
 
-	do_video_conversion(buffer);
+//	do_video_conversion(buffer); TODO
 
     if(FAILED(AVIStreamWrite(avi_file->compressed_streams[VIDEO_STREAM],
                                  avi_file->video_frames, 1, avi_file->convert_buffer,

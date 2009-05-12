@@ -1,10 +1,15 @@
 #include "resource.h"
 #include "ramwatch.h"
+
 #include "./settings/settings.h"
+#include "./cpudebug/yuidebug.h"
+
+extern "C" {
+#include "../cs2.h"
+#include "../memory.h"
+}
 #include "windows.h"
 #include "commctrl.h"
-#include "./cpudebug/yuidebug.h"
-#include "../cs2.h"
 
 extern HWND YabWin;
 extern HINSTANCE y_hInstance;
@@ -85,7 +90,7 @@ int InsertWatch(const struct AddressWatcher *Watch, char *Comment)
 	//	NewWatch = Watch;
 	//if (NewWatch.comment) free(NewWatch.comment);
 	NewWatch->comment = (char *) malloc(strlen(Comment)+2);
-	NewWatch->CurValue = GetCurrentValue(Watch);;//Watch->CurValue;//GetCurrentValue(NewWatch);
+	NewWatch->CurValue = GetCurrentValue((AddressWatcher*)Watch);;//Watch->CurValue;//GetCurrentValue(NewWatch);
 	NewWatch->Address = Watch->Address;
 	NewWatch->Size = Watch->Size;
 	NewWatch->Type = Watch->Type;
@@ -237,7 +242,7 @@ int AskSave()
 	//returns 0 only if a save was attempted but failed or was cancelled
 	if (RWfileChanged)
 	{
-		int answer = MessageBox(MESSAGEBOXPARENT, _16("Save Changes?"), _16("Ram Watch"), MB_YESNOCANCEL);
+		int answer = MessageBox(MESSAGEBOXPARENT, (LPCWSTR)_16("Save Changes?"), (LPCWSTR)_16("Ram Watch"), MB_YESNOCANCEL);
 		if(answer == IDYES)
 			if(!QuickSaveWatches())
 				return 0;
@@ -295,7 +300,7 @@ void UpdateRW_RMenu(HMENU menu, unsigned int mitem, unsigned int baseid)
 		moo.cch = strlen(tmp);
 		moo.fType = 0;
 		moo.wID = baseid + x;
-		moo.dwTypeData = tmp;
+		moo.dwTypeData = (LPWSTR)tmp;
 		InsertMenuItem(menu, 0, 1, &moo);
 	}
 }
@@ -402,7 +407,7 @@ void OpenRWRecentFile(int memwRFileNumber)
 	WatchFile = fopen(Str_Tmp,"rb");
 	if (!WatchFile)
 	{
-		int answer = MessageBox(MESSAGEBOXPARENT,"Error opening file.","ERROR",MB_OKCANCEL);
+		int answer = MessageBox(MESSAGEBOXPARENT,(LPCWSTR)"Error opening file.",(LPCWSTR)"ERROR",MB_OKCANCEL);
 		if (answer == IDOK)
 		{
 			rw_recent_files[rnum][0] = '\0';	//Clear file from list 
@@ -466,7 +471,7 @@ int Change_File_S(char *Dest, char *Dir, char *Titre, char *Filter, char *Ext, H
 
 	SetupOFN(&ofn, OFN_DEFAULTSAVE, hwnd, filter,
 		watchfilename, sizeof(watchfilename)/sizeof(TCHAR));
-	ofn.lpstrDefExt = _16(Ext);
+	ofn.lpstrDefExt = (LPCWSTR)_16(Ext);
 
 	if (GetSaveFileName(&ofn)) {
 
@@ -522,7 +527,7 @@ int Save_Watches()
 	if(Change_File_S(Str_Tmp, Gens_Path, "Save Watches", "GENs Watchlist\0*.wch\0All Files\0*.*\0\0", "wch", RamWatchHWnd))
 	{
 		FILE *WatchFile;
-		WideCharToMultiByte(CP_ACP, 0, Str_Tmp, -1, Str_Tmp, sizeof(Str_Tmp), NULL, NULL);
+		WideCharToMultiByte(CP_ACP, 0, (LPCWSTR)Str_Tmp, -1, Str_Tmp, sizeof(Str_Tmp), NULL, NULL);
 		WatchFile = fopen(Str_Tmp,"r+b");
 		if (!WatchFile) WatchFile = fopen(Str_Tmp,"w+b");
 		//		fputc(SegaCD_Started?'1':(_32X_Started?'2':'0'),WatchFile);
@@ -587,7 +592,7 @@ int Load_Watches(int clear, const char* filename)
 
 	if (!WatchFile)
 	{
-		MessageBox(MESSAGEBOXPARENT,"Error opening file.","ERROR",MB_OK);
+		MessageBox(MESSAGEBOXPARENT,(LPCWSTR)"Error opening file.",(LPCWSTR)"ERROR",MB_OK);
 		return 0;
 	}
 	if(clear)
@@ -652,7 +657,7 @@ int Change_File_L(char *Dest, char *Dir, char *Titre, char *Filter, char *Ext, H
 
 	SetupOFN(&ofn, OFN_DEFAULTSAVE, hwnd, filter,
 		watchfilename, sizeof(watchfilename)/sizeof(TCHAR));
-	ofn.lpstrDefExt = _16(Ext);
+	ofn.lpstrDefExt = (LPCWSTR)_16(Ext);
 
 
 	if (GetOpenFileName(&ofn))  {
@@ -862,7 +867,7 @@ LRESULT CALLBACK EditWatchProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 					}
 					else
 					{
-						MessageBox(hDlg,_16("Invalid Address"),"ERROR",MB_OK);
+						MessageBox(hDlg,(LPCWSTR)_16("Invalid Address"),(LPCWSTR)"ERROR",MB_OK);
 					}
 				}
 				else
@@ -872,7 +877,7 @@ LRESULT CALLBACK EditWatchProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 						strcat(Str_Tmp," Size must be specified.");
 					if (!t)
 						strcat(Str_Tmp," Type must be specified.");
-					MessageBox(hDlg,_16(Str_Tmp),"ERROR",MB_OK);
+					MessageBox(hDlg,(LPCWSTR)_16(Str_Tmp),(LPCWSTR)"ERROR",MB_OK);
 				}
 				RWfileChanged=1;
 				return 1;
@@ -906,7 +911,7 @@ void init_list_box(HWND Box, const char* Strs[], int numColumns, int *columnWidt
 	{
 		Col.iOrder = i;
 		Col.iSubItem = i;
-		Col.pszText = _16(Strs[i]);
+		Col.pszText = (LPWSTR)_16(Strs[i]);
 		Col.cx = columnWidths[i];
 		ListView_InsertColumn(Box,i,&Col);
 	}
@@ -1046,7 +1051,7 @@ LRESULT CALLBACK RamWatchProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 					{
 					case 0:
 						sprintf(num,"%08X",rswatches[iNum].Address);
-						Item->item.pszText = _16(num);
+						Item->item.pszText = (LPWSTR)_16(num);
 						return 1;
 					case 1: {
 						i = rswatches[iNum].CurValue;
@@ -1061,10 +1066,10 @@ LRESULT CALLBACK RamWatchProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 						case 'd': sprintf(num, formatString, t=='s' ? (long)(i&0xffffffff) : (unsigned long)(i&0xffffffff)); break;
 						}
 
-						Item->item.pszText = _16(num);
+						Item->item.pszText = (LPWSTR)_16(num);
 							}	return 1;
 					case 2:
-						Item->item.pszText = _16(rswatches[iNum].comment ? rswatches[iNum].comment : "");
+						Item->item.pszText = (LPWSTR)_16(rswatches[iNum].comment ? rswatches[iNum].comment : "");
 						return 1;
 
 					default:
@@ -1220,7 +1225,7 @@ LRESULT CALLBACK RamWatchProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 	case WM_DROPFILES:
 		{
 			HDROP hDrop = (HDROP)wParam;
-			DragQueryFile(hDrop, 0, Str_Tmp, 1024);
+			DragQueryFile(hDrop, 0, (LPWSTR)Str_Tmp, 1024);
 			DragFinish(hDrop);
 			return Load_Watches(1, Str_Tmp);
 		}	break;

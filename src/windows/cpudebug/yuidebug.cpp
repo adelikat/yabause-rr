@@ -23,12 +23,15 @@
 #include <commctrl.h>
 #include <tchar.h>
 #include "../resource.h"
+
 #undef FASTCALL
+extern "C" {
 #include "../../memory.h"
 #include "../../scu.h"
 #include "../../sh2d.h"
 #include "../../vdp2debug.h"
 #include "../../yui.h"
+}
 #include "../disasm.h"
 #include "../hexedit.h"
 #include "../settings/settings.h"
@@ -65,6 +68,8 @@ HWND LogWin=NULL;
 char *logbuffer;
 u32 logcounter=0;
 u32 logsize=512;
+
+extern "C" SH2Interface_struct *SH2Core;
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -103,7 +108,7 @@ LRESULT CALLBACK ErrorDebugDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
    {
       case WM_INITDIALOG:
       {
-         SetDlgItemText(hDlg, IDC_EDTEXT, _16((char *)lParam));
+         SetDlgItemText(hDlg, IDC_EDTEXT, (LPCWSTR)_16((char *)lParam));
          return TRUE;
       }
       case WM_COMMAND:
@@ -136,7 +141,7 @@ LRESULT CALLBACK ErrorDebugDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
 
 void YuiErrorMsg(const char *string)
 {
-   extern SH2Interface_struct *SH2Core;
+   
 
    // This sucks, but until YuiErrorMsg is changed around, this will have to do
    if (strncmp(string, "Master SH2 invalid opcode", 25) == 0)
@@ -162,7 +167,7 @@ void YuiErrorMsg(const char *string)
       }
    }
    else
-      MessageBox (YabWin, _16(string), _16("Error"),  MB_OK | MB_ICONINFORMATION);
+      MessageBox (YabWin, (LPCWSTR)_16(string), (LPCWSTR)_16("Error"),  MB_OK | MB_ICONINFORMATION);
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -256,7 +261,7 @@ LRESULT CALLBACK MemTransferDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
 
                if ((mtrnseaddress - mtrnssaddress) < 0)
                {
-                  MessageBox (hDlg, _16("Invalid Start/End Address Combination"), _16("Error"),  MB_OK | MB_ICONINFORMATION);
+                  MessageBox (hDlg, (LPCWSTR)_16("Invalid Start/End Address Combination"), (LPCWSTR)_16("Error"),  MB_OK | MB_ICONINFORMATION);
                   EndDialog(hDlg, TRUE);
                   return FALSE;
                }
@@ -349,7 +354,7 @@ LRESULT CALLBACK MemDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
          char buf[9];
 
          sprintf(buf, "%08lX", memaddr);
-         SetDlgItemTextA(hDlg, IDC_EDITTEXT1, buf);
+         SetDlgItemTextA(hDlg, IDC_EDITTEXT1, (LPCSTR)buf);
          return TRUE;
       }
       case WM_COMMAND:
@@ -567,14 +572,14 @@ LRESULT CALLBACK SearchMemoryDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
             default: break;
          }
 
-         SetDlgItemText(hDlg, IDC_SEARCHMEMET, _16(searcharg->searchstr));
+         SetDlgItemText(hDlg, IDC_SEARCHMEMET, (LPCWSTR)_16(searcharg->searchstr));
          SendDlgItemMessage(hDlg, IDC_SEARCHTYPECB, CB_SETCURSEL, cursel, 0);
 
          sprintf(tempstr, "%08X", (int)searcharg->startaddr);
-         SetDlgItemText(hDlg, IDC_SEARCHSTARTADDRET, _16(tempstr));
+         SetDlgItemText(hDlg, IDC_SEARCHSTARTADDRET, (LPCWSTR)_16(tempstr));
 
          sprintf(tempstr, "%08X", (int)searcharg->endaddr);
-         SetDlgItemText(hDlg, IDC_SEARCHENDADDRET, _16(tempstr));
+         SetDlgItemText(hDlg, IDC_SEARCHENDADDRET, (LPCWSTR)_16(tempstr));
 
          return TRUE;
       }
@@ -807,9 +812,9 @@ LRESULT CALLBACK MemoryEditorDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
                         // ask the user if they want to search from the begining.
 
                         if (SendDlgItemMessage(hDlg, IDC_HEXEDIT, HEX_GETCURADDRESS, 0, 0) != 0)
-                           MessageBox (hDlg, _16("Finished searching up to end of memory, continue from the beginning?"), _16("Wrap search?"), MB_OKCANCEL);
+                           MessageBox (hDlg, (LPCWSTR)_16("Finished searching up to end of memory, continue from the beginning?"), (LPCWSTR)_16("Wrap search?"), MB_OKCANCEL);
                         else
-                           MessageBox (hDlg, _16("No matches found"), _16("Finished search"), MB_OK);
+                           MessageBox (hDlg, (LPCWSTR)_16("No matches found"), (LPCWSTR)_16("Finished search"), MB_OK);
                      }
                   }
                }
@@ -847,7 +852,7 @@ LRESULT CALLBACK LogDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
          switch (LOWORD(wParam))
          {
             case IDC_CLEARBT:
-               SetDlgItemText(hDlg, IDC_LOGET, _16(""));
+               SetDlgItemText(hDlg, IDC_LOGET, (LPCWSTR)_16(""));
                return TRUE;
             case IDC_SAVELOGBT:
             {
@@ -861,7 +866,7 @@ LRESULT CALLBACK LogDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
 
                // setup ofn structure
                SetupOFN(&ofn, OFN_DEFAULTSAVE, hDlg, filter, filename, sizeof(filename)/sizeof(TCHAR));
-               ofn.lpstrDefExt = _16("TXT");
+               ofn.lpstrDefExt = (LPCWSTR)_16("TXT");
 
                if (GetSaveFileName(&ofn))
                {
@@ -872,12 +877,12 @@ LRESULT CALLBACK LogDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
 
                   if (fp == NULL)
                   {
-                     MessageBox (hDlg, _16("Unable to open file for writing"), _16("Error"),  MB_OK | MB_ICONINFORMATION);
+                     MessageBox (hDlg, (LPCWSTR)_16("Unable to open file for writing"), (LPCWSTR)_16("Error"),  MB_OK | MB_ICONINFORMATION);
                      return FALSE;
                   }
 
-                  buf = LocalLock(localbuf);
-                  if (buf2 = malloc(lstrlen(buf)+1))
+                  buf = (TCHAR*)LocalLock(localbuf);
+                  if (buf2 = (char*)malloc(lstrlen(buf)+1))//TODO
                   {
                      WideCharToMultiByte(CP_ACP, 0, buf, -1, buf2, lstrlen(buf)+1, NULL, NULL);
                      fwrite((void *)buf2, 1, strlen(buf2), fp);

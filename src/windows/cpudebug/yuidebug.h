@@ -19,8 +19,9 @@
 
 #ifndef YUIDEBUG_H
 #define YUIDEBUG_H
+extern "C" {
 #include "../../sh2core.h"
-
+}
 enum { OFN_DEFAULTSAVE=0, OFN_DEFAULTLOAD };
 
 LRESULT CALLBACK MemTransferDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,

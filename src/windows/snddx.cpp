@@ -20,7 +20,9 @@
 #include <math.h>
 #include <dsound.h>
 #include "dx.h"
+extern "C" {
 #include "../scsp.h"
+}
 #include "snddx.h"
 
 int SNDDXInit();
@@ -72,14 +74,14 @@ int SNDDXInit()
    if ((ret = DirectSoundCreate8(NULL, &lpDS8, NULL)) != DS_OK)
    {
       sprintf(tempstr, "DirectSound8Create error: %s - %s", DXGetErrorString8(ret), DXGetErrorDescription8(ret));
-      MessageBox (NULL, _16(tempstr), _16("Error"),  MB_OK | MB_ICONINFORMATION);
+      MessageBox (NULL, (LPCWSTR)_16(tempstr), (LPCWSTR)_16("Error"),  MB_OK | MB_ICONINFORMATION);
       return -1;
    }
 
    if ((ret = IDirectSound8_SetCooperativeLevel(lpDS8, YabWin, DSSCL_PRIORITY)) != DS_OK)
    {
       sprintf(tempstr, "IDirectSound8_SetCooperativeLevel error: %s - %s", DXGetErrorString8(ret), DXGetErrorDescription8(ret));
-      MessageBox (NULL, _16(tempstr), _16("Error"),  MB_OK | MB_ICONINFORMATION);
+      MessageBox (NULL, (LPCWSTR)_16(tempstr), (LPCWSTR)_16("Error"),  MB_OK | MB_ICONINFORMATION);
       return -1;
    }
 
@@ -92,7 +94,7 @@ int SNDDXInit()
    if ((ret = IDirectSound8_CreateSoundBuffer(lpDS8, &dsbdesc, &lpDSB, NULL)) != DS_OK)
    {
       sprintf(tempstr, "Error when creating primary sound buffer: %s - %s", DXGetErrorString8(ret), DXGetErrorDescription8(ret));
-      MessageBox (NULL, _16(tempstr), _16("Error"),  MB_OK | MB_ICONINFORMATION);
+      MessageBox (NULL, (LPCWSTR)_16(tempstr), (LPCWSTR)_16("Error"),  MB_OK | MB_ICONINFORMATION);
       return -1;
    }
 
@@ -110,7 +112,7 @@ int SNDDXInit()
    if ((ret = IDirectSoundBuffer8_SetFormat(lpDSB, &wfx)) != DS_OK)
    {
       sprintf(tempstr, "IDirectSoundBuffer8_SetFormat error: %s - %s", DXGetErrorString8(ret), DXGetErrorDescription8(ret));
-      MessageBox (NULL, _16(tempstr), _16("Error"),  MB_OK | MB_ICONINFORMATION);
+      MessageBox (NULL, (LPCWSTR)_16(tempstr), (LPCWSTR)_16("Error"),  MB_OK | MB_ICONINFORMATION);
       return -1;
    }
 
@@ -137,14 +139,14 @@ int SNDDXInit()
          if ((ret = IDirectSound8_CreateSoundBuffer(lpDS8, &dsbdesc, &lpDSB2, NULL)) != DS_OK)
          {
             sprintf(tempstr, "Error when creating secondary sound buffer: %s - %s", DXGetErrorString8(ret), DXGetErrorDescription8(ret));
-            MessageBox (NULL, _16(tempstr), _16("Error"),  MB_OK | MB_ICONINFORMATION);
+            MessageBox (NULL, (LPCWSTR)_16(tempstr), (LPCWSTR)_16("Error"),  MB_OK | MB_ICONINFORMATION);
             return -1;
          }
       }
       else
       {
          sprintf(tempstr, "Error when creating secondary sound buffer: %s - %s", DXGetErrorString8(ret), DXGetErrorDescription8(ret));
-         MessageBox (NULL, _16(tempstr), _16("Error"),  MB_OK | MB_ICONINFORMATION);
+         MessageBox (NULL, (LPCWSTR)_16(tempstr), (LPCWSTR)_16("Error"),  MB_OK | MB_ICONINFORMATION);
          return -1;
       }
    }
@@ -236,6 +238,8 @@ void SNDDXUpdateAudio(u32 *leftchanbuffer, u32 *rightchanbuffer, u32 num_samples
    memcpy(buffer1, stereodata16, buffer1_size);
    if (buffer2)
       memcpy(buffer2, ((u8 *)stereodata16)+buffer1_size, buffer2_size);
+
+  // DRV_AviSoundUpdate(stereodata16, buffer1_size
 
    soundoffset += buffer1_size + buffer2_size;
    soundoffset %= soundbufsize;

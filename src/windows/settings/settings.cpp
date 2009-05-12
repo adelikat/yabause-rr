@@ -86,7 +86,7 @@ int CreateHelpBalloons(helpballoon_struct *hb)
       ti.hwnd = hb[i].hParent;
       ti.hinst = y_hInstance;
       ti.uId = 0;
-      ti.lpszText = _16(hb[i].string);
+      ti.lpszText = (LPWSTR)_16(hb[i].string);
       GetClientRect(hb[i].hParent, &rect);
       ti.rect.left = rect.left;
       ti.rect.top = rect.top;
@@ -131,7 +131,7 @@ void CreateFilter(WCHAR * filter, size_t maxlen, ...)
 #ifdef __MINGW32_VERSION
       wrote = swprintf(filterpos, _16(str));
 #else
-      wrote = swprintf(filterpos, maxlen, _16(str));
+      wrote = swprintf((wchar_t*)filterpos, maxlen, (wchar_t*)_16(str));
 #endif
       filterpos += 1 + wrote;
       maxlen -= 1 + wrote;
@@ -177,17 +177,17 @@ BOOL CreatePropertySheet(psp_struct *psplist, LPCTSTR lpTemplate, LPCTSTR pszTit
 
 INT_PTR SettingsCreatePropertySheets(HWND hParent, BOOL ismodal, psp_struct *psplist)
 {
-   CreatePropertySheet(psplist, MAKEINTRESOURCE(IDD_BASICSETTINGS), _16("Basic"), (DLGPROC)BasicSettingsDlgProc);
-   CreatePropertySheet(psplist, MAKEINTRESOURCE(IDD_VIDEOSETTINGS), _16("Video"), (DLGPROC)VideoSettingsDlgProc);
-   CreatePropertySheet(psplist, MAKEINTRESOURCE(IDD_SOUNDSETTINGS), _16("Sound"), (DLGPROC)SoundSettingsDlgProc);
-   CreatePropertySheet(psplist, MAKEINTRESOURCE(IDD_INPUTSETTINGS), _16("Input"), (DLGPROC)InputSettingsDlgProc);
+   CreatePropertySheet(psplist, MAKEINTRESOURCE(IDD_BASICSETTINGS), (LPCTSTR)_16("Basic"), (DLGPROC)BasicSettingsDlgProc);
+   CreatePropertySheet(psplist, MAKEINTRESOURCE(IDD_VIDEOSETTINGS), (LPCTSTR)_16("Video"), (DLGPROC)VideoSettingsDlgProc);
+   CreatePropertySheet(psplist, MAKEINTRESOURCE(IDD_SOUNDSETTINGS), (LPCTSTR)_16("Sound"), (DLGPROC)SoundSettingsDlgProc);
+   CreatePropertySheet(psplist, MAKEINTRESOURCE(IDD_INPUTSETTINGS), (LPCTSTR)_16("Input"), (DLGPROC)InputSettingsDlgProc);
 
 #ifdef USESOCKET
    CreatePropertySheet(psplist, MAKEINTRESOURCE(IDD_NETLINKSETTINGS), _16("Netlink"), (DLGPROC)NetlinkSettingsDlgProc);
 #endif
 
 #if DEBUG
-   CreatePropertySheet(psplist, MAKEINTRESOURCE(IDD_LOGSETTINGS), _16("Log"), (DLGPROC)LogSettingsDlgProc);
+   CreatePropertySheet(psplist, MAKEINTRESOURCE(IDD_LOGSETTINGS), (LPCTSTR)_16("Log"), (DLGPROC)LogSettingsDlgProc);
 #endif
 
    psplist->psh.dwSize = sizeof(PROPSHEETHEADER);

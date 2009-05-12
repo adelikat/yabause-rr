@@ -23,8 +23,9 @@
 #include <stdio.h>
 #undef FASTCALL
 #include "../resource.h"
+extern "C" {
 #include "../../smpc.h"
-
+}
 void SMPCUpdateRegList(HWND hDlg)
 {
    char tempstr[128];
@@ -77,7 +78,7 @@ LRESULT CALLBACK SMPCDebugDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
          else
             sprintf(buf, "Last executed command: %02X\r\n", SmpcRegs->COMREG);
 
-         SetDlgItemText(hDlg, IDC_SMPCSTATUSET, _16(tempstr));
+         SetDlgItemText(hDlg, IDC_SMPCSTATUSET, (LPCWSTR)_16(tempstr));
          return TRUE;
       }
       case WM_COMMAND:

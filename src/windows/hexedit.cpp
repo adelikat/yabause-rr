@@ -61,7 +61,7 @@ LRESULT InitHexEditCtl(HWND hwnd, WPARAM wParam, LPARAM lParam)
    cc->numaddr = 0;
 
    cc->hwnd = hwnd;
-   cc->font = GetStockObject(DEFAULT_GUI_FONT);
+   cc->font = (HFONT)GetStockObject(DEFAULT_GUI_FONT);
    cc->text_color1 = GetSysColor(COLOR_WINDOWTEXT);
    cc->text_color2 = RGB(0, 0, 255);
    cc->text_color3 = RGB(0, 0, 128);
@@ -571,7 +571,7 @@ BOOL HexEditCtl_Copy(HexEditCtl_struct *cc)
       return FALSE;
    }
 
-   text = GlobalLock(clipmem);
+   text = (char*)GlobalLock(clipmem);
    // fill text here
    GlobalUnlock(clipmem);
 
@@ -854,7 +854,7 @@ void InitHexEdit()
    WNDCLASSEX wc;
 
    wc.cbSize         = sizeof(wc);
-   wc.lpszClassName  = _16("YabauseHexEdit");
+   wc.lpszClassName  = (LPCWSTR)_16("YabauseHexEdit");
    wc.hInstance      = GetModuleHandle(0);
    wc.lpfnWndProc    = HexEditCtl;
    wc.hCursor        = LoadCursor(NULL, IDC_ARROW);

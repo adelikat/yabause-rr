@@ -76,6 +76,7 @@ BEGIN
         MENUITEM "&Capture Screen",             IDM_CAPTURESCREEN
 		MENUITEM SEPARATOR
         MENUITEM "Record Movie",                MENU_RECORD_MOVIE
+//		MENUITEM "Record From Now",             MENU_RECORD_MOVIE_FROM_NOW
         MENUITEM "Replay Movie",                MENU_PLAY_MOVIE
 		MENUITEM "Stop Movie",                  MENU_STOP_MOVIE
         MENUITEM SEPARATOR

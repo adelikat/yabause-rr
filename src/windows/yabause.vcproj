@@ -68,7 +68,7 @@
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="0"
-				CompileAs="1"
+				CompileAs="0"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -559,15 +559,15 @@
 				Name="windows specific"
 				>
 				<File
-					RelativePath=".\aviout.c"
+					RelativePath=".\aviout.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\bup-manager.c"
+					RelativePath=".\bup-manager.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\cd-windows.c"
+					RelativePath="..\cd-windows.cpp"
 					>
 					<FileConfiguration
 						Name="Release|Win32"
@@ -619,38 +619,38 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath=".\cheats.c"
+					RelativePath=".\cheats.cpp"
 					>
 				</File>
 				<File
-					RelativePath="perdx.c"
+					RelativePath=".\perdx.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\ramwatch.c"
+					RelativePath=".\ramwatch.cpp"
 					>
 				</File>
 				<File
-					RelativePath="snddx.c"
+					RelativePath=".\snddx.cpp"
 					>
 				</File>
 				<File
-					RelativePath="yui.c"
+					RelativePath=".\yui.cpp"
 					>
 				</File>
 				<Filter
 					Name="custom controls"
 					>
 					<File
-						RelativePath=".\custctl.c"
+						RelativePath=".\custctl.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\disasm.c"
+						RelativePath=".\disasm.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\hexedit.c"
+						RelativePath=".\hexedit.cpp"
 						>
 					</File>
 				</Filter>
@@ -658,31 +658,31 @@
 					Name="settings"
 					>
 					<File
-						RelativePath=".\settings\settings-basic.c"
+						RelativePath=".\settings\settings-basic.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\settings\settings-input.c"
+						RelativePath=".\settings\settings-input.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\settings\settings-log.c"
+						RelativePath=".\settings\settings-log.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\settings\settings-netlink.c"
+						RelativePath=".\settings\settings-netlink.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\settings\settings-sound.c"
+						RelativePath=".\settings\settings-sound.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\settings\settings-video.c"
+						RelativePath=".\settings\settings-video.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\settings\settings.c"
+						RelativePath=".\settings\settings.cpp"
 						>
 					</File>
 				</Filter>
@@ -690,35 +690,35 @@
 					Name="debug"
 					>
 					<File
-						RelativePath=".\cpudebug\debug-68k.c"
+						RelativePath=".\cpudebug\debug-68k.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\cpudebug\debug-scsp.c"
+						RelativePath=".\cpudebug\debug-scsp.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\cpudebug\debug-scu.c"
+						RelativePath=".\cpudebug\debug-scu.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\cpudebug\debug-sh2.c"
+						RelativePath=".\cpudebug\debug-sh2.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\cpudebug\debug-smpc.c"
+						RelativePath=".\cpudebug\debug-smpc.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\cpudebug\debug-vdp1.c"
+						RelativePath=".\cpudebug\debug-vdp1.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\cpudebug\debug-vdp2.c"
+						RelativePath=".\cpudebug\debug-vdp2.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\cpudebug\yuidebug.c"
+						RelativePath=".\cpudebug\yuidebug.cpp"
 						>
 					</File>
 				</Filter>
