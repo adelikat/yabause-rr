@@ -1014,13 +1014,16 @@ int YuiInit(LPSTR lpCmdLine)
 	// Grab RamWatch Settings
 	GetPrivateProfileStringA("RamWatch", "AutoLoad", "0", tempstr, MAX_PATH, inifilename);
 	AutoRWLoad = atoi(tempstr);
+	
+	GetPrivateProfileStringA("RamWatch", "SaveWindowPos", "0", tempstr, MAX_PATH, inifilename);
+	RWSaveWindowPos = atoi(tempstr);
+
 	for(int i = 0; i < MAX_RECENT_WATCHES; i++)
 		{
 			char str[256];
 			sprintf(str, "Recent Watch %d", i+1);
 			GetPrivateProfileStringA("Watches", str, "", &rw_recent_files[i][0], 1024, inifilename);
 		}
-	//Save window position bool
 	//Window position (x,y)
 
 #if DEBUG

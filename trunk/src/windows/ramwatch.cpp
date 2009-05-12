@@ -1194,6 +1194,7 @@ LRESULT CALLBACK RamWatchProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 		case RAMMENU_FILE_SAVEWINDOW:
 			{
 				RWSaveWindowPos ^=1;
+				WritePrivateProfileStringA("RamWatch", "SaveWindowPos", RWSaveWindowPos ? "1" : "0", inifilename);
 				CheckMenuItem(ramwatchmenu, RAMMENU_FILE_SAVEWINDOW, RWSaveWindowPos ? MF_CHECKED : MF_UNCHECKED);
 				break;
 			}
