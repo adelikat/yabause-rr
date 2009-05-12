@@ -17,7 +17,7 @@ extern "C" {
 extern HWND YabWin;
 extern HINSTANCE y_hInstance;
 
-HWND RamWatchHWnd;
+HWND RamWatchHWnd = NULL;
 
 char Str_Tmp[1024];
 char Rom_Name[64] = "test"; //TODO
@@ -193,6 +193,8 @@ int InsertWatchHwnd(const struct AddressWatcher *Watch, HWND parent)
 
 void Update_RAM_Watch()
 {
+	if (!RamWatchHWnd) return;
+	
 	HWND lv;
 	int top;
 	int bottom;
