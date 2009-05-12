@@ -1009,6 +1009,14 @@ int YuiInit(LPSTR lpCmdLine)
 
    sprintf(netlinksetting, "%d.%d.%d.%d\n%d", (int)FIRST_IPADDRESS(netlinklocalremoteip), (int)SECOND_IPADDRESS(netlinklocalremoteip), (int)THIRD_IPADDRESS(netlinklocalremoteip), (int)FOURTH_IPADDRESS(netlinklocalremoteip), netlinkport);
 
+	// Grab RamWatch Settings
+	GetPrivateProfileStringA("RamWatch", "AutoLoad", "0", tempstr, MAX_PATH, inifilename);
+	AutoRWLoad = atoi(tempstr);
+
+	//Recent files menu
+	//Save window position bool
+	//Window position (x,y)
+
 #if DEBUG
    // Grab Logging settings
    GetPrivateProfileStringA("Log", "Enable", "0", tempstr, MAX_PATH, inifilename);
