@@ -8,3 +8,4 @@
   * Auto-hold 
   * Screenshots - .png format 
   * Pause should be one toggle-able menu item, it should also take the emulator out of frame advance mode 
+  * Ram-watch - a bunch of little things need to be finished implementing
