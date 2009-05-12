@@ -1181,6 +1181,7 @@ LRESULT CALLBACK RamWatchProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 			{
 				AutoRWLoad ^= 1;
 				CheckMenuItem(ramwatchmenu, RAMMENU_FILE_AUTOLOAD, AutoRWLoad ? MF_CHECKED : MF_UNCHECKED);
+				WritePrivateProfileStringA("RamWatch", "AutoLoad", AutoRWLoad ? "1" : "0", inifilename);
 				break;
 			}
 		case RAMMENU_FILE_SAVEWINDOW:
