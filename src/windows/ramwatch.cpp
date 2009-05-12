@@ -305,7 +305,7 @@ void UpdateRW_RMenu(HMENU menu, unsigned int mitem, unsigned int baseid)
 		moo.cch = strlen(tmp);
 		moo.fType = 0;
 		moo.wID = baseid + x;
-		moo.dwTypeData = (LPWSTR)tmp;
+		moo.dwTypeData = (LPWSTR)_16(tmp);
 		InsertMenuItem(menu, 0, 1, &moo);
 	}
 }
