@@ -21,14 +21,6 @@
 
 #include "hotkey.h"
 #include "resource.h"
-//#include "main.h"
-//#include "NDSSystem.h"
-//#include "saves.h"
-//#include "inputdx.h"
-//#include "render3d.h"
-//#include "throttle.h"
-//#include "../mic.h"
-//#include "../movie.h"
 #include "ramwatch.h"		//In order to call UpdateRamWatch (for loadstate functions)
 #include "ram_search.h"		//In order to call UpdateRamSearch (for loadstate functions)
 
@@ -837,7 +829,7 @@ static LRESULT CALLBACK HotInputCustomWndProc(HWND hwnd, UINT msg, WPARAM wParam
 static void set_hotkeyinfo(HWND hDlg)
 {
 	HotkeyPage page = (HotkeyPage) SendDlgItemMessage(hDlg,IDC_HKCOMBO,CB_GETCURSEL,0,0);
-	SCustomKey *key = &CustomKeys.key(0);
+	SCustomKey *key = CustomKeys.key;
 	int i = 0;
 
 	while (!IsLastCustomKey(key) && i < NUM_HOTKEY_CONTROLS) {
@@ -867,21 +859,21 @@ static void ReadHotkey(const char* name, WORD& output)
 }
 
 static void LoadHotkeyConfig()
-{//TODO
-	/*
-	SCustomKey *key = CustomKeys.key;
+{
+	
+	SCustomKey *key = CustomKeys.key; //TODO
 
 	while (!IsLastCustomKey(key)) {
 		ReadHotkey(key->code,key->key); 
 		std::string modname = (std::string)key->code + (std::string)" MOD";
 		ReadHotkey(modname.c_str(),key->modifiers);
 		key++;
-	}*/
+	}
 }
 
 static void SaveHotkeyConfig()//TODO
-{
-/*	SCustomKey *key = CustomKeys.key;
+{/*
+	SCustomKey *key = CustomKeys.key;
 
 	while (!IsLastCustomKey(key)) {
 //		WritePrivateProfileInt("Hotkeys",(char*)key->code,key->key,IniName);
@@ -922,7 +914,7 @@ int GetNumHotKeysAssignedTo (WORD Key, int modifiers)
 int hotkeyinfo(HWND hDlg)//TODO
 {
 	HotkeyPage page = (HotkeyPage) SendDlgItemMessage(hDlg,IDC_HKCOMBO,CB_GETCURSEL,0,0);
-/*	SCustomKey *key = CustomKeys.key;
+	SCustomKey *key = CustomKeys.key;//TODO
 	int i = 0;
 
 	while (!IsLastCustomKey(key) && i < NUM_HOTKEY_CONTROLS) {
@@ -939,7 +931,7 @@ int hotkeyinfo(HWND hDlg)//TODO
 		SendDlgItemMessage(hDlg, IDC_HOTKEY_Table[i], WM_USER+44, 0, 0);
 		SetDlgItemText(hDlg, IDC_LABEL_HK_Table[i], (LPCWSTR)INPUTCONFIG_LABEL_UNUSED);
 		ShowWindow(GetDlgItem(hDlg, IDC_HOTKEY_Table[i]), SW_HIDE);
-	}*/
+	}
 	return 0;//TODO
 }
 
@@ -964,6 +956,7 @@ switch(msg)
 			EndPaint (hDlg, &ps);
 		}
 		return true;
+	case 48:
 	case WM_INITDIALOG:
 		//if(DirectX.Clipped) S9xReRefresh();
 		SetWindowText(hDlg,(LPCWSTR)HOTKEYS_TITLE);
@@ -1017,7 +1010,7 @@ switch(msg)
 		}
 		GetDlgItemText(hDlg, IDC_LABEL_HK_Table[i], text, COUNT(text));
 
-/*		SCustomKey *key = CustomKeys.key; TODO
+		SCustomKey *key = CustomKeys.key;//TODO
 		while (!IsLastCustomKey(key)) {
 			if (page == key->page) {
 //				if (lstrcmp(text, key->name) == 0) { TODO TODO TODO
@@ -1027,7 +1020,7 @@ switch(msg)
 //				}
 			}
 			key++;
-		}*/
+		}
 
 		set_hotkeyinfo(hDlg);
 		PostMessage(hDlg,WM_NEXTDLGCTL,0,0);
@@ -1385,13 +1378,13 @@ void InitCustomKeys (SCustomKeys *keys)
 	keys->ToggleRasterizer.name = L"Toggle Rasterizer";
 	keys->ToggleRasterizer.page = HOTKEY_PAGE_MAIN;
 	keys->ToggleRasterizer.key = VK_SUBTRACT;
-*/
+*//*
 	keys->PrintScreen.handleKeyDown = HK_PrintScreen;
 	keys->PrintScreen.code = "SaveScreenshotas";
 	keys->PrintScreen.name = L"Save Screenshot as";
 	keys->PrintScreen.page = HOTKEY_PAGE_MAIN;
 	keys->PrintScreen.key = VK_F12;
-
+*/
 /*	keys->ToggleFrameCounter.handleKeyDown = HK_ToggleFrame;
 	keys->ToggleFrameCounter.code = "ToggleFrameDisplay";
 	keys->ToggleFrameCounter.name = L"Toggle Frame Display";

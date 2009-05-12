@@ -59,11 +59,9 @@ struct SCustomKey
 };
 
 struct SCustomKeys
-{
-	SCustomKey Save[10];
-	SCustomKey Load[10];
-	SCustomKey Slot[10];
-	SCustomKey QuickSave, QuickLoad, NextSaveSlot, PreviousSaveSlot;
+{/*
+
+	
 
 	SCustomKey OpenROM, Reset, Pause, FrameAdvance, FastForward, FastForwardToggle, IncreaseSpeed, DecreaseSpeed, Microphone;
 
@@ -80,7 +78,11 @@ struct SCustomKeys
 	SCustomKey ToggleFPS;
 	SCustomKey ToggleInput;
 	SCustomKey ToggleLag;
-	SCustomKey ToggleReadOnly;
+	SCustomKey ToggleReadOnly;*/
+	SCustomKey QuickSave, QuickLoad, NextSaveSlot, PreviousSaveSlot;
+	SCustomKey Save[10];
+	SCustomKey Load[10];
+	SCustomKey Slot[10];
 	SCustomKey LastItem; // dummy, must be last
 
 	//--methods--
