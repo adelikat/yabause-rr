@@ -82,6 +82,7 @@ struct SCustomKeys
 	SCustomKey ToggleInput;
 	SCustomKey ToggleLag;
 	SCustomKey ToggleReadOnly;*/
+	SCustomKey FrameAdvance;
 	SCustomKey QuickSave, QuickLoad, NextSaveSlot, PreviousSaveSlot;
 	SCustomKey Save[10];
 	SCustomKey Load[10];
@@ -104,6 +105,7 @@ int HandleKeyMessage(WPARAM wParam, LPARAM lParam, int modifiers);
 int HandleKeyUp(WPARAM wParam, LPARAM lParam, int modifiers);
 INT_PTR CALLBACK DlgHotkeyConfig(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lParam);
 void InitCustomControls();
+void LoadHotkeyConfig();
 
 //HOTKEY HANDLERS
 void HK_PrintScreen(int);
