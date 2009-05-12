@@ -1,10 +1,10 @@
-=High=
+===High===
 
   * Snes9x Hotkeys
   * Save slot system
   * Screenshots - .png format
 
-=Medium=  
+===Medium=== 
 
   * Make background input optional
   * File->Open ISO option
@@ -13,7 +13,7 @@
   * Pause should be one toggle-able menu item, it should also take the emulator out of frame advance mode 
   * Ram-watch - a bunch of little things need to be finished implementing
 
-=Low=
+===Low===
 
   * Make it so that it can start without an ini
   * No setup menu when you first start it, just go to the main window
