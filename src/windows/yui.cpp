@@ -1454,7 +1454,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 				if(wParam != VK_PAUSE)
 					break;
 			case WM_SYSKEYDOWN:
-//			case WM_CUSTKEYDOWN:
+			case WM_CUSTKEYDOWN:
 				{
 					int modifiers = GetModifiers(wParam);
 					if(!HandleKeyMessage(wParam,lParam, modifiers))
@@ -1465,7 +1465,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 				if(wParam != VK_PAUSE)
 					break;
 			case WM_SYSKEYUP:
-//			case WM_CUSTKEYUP:
+			case WM_CUSTKEYUP:
 				{
 					int modifiers = GetModifiers(wParam);
 					HandleKeyUp(wParam, lParam, modifiers);

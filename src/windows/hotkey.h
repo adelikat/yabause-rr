@@ -27,6 +27,9 @@
 #include <tchar.h>
 #include <string>
 
+#define WM_CUSTKEYDOWN	(WM_USER+50)
+#define WM_CUSTKEYUP	(WM_USER+51)
+
 enum HotkeyPage {
 	HOTKEY_PAGE_MAIN=0,
 	HOTKEY_PAGE_STATE,
