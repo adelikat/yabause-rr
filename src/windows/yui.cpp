@@ -2052,6 +2052,7 @@ int PASCAL WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 #endif
 
    InitCustomControls();
+   LoadHotkeyConfig();
 
    if (YuiInit(lpCmdLine) != 0)
       fprintf(stderr, "Error running Yabause\n");

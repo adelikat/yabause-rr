@@ -890,13 +890,13 @@ static void set_hotkeyinfo(HWND hDlg)
 static void ReadHotkey(const char* name, WORD& output)
 {
 	UINT temp;
-//	temp = GetPrivateProfileInt("Hotkeys",name,-1,IniName);
-//	if(temp != -1) {
-//		output = temp;
-//	}
+	temp = GetPrivateProfileIntA("Hotkeys",name,-1,inifilename);
+	if(temp != -1) {
+		output = temp;
+	}
 }
 
-static void LoadHotkeyConfig()
+void LoadHotkeyConfig()
 {
 	
 	SCustomKey *key = &CustomKeys.key(0); //TODO
@@ -909,16 +909,29 @@ static void LoadHotkeyConfig()
 	}
 }
 
+///////////////////
+
+
+void WritePrivateProfileInt(char* appname, char* keyname, int val, char* file)
+{
+	char temp[256] = "";
+	sprintf(temp, "%d", val);
+	WritePrivateProfileStringA(appname, keyname, temp, file);
+}
+
+
+///////////////
+
 static void SaveHotkeyConfig()//TODO
-{/*
+{
 	SCustomKey *key = &CustomKeys.key(0);
 
 	while (!IsLastCustomKey(key)) {
-//		WritePrivateProfileInt("Hotkeys",(char*)key->code,key->key,IniName);
+		WritePrivateProfileInt("Hotkeys",(char*)key->code,key->key,inifilename);
 		std::string modname = (std::string)key->code + (std::string)" MOD";
-//		WritePrivateProfileInt("Hotkeys",(char*)modname.c_str(),key->modifiers,IniName);
+		WritePrivateProfileInt("Hotkeys",(char*)modname.c_str(),key->modifiers,inifilename);
 		key++;
-	}*/
+	}
 }
 
 // DlgHotkeyConfig
@@ -941,7 +954,6 @@ switch(msg)
 			EndPaint (hDlg, &ps);
 		}
 		return true;
-//	case WM_SETFONT:
 	case WM_INITDIALOG:
 		//if(DirectX.Clipped) S9xReRefresh();
 		SetWindowText(hDlg,(LPCWSTR)_16(HOTKEYS_TITLE));
@@ -955,7 +967,8 @@ switch(msg)
 		SendDlgItemMessage(hDlg,IDC_HKCOMBO,CB_SETCURSEL,(WPARAM)0,0);
 
 		InitCustomKeys(&keys);
-	//	CopyCustomKeys(&keys, &CustomKeys); TODO
+	//	CopyCustomKeys(&keys, &CustomKeys); //TODO
+		CopyCustomKeys(&CustomKeys, &keys); // TODO TODO TODO why did I have to reverse this?
 		for( i=0;i<256;i++)
 		{
 			GetAsyncKeyState(i);
@@ -998,11 +1011,11 @@ switch(msg)
 		SCustomKey *key = &CustomKeys.key(0);//TODO
 		while (!IsLastCustomKey(key)) {
 			if (page == key->page) {
-//				if (lstrcmp(text, key->name) == 0) { TODO TODO TODO
-//					key->key = wParam;
-//					key->modifiers = modifiers;
-//					break;
-//				}
+				if (lstrcmp(text, key->name.c_str()) == 0) {
+					key->key = wParam;
+					key->modifiers = modifiers;
+					break;
+				}
 			}
 			key++;
 		}
@@ -1244,6 +1257,11 @@ void HK_PreviousSaveSlot(int) {
 		lastSaveState--;
 	SaveStateMessages(lastSaveState,2); */
 }
+
+bool FrameAdvance;
+
+void HK_FrameAdvanceKeyDown(int) { FrameAdvance=true; }
+void HK_FrameAdvanceKeyUp(int) { FrameAdvance=false; }
 /*
 void HK_Pause(int) { Pause(); }
 void HK_FastForwardToggle(int) { FastForward ^=1; }
@@ -1251,8 +1269,7 @@ void HK_FastForwardKeyDown(int) { FastForward = 1; }
 void HK_FastForwardKeyUp(int) { FastForward = 0; }
 void HK_IncreaseSpeed(int) { IncreaseSpeed(); }
 void HK_DecreaseSpeed(int) { DecreaseSpeed(); }
-void HK_FrameAdvanceKeyDown(int) { FrameAdvance(true); }
-void HK_FrameAdvanceKeyUp(int) { FrameAdvance(false); }
+
 
 void HK_ToggleRasterizer(int) { 
 	if(cur3DCore == GPU3D_OPENGL)
@@ -1306,13 +1323,13 @@ void InitCustomKeys (SCustomKeys *keys)
 	keys->Pause.page = HOTKEY_PAGE_MAIN;
 	keys->Pause.key = VK_PAUSE;*/
 
-/*	keys->FrameAdvance.handleKeyDown = HK_FrameAdvanceKeyDown;
+	keys->FrameAdvance.handleKeyDown = HK_FrameAdvanceKeyDown;
 	keys->FrameAdvance.handleKeyUp = HK_FrameAdvanceKeyUp;
 	keys->FrameAdvance.code = "FrameAdvance";
 	keys->FrameAdvance.name = L"Frame Advance";
 	keys->FrameAdvance.page = HOTKEY_PAGE_MAIN;
 	keys->FrameAdvance.key = 'N';
-
+/*
 	keys->FastForward.handleKeyDown = HK_FastForwardKeyDown;
 	keys->FastForward.handleKeyUp = HK_FastForwardKeyUp;
 	keys->FastForward.code = "FastForward";
