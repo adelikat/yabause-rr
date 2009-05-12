@@ -3153,7 +3153,7 @@ void ScspExec() {
       SNDCore->UpdateAudio(scspchannel[0].data32, (u32 *)scspchannel[1].data32, audiosize);
 	  #ifdef WIN32
       ScspConvert32uto16s((s32 *)scspchannel[0].data32, (s32 *)scspchannel[1].data32, (s16 *)stereodata16, audiosize);
-	  DRV_AviSoundUpdate(stereodata16, audiosize);
+//	  DRV_AviSoundUpdate(stereodata16, audiosize); TODO
 	  #endif
 
    }
