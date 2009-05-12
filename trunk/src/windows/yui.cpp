@@ -1934,10 +1934,13 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
       }
       case WM_CLOSE:
       {
-         stop = 1;
-         PostQuitMessage(0);
-         WriteToINI();
-		 return 0L;
+         if (AskSave())
+		 {
+			 stop = 1;
+			 PostQuitMessage(0);
+			 WriteToINI();
+			 return 0L;
+		 }
       }
       case WM_SIZE:
       {
@@ -1952,10 +1955,13 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
          return 0L;
       }
       case WM_DESTROY:
-         stop = 1;
-         PostQuitMessage(0);
-         WriteToINI();
-		 return 0L;
+         if (AskSave())
+		 {
+			stop = 1;
+			PostQuitMessage(0);
+			WriteToINI();
+			return 0L;
+		 }
     }
 
     return DefWindowProc(hWnd, uMsg, wParam, lParam);
