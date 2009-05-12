@@ -325,7 +325,7 @@ static int AviNextSegment(HWND HWnd)
 }
 
 
-int DRV_AviBegin(const char* fname, HWND HWnd)
+bool DRV_AviBegin(const char* fname, HWND HWnd)
 {
 	WAVEFORMATEX wf;
 	BITMAPINFOHEADER bi;
@@ -371,7 +371,7 @@ int DRV_AviBegin(const char* fname, HWND HWnd)
 	if(!avi_open(fname, &bi, pwf, HWnd))
 	{
 		saved_avi_fname[0]='\0';
-		return 0;
+		return false;
 	}
 
 	// Don't display at file splits
@@ -388,7 +388,7 @@ int DRV_AviBegin(const char* fname, HWND HWnd)
 		strcpy(saved_avi_ext,dot);
 		dot[0]='\0';
 	}
-	return 1;
+	return true;
 }
 
 void DRV_AviVideoUpdate(const u16* buffer, HWND HWnd)
