@@ -83,12 +83,16 @@ struct SCustomKeys
 	SCustomKey ToggleInput;
 	SCustomKey ToggleLag;
 	*/
-	
+
+	SCustomKey ToggleNBG0, ToggleNBG1, ToggleNBG2, ToggleNBG3, ToggleRBG0, ToggleVDP1;
+
+	SCustomKey ToggleFullScreen;
 	SCustomKey PlayMovie;
 	SCustomKey RecordMovie;
 	SCustomKey StopMovie;
 	SCustomKey ToggleReadOnly;
 
+	SCustomKey ToggleOSD;
 	SCustomKey Reset;
 	SCustomKey HardReset;
 	SCustomKey Pause;
