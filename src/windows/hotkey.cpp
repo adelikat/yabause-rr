@@ -1448,14 +1448,6 @@ void HK_IncreaseSpeed(int) { IncreaseSpeed(); }
 void HK_DecreaseSpeed(int) { DecreaseSpeed(); }
 
 
-void HK_ToggleRasterizer(int) { 
-	if(cur3DCore == GPU3D_OPENGL)
-		cur3DCore = GPU3D_SWRAST;
-	else cur3DCore = GPU3D_OPENGL;
-
-	NDS_3D_ChangeCore(cur3DCore);
-	WritePrivateProfileInt("3D", "Renderer", cur3DCore, IniName);
-}
 */
 //======================================================================================
 //=====================================DEFINITIONS======================================
@@ -1539,12 +1531,6 @@ void InitCustomKeys (SCustomKeys *keys)
 	keys->DecreaseSpeed.page = HOTKEY_PAGE_MAIN;
 	keys->DecreaseSpeed.key = VK_OEM_MINUS;
 	
-	keys->Microphone.handleKeyDown = HK_MicrophoneKeyDown;
-	keys->Microphone.handleKeyUp = HK_MicrophoneKeyUp;
-	keys->Microphone.code = "Microphone";
-	keys->Microphone.name = L"Microphone";
-	keys->Microphone.page = HOTKEY_PAGE_MAIN;
-	keys->Microphone.key = NULL;
 */
 /*	keys->AutoHold.handleKeyDown = HK_AutoHoldKeyDown;
 	keys->AutoHold.handleKeyUp = HK_AutoHoldKeyUp;
@@ -1559,12 +1545,7 @@ void InitCustomKeys (SCustomKeys *keys)
 	keys->AutoHoldClear.page = HOTKEY_PAGE_MAIN;
 	keys->AutoHoldClear.key = NULL;
 */
-/*	keys->ToggleRasterizer.handleKeyDown = HK_ToggleRasterizer;
-	keys->ToggleRasterizer.code = "ToggleRasterizer";
-	keys->ToggleRasterizer.name = L"Toggle Rasterizer";
-	keys->ToggleRasterizer.page = HOTKEY_PAGE_MAIN;
-	keys->ToggleRasterizer.key = VK_SUBTRACT;
-*//*
+/*
 	keys->PrintScreen.handleKeyDown = HK_PrintScreen;
 	keys->PrintScreen.code = "SaveScreenshotas";
 	keys->PrintScreen.name = L"Save Screenshot as";

@@ -68,13 +68,12 @@ struct SCustomKeys
 
 	
 
-	SCustomKey OpenROM, FrameAdvance, FastForward, FastForwardToggle, IncreaseSpeed, DecreaseSpeed, Microphone;
+	SCustomKey OpenROM, FrameAdvance, FastForward, FastForwardToggle, IncreaseSpeed, DecreaseSpeed;
 
 	SCustomKey TurboRight, TurboLeft, TurboDown, TurboUp, TurboSelect, TurboStart, TurboB, TurboA, TurboY, TurboX, TurboR, TurboL;
 
 	SCustomKey AutoHold, AutoHoldClear;
 
-	SCustomKey ToggleRasterizer;
 	SCustomKey PrintScreen;	//Screenshot
 
 	SCustomKey RecordAVI, StopAVI;
@@ -84,10 +83,12 @@ struct SCustomKeys
 	SCustomKey ToggleInput;
 	SCustomKey ToggleLag;
 	*/
-	SCustomKey ToggleReadOnly;
+	
 	SCustomKey PlayMovie;
 	SCustomKey RecordMovie;
 	SCustomKey StopMovie;
+	SCustomKey ToggleReadOnly;
+
 	SCustomKey Reset;
 	SCustomKey HardReset;
 	SCustomKey Pause;
