@@ -1366,6 +1366,8 @@ void HK_ToggleReadOnly(int) {
 	//else
 	//SetMessageToDisplay("Read+Write");
 }
+
+void HK_PlayMovie(int) { MovieToggleReadOnly(); };
 /*
 void HK_AutoHoldKeyDown(int) {AutoHoldPressed = true;}
 void HK_AutoHoldKeyUp(int) {AutoHoldPressed = false;}
@@ -1593,6 +1595,12 @@ void InitCustomKeys (SCustomKeys *keys)
 	keys->ToggleReadOnly.name = L"Toggle Read Only";
 	keys->ToggleReadOnly.page = HOTKEY_PAGE_MOVIE;
 	keys->ToggleReadOnly.key = 'Q';
+
+	keys->PlayMovie.handleKeyDown = HK_PlayMovie;
+	keys->PlayMovie.code = "PlayMovie";
+	keys->PlayMovie.name = L"Play Movie";
+	keys->PlayMovie.page = HOTKEY_PAGE_MOVIE;
+	keys->PlayMovie.key = 'R';
 /*
 	keys->RecordAVI.handleKeyDown = HK_RecordAVI;
 	keys->RecordAVI.code = "RecordAVI";

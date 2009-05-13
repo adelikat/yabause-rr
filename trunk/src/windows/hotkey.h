@@ -85,6 +85,7 @@ struct SCustomKeys
 	SCustomKey ToggleLag;
 	*/
 	SCustomKey ToggleReadOnly;
+	SCustomKey PlayMovie;
 	SCustomKey Reset;
 	SCustomKey HardReset;
 	SCustomKey Pause;
