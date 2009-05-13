@@ -107,6 +107,9 @@ INT_PTR CALLBACK DlgHotkeyConfig(HWND hDlg, UINT msg, WPARAM wParam, LPARAM lPar
 void InitCustomControls();
 void LoadHotkeyConfig();
 
+extern DWORD hKeyInputTimer;
+extern VOID CALLBACK KeyInputTimer( UINT idEvent, UINT uMsg, DWORD_PTR dwUser, DWORD_PTR dw1, DWORD_PTR dw2);
+
 //HOTKEY HANDLERS
 void HK_PrintScreen(int);
 void HK_StateSaveSlot(int);
