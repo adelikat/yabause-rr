@@ -81,7 +81,10 @@ static BOOL s_itemIndicesInvalid = true; // if true, the link from listbox items
 static BOOL s_prevValuesNeedUpdate = true; // if true, the "prev" values should be updated using the "cur" values on the next frame update signaled
 static unsigned int s_maxItemIndex = 0; // max currently valid item index, the listbox sometimes tries to update things past the end of the list so we need to know this to ignore those attempts
 
-static const MemoryRegion s_prgRegion    = {  0x06000000, 0x100000, (unsigned char*)&HighWram, false};//0x100000
+u8 *Ram1;
+//(unsigned char*)&
+static MemoryRegion s_prgRegion;//    = {  0x06000000,    0x10000, Ram1, false};//0x100000
+static MemoryRegion s_prgRegion2;
 //static const MemoryRegion s_prgRegion2    = {  0x02000000, 0x400000, (unsigned char*)HighWram,     false};
 
 /*
@@ -109,6 +112,18 @@ void InitRamSearch()
 	{
 		buffers = new Buffers;
 		memset(buffers,0,sizeof(Buffers));
+		//Ram1=HighWram;
+		s_prgRegion.byteSwapped=false;
+		s_prgRegion.hardwareAddress=0x06000000;
+		s_prgRegion.size=0x100000;
+		s_prgRegion.softwareAddress=HighWram;
+
+/*		s_prgRegion2.byteSwapped=false;
+		s_prgRegion2.hardwareAddress=0x00200000;
+		s_prgRegion2.size=0x100000;
+		s_prgRegion2.softwareAddress=LowWram;*/
+
+	//		= {  0x06000000,    0x10000, HighWram, false};//0x100000
 	}
 }
 
@@ -119,6 +134,7 @@ void ResetMemoryRegions()
 	s_activeMemoryRegions.clear();
 		
 	s_activeMemoryRegions.push_back(s_prgRegion);
+//	s_activeMemoryRegions.push_back(s_prgRegion2);
 	
 	/*if(Genesis_Started || _32X_Started || SegaCD_Started)
 	{
