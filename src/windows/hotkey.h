@@ -81,7 +81,8 @@ struct SCustomKeys
 	SCustomKey ToggleFPS;
 	SCustomKey ToggleInput;
 	SCustomKey ToggleLag;
-	SCustomKey ToggleReadOnly;*/
+	*/
+	SCustomKey ToggleReadOnly;
 	SCustomKey Reset;
 	SCustomKey HardReset;
 	SCustomKey Pause;
