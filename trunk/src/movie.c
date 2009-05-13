@@ -36,6 +36,7 @@ int PlaybackFileOpened;
 struct MovieStruct Movie;
 
 char MovieStatus[40];
+int movieLoaded = 0;	//Boolean value, 1 if a movie is playing or recording
 
 //Counting
 int framecounter;
@@ -394,6 +395,16 @@ void PauseOrUnpause(void) {
 		FrameAdvanceVariable=RunNormal;	
 		ScspUnMuteAudio();
 	}
+}
+
+//////////////////////////////////////////////////////////////////////////////
+
+int IsMovieLoaded()
+{
+	if (RecordingFileOpened || PlaybackFileOpened)
+		return 1;
+	else
+		return 0;
 }
 
 //////////////////////////////////////////////////////////////////////////////

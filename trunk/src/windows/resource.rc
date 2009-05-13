@@ -7,7 +7,7 @@
 //
 // Generated from the TEXTINCLUDE 2 resource.
 //
-#include <windows.h>
+#include <windows.h>
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
 
@@ -180,7 +180,6 @@ BEGIN
     LTEXT           "Blue means the hotkey is already mapped.\nPink means it conflicts with a game button.\nRed means it's reserved by Windows.\nA hotkey can be disabled using Escape.",IDC_LABEL_BLUE,238,140,136,32
     COMBOBOX        IDC_HKCOMBO,16,141,168,60,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
 END
-
 
 IDD_RAMSEARCH DIALOGEX 0, 0, 287, 292
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU
@@ -1157,8 +1156,8 @@ BEGIN
         MENUITEM "&Capture Screen",             IDM_CAPTURESCREEN
         MENUITEM SEPARATOR
         MENUITEM "Record Movie...",             MENU_RECORD_MOVIE
-        MENUITEM "Replay Movie...",             MENU_PLAY_MOVIE
-        MENUITEM "Stop Movie",                  MENU_STOP_MOVIE
+        MENUITEM "&Replay Movie...",            MENU_PLAY_MOVIE
+        MENUITEM "&Stop Movie",                 MENU_STOP_MOVIE
         MENUITEM SEPARATOR
         MENUITEM "Record AVI...",               IDM_FILE_RECORDAVI
         MENUITEM "Stop AVI",                    IDM_FILE_STOPAVI
@@ -1191,7 +1190,7 @@ BEGIN
         MENUITEM "Memory Editor...",            IDM_MEMORYEDITOR
         MENUITEM "RAM Watch...",                ID_RAM_WATCH
         MENUITEM "RAM Search...",               ID_RAM_SEARCH
-		MENUITEM "Hotkey Config",				IDM_HOTKEY_CONFIG
+        MENUITEM "Hotkey Config",               IDM_HOTKEY_CONFIG
     END
     POPUP "&Help"
     BEGIN
@@ -1282,7 +1281,7 @@ END
 //
 // Generated from the TEXTINCLUDE 3 resource.
 //
-
+
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
 
