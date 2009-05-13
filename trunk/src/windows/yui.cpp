@@ -66,6 +66,7 @@ extern "C" {
 void ResetGame();
 void HardResetGame();
 void YuiPlayMovie(HWND hWnd);
+void YuiRecordMovie(HWND hWnd);
 
 HANDLE emuthread=INVALID_HANDLE_VALUE;
 int KillEmuThread=0;
@@ -1715,26 +1716,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 				AVIRecording=0;
 				break;
 			case MENU_RECORD_MOVIE:
-				{
-			   WCHAR filter[1024];
-               OPENFILENAME ofn;
-
-               YuiTempPause();
-
-               CreateFilter(filter, 1024,
-                  "Yabause Movie file", "*.YMV",
-                  "All files (*.*)", "*.*", NULL);
-
-               SetupOFN(&ofn, OFN_DEFAULTSAVE, hWnd, filter,
-                        ymvfilename, sizeof(ymvfilename)/sizeof(TCHAR));
-               ofn.lpstrDefExt = (LPCWSTR)_16("YMV");
-
-               if (GetSaveFileName(&ofn))
-               {
-                  WideCharToMultiByte(CP_ACP, 0, ymvfilename, -1, text, sizeof(text), NULL, NULL);
-               SaveMovie(text);
-               }
-				}
+				YuiRecordMovie(hWnd);
 				break;
 
 /*			case MENU_RECORD_MOVIE_FROM_NOW:
@@ -2145,8 +2127,8 @@ void YuiPlayMovie(HWND hWnd)
 
 	YuiTempPause();
 	CreateFilter(filter, 1024,
-	"Yabause Movie files", "*.YMV",
-	"All files (*.*)", "*.*", NULL);
+		"Yabause Movie files", "*.YMV",
+		"All files (*.*)", "*.*", NULL);
 	SetupOFN(&ofn, OFN_DEFAULTLOAD, hWnd, filter,
 	ymvfilename, sizeof(ymvfilename)/sizeof(TCHAR));
 
@@ -2156,4 +2138,26 @@ void YuiPlayMovie(HWND hWnd)
 		PlayMovie(text);
 	}
 	YuiTempUnPause();
+}
+
+void YuiRecordMovie(HWND hWnd)
+{
+	char text[MAX_PATH];
+	WCHAR filter[1024];
+	OPENFILENAME ofn;
+
+	YuiTempPause();
+	CreateFilter(filter, 1024,
+		"Yabause Movie file", "*.YMV",
+		"All files (*.*)", "*.*", NULL);
+
+	SetupOFN(&ofn, OFN_DEFAULTSAVE, hWnd, filter,
+	ymvfilename, sizeof(ymvfilename)/sizeof(TCHAR));
+	ofn.lpstrDefExt = (LPCWSTR)_16("YMV");
+
+	if (GetSaveFileName(&ofn))
+	{
+		WideCharToMultiByte(CP_ACP, 0, ymvfilename, -1, text, sizeof(text), NULL, NULL);
+		SaveMovie(text);
+	}
 }
