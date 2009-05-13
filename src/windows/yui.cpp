@@ -2143,7 +2143,6 @@ void SaveState(int num) {
 	if (YabSaveStateSlot(ysspath, num) != 0)
 		MessageBox (YabWin, (LPCWSTR)_16("Couldn't save state file"), (LPCWSTR)_16("Error"),  MB_OK | MB_ICONINFORMATION);
 	YuiTempUnPause();
-
 }
 
 void LoadState(int num) {
@@ -2152,6 +2151,4 @@ void LoadState(int num) {
 	if (YabLoadStateSlot(ysspath, num) != 0)
 		MessageBox (YabWin, (LPCWSTR)_16("Couldn't load state file"), (LPCWSTR)_16("Error"),  MB_OK | MB_ICONINFORMATION);
 	YuiTempUnPause();
-
-
 }
