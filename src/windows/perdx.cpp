@@ -34,6 +34,7 @@ extern "C" {
 #include "settings/settings.h"
 #include "resource.h"
 #include "ramwatch.h"
+#include "ram_search.h"
 
 int PERDXInit(void);
 void PERDXDeInit(void);
@@ -663,6 +664,7 @@ int PERDXHandleEvents(void)
    if (YabauseExec() != 0)
       return -1;
 
+   Update_RAM_Search();
    Update_RAM_Watch();
    YuiCaptureVideo();
 
