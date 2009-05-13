@@ -25,7 +25,9 @@
 #include "ram_search.h"		//In order to call UpdateRamSearch (for loadstate functions)
 #include "./settings/settings.h"
 #include <commctrl.h>
-
+extern "C" {
+#include "../movie.h"
+}
 extern HWND YabWin;
 extern HINSTANCE y_hInstance;
 
@@ -1406,10 +1408,10 @@ void HK_PreviousSaveSlot(int) {
 bool FrameAdvance;
 
 void HK_FrameAdvanceKeyDown(int) { 
-	FrameAdvance=true; 
+	FrameAdvanceVariable = NeedAdvance;
 }
 void HK_FrameAdvanceKeyUp(int) { 
-	FrameAdvance=false; 
+	FrameAdvance=false; //dummy todo
 }
 /*
 void HK_Pause(int) { Pause(); }

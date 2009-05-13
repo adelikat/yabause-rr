@@ -1450,28 +1450,6 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 					SetForegroundWindow(RamSearchHWnd);
 				break;
 
-			case WM_KEYDOWN:
-				if(wParam != VK_PAUSE)
-					break;
-			case WM_SYSKEYDOWN:
-			case WM_CUSTKEYDOWN:
-				{
-					int modifiers = GetModifiers(wParam);
-					if(!HandleKeyMessage(wParam,lParam, modifiers))
-						return 0;
-					break;
-				}
-			case WM_KEYUP:
-				if(wParam != VK_PAUSE)
-					break;
-			case WM_SYSKEYUP:
-			case WM_CUSTKEYUP:
-				{
-					int modifiers = GetModifiers(wParam);
-					HandleKeyUp(wParam, lParam, modifiers);
-				}
-				break;
-
 			case IDM_HOTKEY_CONFIG:
 				{
 
@@ -1896,6 +1874,30 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 
          return 0L;
       }
+
+case WM_KEYDOWN:
+//	if(wParam != VK_PAUSE)
+//		break;
+case WM_SYSKEYDOWN:
+case WM_CUSTKEYDOWN:
+	{
+		int modifiers = GetModifiers(wParam);
+		if(!HandleKeyMessage(wParam,lParam, modifiers))
+			return 0;
+		break;
+	}
+case WM_KEYUP:
+//	if(wParam != VK_PAUSE)
+//		break;
+case WM_SYSKEYUP:
+case WM_CUSTKEYUP:
+	{
+		int modifiers = GetModifiers(wParam);
+		HandleKeyUp(wParam, lParam, modifiers);
+	}
+	break;
+
+				/*
       case WM_KEYDOWN:
       {
          if(wParam == VK_OEM_3) // ~ key
@@ -1908,7 +1910,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
          if(wParam == VK_OEM_3) // ~ key
              SpeedThrottleDisable();
          return 0L;
-      }
+      }*/
       case WM_ENTERMENULOOP:
       {
 #ifndef USETHREADS
