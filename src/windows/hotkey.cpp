@@ -35,6 +35,8 @@ extern HINSTANCE y_hInstance;
 extern void TogglePause();	//adelikat: TODO: maybe there should be a driver.h or a main.h to put this and the handles in
 extern void ResetGame();
 extern void HardResetGame();
+extern void SaveState(int num);
+extern void LoadState(int num);
 
 static TCHAR szHotkeysClassName[] = _T("InputCustomHot");
 
@@ -1286,18 +1288,19 @@ void HK_PrintScreen(int param)
 
 void HK_StateSaveSlot(int num)
 {
-/*	if (!paused)
-	{
-		NDS_Pause();
-		savestate_slot(num);	//Savestate
-		NDS_UnPause();
-	}
-	else
-		savestate_slot(num);	//Savestate
+//	if (!paused)
+//	{
+//		NDS_Pause();
+//		savestate_slot(num);	//Savestate
+//		NDS_UnPause();
+//	}
+//	else
+//		savestate_slot(num);	//Savestate
 	
-	lastSaveState = num;		//Set last savestate used
-	SaveStateMessages(num, 0);	//Display state loaded message
-	LoadSaveStateInfo();*/
+//	lastSaveState = num;		//Set last savestate used
+//	SaveStateMessages(num, 0);	//Display state loaded message
+//	LoadSaveStateInfo();
+	SaveState(num);
 }
 
 void HK_StateLoadSlot(int num)
@@ -1315,6 +1318,7 @@ void HK_StateLoadSlot(int num)
 		NDS_UnPause();
 	else
 		Display();*/
+	LoadState(num);
 }
 
 void HK_StateSetSlot(int num)
