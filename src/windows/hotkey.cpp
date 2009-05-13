@@ -34,6 +34,7 @@ extern HINSTANCE y_hInstance;
 
 extern void TogglePause();	//adelikat: TODO: maybe there should be a driver.h or a main.h to put this and the handles in
 extern void ResetGame();
+extern void HardResetGame();
 
 static TCHAR szHotkeysClassName[] = _T("InputCustomHot");
 
@@ -1338,6 +1339,7 @@ void HK_AutoHoldClearKeyDown(int) {
 }
 
 void HK_Reset(int) {ResetGame();}
+void HK_HardReset(int) {HardResetGame();}
 
 //void HK_RecordAVI(int) {AviRecordTo();}
 //void HK_StopAVI(int) {AviEnd();}
@@ -1473,6 +1475,13 @@ void InitCustomKeys (SCustomKeys *keys)
 	keys->Reset.page = HOTKEY_PAGE_MAIN;
 	keys->Reset.key = 'R';
 	keys->Reset.modifiers = CUSTKEY_CTRL_MASK;
+
+	keys->HardReset.handleKeyDown = HK_HardReset;
+	keys->HardReset.code = "HardReset";
+	keys->HardReset.name = L"Hard Reset";
+	keys->HardReset.page = HOTKEY_PAGE_MAIN;
+	keys->HardReset.key = 'P';
+	keys->HardReset.modifiers = CUSTKEY_CTRL_MASK;
 
 	keys->Pause.handleKeyDown = HK_Pause;
 	keys->Pause.code = "Pause";

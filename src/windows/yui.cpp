@@ -64,6 +64,7 @@ extern "C" {
 
 //Prototypes
 void ResetGame();
+void HardResetGame();
 
 HANDLE emuthread=INVALID_HANDLE_VALUE;
 int KillEmuThread=0;
@@ -1427,9 +1428,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
             }
             case IDM_HARDRESET:
             {
-               YuiTempPause();
-               YabauseReset();
-               YuiTempUnPause();
+               HardResetGame();
                break;
             }
             case IDM_CHEATSEARCH:
@@ -2128,5 +2127,12 @@ void ResetGame()
 {
 	YuiTempPause();
     YabauseResetButton();
+    YuiTempUnPause();
+}
+
+void HardResetGame()
+{
+	YuiTempPause();
+    YabauseReset();
     YuiTempUnPause();
 }

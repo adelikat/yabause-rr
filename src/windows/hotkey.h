@@ -83,6 +83,7 @@ struct SCustomKeys
 	SCustomKey ToggleLag;
 	SCustomKey ToggleReadOnly;*/
 	SCustomKey Reset;
+	SCustomKey HardReset;
 	SCustomKey Pause;
 	SCustomKey FrameAdvance;
 	SCustomKey QuickSave, QuickLoad, NextSaveSlot, PreviousSaveSlot;
