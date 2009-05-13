@@ -1072,6 +1072,8 @@ IDR_MENU MENU
 BEGIN
     POPUP "&File"
     BEGIN
+		MENUITEM "&Open Cue / ISO",	            IDM_OPENCUEISO
+		MENUITEM SEPARATOR
         MENUITEM "&Memory Transfer",            IDM_MEMTRANSFER
         MENUITEM SEPARATOR
         MENUITEM "&Settings",                   IDM_SETTINGS

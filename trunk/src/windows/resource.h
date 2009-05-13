@@ -448,6 +448,7 @@
 #define IDD_KEYCUSTOM                   60078
 #define IDM_HOTKEY_CONFIG               60079
 #define IDC_LABEL_BLUE                  60080
+#define IDM_OPENCUEISO                  60081
 #define IDC_STATIC                      -1
 
 // Next default values for new objects
