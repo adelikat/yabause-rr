@@ -48,6 +48,8 @@ SCustomKeys CustomKeys;
 
 bool AutoHoldPressed=false;
 
+int SaveStateSlot=1;
+
 ///////////////////////////
 
 #define INPUTCONFIG_LABEL_BLUE "Blue means the button is already mapped.\nPink means it conflicts with a custom hotkey.\nRed means it's reserved by Windows.\nButtons can be disabled using Escape.\nGrayed buttons arent supported yet (sorry!)"
@@ -1323,17 +1325,20 @@ void HK_StateLoadSlot(int num)
 
 void HK_StateSetSlot(int num)
 {
+	SaveStateSlot=num;
 //	lastSaveState = num;
 //	SaveStateMessages(num,2);	
 }
 
 void HK_StateQuickSaveSlot(int)
 {
+	SaveState(SaveStateSlot);
 //	HK_StateSaveSlot(lastSaveState);
 }
 
 void HK_StateQuickLoadSlot(int)
 {
+	LoadState(SaveStateSlot);
 //	HK_StateLoadSlot(lastSaveState);
 }
 
