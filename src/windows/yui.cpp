@@ -1930,11 +1930,12 @@ case WM_CUSTKEYUP:
             }
          }
 
-		EnableMenuItem(YabMenu, IDM_FILE_RECORDAVI, MF_BYCOMMAND | (!DRV_AviIsRecording()) ? MF_ENABLED : MF_GRAYED);
+		EnableMenuItem(YabMenu, IDM_FILE_RECORDAVI, MF_BYCOMMAND | (!DRV_AviIsRecording())? MF_ENABLED : MF_GRAYED);
 		EnableMenuItem(YabMenu, IDM_FILE_STOPAVI,   MF_BYCOMMAND | (DRV_AviIsRecording()) ? MF_ENABLED : MF_GRAYED);
-
-
-         return 0L;
+		EnableMenuItem(YabMenu, MENU_RECORD_MOVIE,  MF_BYCOMMAND | (!IsMovieLoaded())     ? MF_ENABLED : MF_GRAYED);
+		EnableMenuItem(YabMenu, MENU_PLAY_MOVIE,    MF_BYCOMMAND | (!IsMovieLoaded())     ? MF_ENABLED : MF_GRAYED);
+		EnableMenuItem(YabMenu, MENU_STOP_MOVIE,    MF_BYCOMMAND | (IsMovieLoaded())      ? MF_ENABLED : MF_GRAYED);
+		return 0L;
       }
       case WM_EXITMENULOOP:
       {
