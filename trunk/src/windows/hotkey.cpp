@@ -31,6 +31,8 @@ extern "C" {
 extern HWND YabWin;
 extern HINSTANCE y_hInstance;
 
+extern void TogglePause();	//adelikat: TODO: maybe there should be a driver.h or a main.h to put this and the handles in
+
 static TCHAR szHotkeysClassName[] = _T("InputCustomHot");
 
 static LRESULT CALLBACK HotInputCustomWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -1413,8 +1415,10 @@ void HK_FrameAdvanceKeyDown(int) {
 void HK_FrameAdvanceKeyUp(int) { 
 	FrameAdvance=false; //dummy todo
 }
+
+void HK_Pause(int) { TogglePause(); }
+
 /*
-void HK_Pause(int) { Pause(); }
 void HK_FastForwardToggle(int) { FastForward ^=1; }
 void HK_FastForwardKeyDown(int) { FastForward = 1; }
 void HK_FastForwardKeyUp(int) { FastForward = 0; }
@@ -1468,11 +1472,11 @@ void InitCustomKeys (SCustomKeys *keys)
 	keys->Reset.key = 'R';
 	keys->Reset.modifiers = CUSTKEY_CTRL_MASK;
 */
-/*	keys->Pause.handleKeyDown = HK_Pause;
+	keys->Pause.handleKeyDown = HK_Pause;
 	keys->Pause.code = "Pause";
 	keys->Pause.name = L"Pause";
 	keys->Pause.page = HOTKEY_PAGE_MAIN;
-	keys->Pause.key = VK_PAUSE;*/
+	keys->Pause.key = VK_PAUSE;
 
 	keys->FrameAdvance.handleKeyDown = HK_FrameAdvanceKeyDown;
 	keys->FrameAdvance.handleKeyUp = HK_FrameAdvanceKeyUp;
