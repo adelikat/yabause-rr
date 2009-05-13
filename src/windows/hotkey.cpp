@@ -38,6 +38,7 @@ extern void HardResetGame();
 extern void SaveState(int num);
 extern void LoadState(int num);
 extern void YuiPlayMovie(HWND hWnd);
+extern void YuiRecordMovie(HWND hWnd);
 
 static TCHAR szHotkeysClassName[] = _T("InputCustomHot");
 
@@ -1368,8 +1369,10 @@ void HK_ToggleReadOnly(int) {
 	//SetMessageToDisplay("Read+Write");
 }
 
-void HK_PlayMovie(int) { YuiPlayMovie(YabWin); };
-void HK_StopMovie(int) { StopMovie(); };
+void HK_PlayMovie(int)   {YuiPlayMovie(YabWin); };
+void HK_RecordMovie(int) {YuiRecordMovie(YabWin); };
+void HK_StopMovie(int)   {StopMovie(); };
+
 /*
 void HK_AutoHoldKeyDown(int) {AutoHoldPressed = true;}
 void HK_AutoHoldKeyUp(int) {AutoHoldPressed = false;}
@@ -1603,6 +1606,13 @@ void InitCustomKeys (SCustomKeys *keys)
 	keys->PlayMovie.name = L"Play Movie";
 	keys->PlayMovie.page = HOTKEY_PAGE_MOVIE;
 	keys->PlayMovie.key = 'R';
+
+	keys->RecordMovie.handleKeyDown = HK_RecordMovie;
+	keys->RecordMovie.code = "RecordMovie";
+	keys->RecordMovie.name = L"Record Movie";
+	keys->RecordMovie.page = HOTKEY_PAGE_MOVIE;
+	keys->RecordMovie.key = 'R';
+	keys->RecordMovie.modifiers = CUSTKEY_SHIFT_MASK;
 
 	keys->StopMovie.handleKeyDown = HK_StopMovie;
 	keys->StopMovie.code = "StopMovie";
