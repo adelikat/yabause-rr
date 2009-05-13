@@ -2052,6 +2052,7 @@ int PASCAL WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 #endif
 
    InitCustomControls();
+   InitCustomKeys(&CustomKeys);
    LoadHotkeyConfig();
 
    if (YuiInit(lpCmdLine) != 0)
