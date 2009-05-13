@@ -888,6 +888,8 @@ int YuiInit(LPSTR lpCmdLine)
    free(cmddup);
 #endif
 
+   LoadHotkeyConfig();
+
    if (GetPrivateProfileStringA("General", "CDROMDrive", "", cdrompath, MAX_PATH, inifilename) == 0)
    {
       if (forcecdpath)
@@ -1995,7 +1997,6 @@ int PASCAL WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
    InitCustomControls();
    InitCustomKeys(&CustomKeys);
-   LoadHotkeyConfig();
 
    if (YuiInit(lpCmdLine) != 0)
       fprintf(stderr, "Error running Yabause\n");
