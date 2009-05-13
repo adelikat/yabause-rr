@@ -89,13 +89,6 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_CAN
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// Accelerator
-//
-
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
 // Dialog
 //
 
@@ -1125,7 +1118,7 @@ BEGIN
         MENUITEM "&Capture Screen",             IDM_CAPTURESCREEN
         MENUITEM SEPARATOR
         MENUITEM "Record Movie...",             MENU_RECORD_MOVIE
-        MENUITEM "&Replay Movie...",            MENU_PLAY_MOVIE
+        MENUITEM "&Play Movie...",              MENU_PLAY_MOVIE
         MENUITEM "&Stop Movie",                 MENU_STOP_MOVIE
         MENUITEM SEPARATOR
         MENUITEM "Record AVI...",               IDM_FILE_RECORDAVI

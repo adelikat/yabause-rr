@@ -65,6 +65,7 @@ extern "C" {
 //Prototypes
 void ResetGame();
 void HardResetGame();
+void YuiPlayMovie(HWND hWnd);
 
 HANDLE emuthread=INVALID_HANDLE_VALUE;
 int KillEmuThread=0;
@@ -1761,25 +1762,8 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 
 			  case MENU_PLAY_MOVIE:
             {
-               WCHAR filter[1024];
-               OPENFILENAME ofn;
-
-               YuiTempPause();
-
-               CreateFilter(filter, 1024,
-                  "Yabause Movie files", "*.YMV",
-                  "All files (*.*)", "*.*", NULL);
-
-               SetupOFN(&ofn, OFN_DEFAULTLOAD, hWnd, filter,
-                        ymvfilename, sizeof(ymvfilename)/sizeof(TCHAR));
-
-               if (GetOpenFileName(&ofn))
-               {
-                  WideCharToMultiByte(CP_ACP, 0, ymvfilename, -1, text, sizeof(text), NULL, NULL);
-                  PlayMovie(text);
-               }
-               YuiTempUnPause();
-               break;
+               YuiPlayMovie(hWnd);
+			   break;
             }
 			case MENU_STOP_MOVIE:
 				StopMovie();
@@ -2150,5 +2134,26 @@ void LoadState(int num) {
 	YuiTempPause();
 	if (YabLoadStateSlot(ysspath, num) != 0)
 		MessageBox (YabWin, (LPCWSTR)_16("Couldn't load state file"), (LPCWSTR)_16("Error"),  MB_OK | MB_ICONINFORMATION);
+	YuiTempUnPause();
+}
+
+void YuiPlayMovie(HWND hWnd) 
+{
+	char text[MAX_PATH];
+	WCHAR filter[1024];
+	OPENFILENAME ofn;
+
+	YuiTempPause();
+	CreateFilter(filter, 1024,
+	"Yabause Movie files", "*.YMV",
+	"All files (*.*)", "*.*", NULL);
+	SetupOFN(&ofn, OFN_DEFAULTLOAD, hWnd, filter,
+	ymvfilename, sizeof(ymvfilename)/sizeof(TCHAR));
+
+	if (GetOpenFileName(&ofn))
+	{
+		WideCharToMultiByte(CP_ACP, 0, ymvfilename, -1, text, sizeof(text), NULL, NULL);
+		PlayMovie(text);
+	}
 	YuiTempUnPause();
 }
