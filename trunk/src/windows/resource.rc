@@ -1166,7 +1166,6 @@ BEGIN
     END
     POPUP "&Emulation"
     BEGIN
-        MENUITEM "Run",                         IDM_RUN
         MENUITEM "Pause",                       IDM_PAUSE
         MENUITEM SEPARATOR
         MENUITEM "Reset",                       IDM_RESET
