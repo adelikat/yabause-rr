@@ -1,19 +1,24 @@
 ===High===
 
   * Snes9x Hotkeys
-  * Save slot system
-  * Screenshots - .png format
+    * Load from ini
+    * Implement desmume hotkey checking system without freezing gui
 
 ===Medium=== 
 
   * Make background input optional
   * File->Open ISO option
   * Gens Ram Search
-  * Auto-hold  
-  * Pause should be one toggle-able menu item, it should also take the emulator out of frame advance mode 
+  * Pause should be one toggle-able menu item, it should also take the emulator out of frame advance mode
   * Ram-watch - a bunch of little things need to be finished implementing
 
 ===Low===
 
   * Make it so that it can start without an ini
   * No setup menu when you first start it, just go to the main window
+  * Screenshots - .png format
+  * Auto-hold
+
+===Done===
+
+  * Save slot system
