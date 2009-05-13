@@ -1357,13 +1357,15 @@ void HK_HardReset(int) {HardResetGame();}
 //void HK_ToggleFPS(int) {FpsDisplay ^= true;}
 //void HK_ToggleInput(int) {ShowInputDisplay ^= true;}
 //void HK_ToggleLag(int) {ShowLagFrameCounter ^= true;}
-/*void HK_ToggleReadOnly(int) {
-	movie_readonly ^= true; 
-	if(movie_readonly)
-	SetMessageToDisplay("Read Only");
-	else
-	SetMessageToDisplay("Read+Write");
-}*/
+void HK_ToggleReadOnly(int) {
+	MovieToggleReadOnly();
+	//adelikat: TODO: add message on screen
+	//movie_readonly ^= true; 
+	//if(movie_readonly)
+	//SetMessageToDisplay("Read Only");
+	//else
+	//SetMessageToDisplay("Read+Write");
+}
 /*
 void HK_AutoHoldKeyDown(int) {AutoHoldPressed = true;}
 void HK_AutoHoldKeyUp(int) {AutoHoldPressed = false;}
@@ -1585,13 +1587,13 @@ void InitCustomKeys (SCustomKeys *keys)
 	keys->ToggleLag.name = L"Toggle Lag Display";
 	keys->ToggleLag.page = HOTKEY_PAGE_MAIN;
 	keys->ToggleLag.key = NULL;
-
+*/
 	keys->ToggleReadOnly.handleKeyDown = HK_ToggleReadOnly;
 	keys->ToggleReadOnly.code = "ToggleReadOnly";
 	keys->ToggleReadOnly.name = L"Toggle Read Only";
 	keys->ToggleReadOnly.page = HOTKEY_PAGE_MAIN;
-	keys->ToggleReadOnly.key = NULL;
-
+	keys->ToggleReadOnly.key = 'Q';
+/*
 	keys->RecordAVI.handleKeyDown = HK_RecordAVI;
 	keys->RecordAVI.code = "RecordAVI";
 	keys->RecordAVI.name = L"Record AVI";
