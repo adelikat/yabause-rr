@@ -1484,6 +1484,69 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
                YuiTempUnPause();
                break;
             }
+			case IDM_OPENCUEISO:
+				{
+					YuiTempPause();
+
+					WCHAR tempwstr[MAX_PATH];
+					WCHAR filter[1024];
+					OPENFILENAME ofn;
+
+					// setup ofn structure
+					ZeroMemory(&ofn, sizeof(OPENFILENAME));
+					ofn.lStructSize = sizeof(OPENFILENAME);
+					ofn.hwndOwner = hWnd;
+
+					CreateFilter(filter, 1024,
+						"Supported image files (*.cue, *.iso)", "*.cue;*.iso",
+						"Cue files (*.cue)", "*.cue",
+						"Iso files (*.iso)", "*.iso",
+						"All files (*.*)", "*.*", NULL);
+
+					ofn.lpstrFilter = filter;
+					GetDlgItemText(hWnd, IDC_IMAGEEDIT, tempwstr, MAX_PATH);
+					ofn.lpstrFile = tempwstr;
+					ofn.nMaxFile = sizeof(tempwstr);
+					ofn.Flags = OFN_FILEMUSTEXIST;
+
+					if (GetOpenFileName(&ofn))
+					{
+						char tempstr[512];
+
+
+						//          GetDlgItemText(hDlg, IDC_IMAGEEDIT, tempwstr, MAX_PATH);
+						WideCharToMultiByte(CP_ACP, 0, tempwstr, -1, tempstr, MAX_PATH, NULL, NULL);
+
+						if (strcmp(tempstr, cdrompath) != 0)
+						{
+							strcpy(cdrompath, tempstr);
+					//		cdromchanged = TRUE;
+						}
+				//	}
+
+					WritePrivateProfileStringA("General", "CDROMDrive", cdrompath, inifilename);
+
+					// adjust appropriate edit box
+					//  SetDlgItemText(hWnd, IDC_IMAGEEDIT, tempwstr);
+
+					//	if (cdromchanged && nocorechange == 0)
+					//	{
+#ifndef USETHREADS
+					//		if (IsPathCdrom(cdrompath))
+					//			Cs2ChangeCDCore(CDCORE_SPTI, cdrompath);
+					//		else
+								Cs2ChangeCDCore(CDCORE_ISO, cdrompath);
+#else
+							corechanged = 0;
+							changecore |= 1;
+							while (corechanged == 0) { Sleep(0); }
+#endif
+					//	}
+							YabauseReset();
+					}
+
+					YuiTempUnPause();
+				}
             case IDM_GERMAN:
             case IDM_ENGLISH:
             case IDM_FRENCH:
