@@ -587,6 +587,17 @@ void YuiTempUnPause()
 
 
 //////////////////////////////////////////////////////////////////////////////
+
+//adelikat: TODO: This should be the only pause function called for menu & hotkey items
+void TogglePause()
+{
+	if (paused)
+		YuiUnPause();
+	else
+		YuiPause();
+}
+//////////////////////////////////////////////////////////////////////////////
+
 #ifdef USETHREADS
 DWORD WINAPI YabauseEmulate(LPVOID arg)
 {
@@ -1389,18 +1400,20 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
                YuiTempUnPause();
                break;
             }
-            case IDM_RUN:
+          /*  case IDM_RUN:
             {
                YuiUnPause();
                EnableMenuItem(YabMenu, IDM_RUN, MF_GRAYED);
                EnableMenuItem(YabMenu, IDM_PAUSE, MF_ENABLED);
                break;
             }	
-            case IDM_PAUSE:
+            */
+			case IDM_PAUSE:
             {
-               YuiPause();
-               EnableMenuItem(YabMenu, IDM_PAUSE, MF_GRAYED);
-               EnableMenuItem(YabMenu, IDM_RUN, MF_ENABLED);
+               TogglePause();
+				//YuiPause();
+               //EnableMenuItem(YabMenu, IDM_PAUSE, MF_GRAYED);
+               //EnableMenuItem(YabMenu, IDM_RUN, MF_ENABLED);
                break;
             }
             case IDM_RESET:
@@ -1935,6 +1948,9 @@ case WM_CUSTKEYUP:
 		EnableMenuItem(YabMenu, MENU_RECORD_MOVIE,  MF_BYCOMMAND | (!IsMovieLoaded())     ? MF_ENABLED : MF_GRAYED);
 		EnableMenuItem(YabMenu, MENU_PLAY_MOVIE,    MF_BYCOMMAND | (!IsMovieLoaded())     ? MF_ENABLED : MF_GRAYED);
 		EnableMenuItem(YabMenu, MENU_STOP_MOVIE,    MF_BYCOMMAND | (IsMovieLoaded())      ? MF_ENABLED : MF_GRAYED);
+		
+		CheckMenuItem(YabMenu, IDM_PAUSE, paused ? MF_CHECKED:MF_UNCHECKED);
+		
 		return 0L;
       }
       case WM_EXITMENULOOP:
