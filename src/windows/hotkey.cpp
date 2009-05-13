@@ -37,6 +37,7 @@ extern void ResetGame();
 extern void HardResetGame();
 extern void SaveState(int num);
 extern void LoadState(int num);
+extern void YuiPlayMovie(HWND hWnd);
 
 static TCHAR szHotkeysClassName[] = _T("InputCustomHot");
 
@@ -1367,7 +1368,7 @@ void HK_ToggleReadOnly(int) {
 	//SetMessageToDisplay("Read+Write");
 }
 
-void HK_PlayMovie(int) { MovieToggleReadOnly(); };
+void HK_PlayMovie(int) { YuiPlayMovie(YabWin); };
 /*
 void HK_AutoHoldKeyDown(int) {AutoHoldPressed = true;}
 void HK_AutoHoldKeyUp(int) {AutoHoldPressed = false;}
