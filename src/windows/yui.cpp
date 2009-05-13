@@ -61,6 +61,10 @@ extern "C" {
 #include "../profile.h"
 }
 #include "ramwatch.h"
+
+//Prototypes
+void ResetGame();
+
 HANDLE emuthread=INVALID_HANDLE_VALUE;
 int KillEmuThread=0;
 int stop=1;
@@ -1418,9 +1422,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
             }
             case IDM_RESET:
             {
-               YuiTempPause();
-               YabauseResetButton();
-               YuiTempUnPause();
+               ResetGame();
                break;
             }
             case IDM_HARDRESET:
@@ -2121,3 +2123,10 @@ void WriteToINI()
 }
 
 //////////////////////////////////////////////////////////////////////////////
+
+void ResetGame()
+{
+	YuiTempPause();
+    YabauseResetButton();
+    YuiTempUnPause();
+}
