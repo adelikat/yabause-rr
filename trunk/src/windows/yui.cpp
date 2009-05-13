@@ -598,10 +598,12 @@ void YuiTempUnPause()
 //adelikat: TODO: This should be the only pause function called for menu & hotkey items
 void TogglePause()
 {
+	PauseOrUnpause();
+	/*
 	if (paused)
 		YuiUnPause();
 	else
-		YuiPause();
+		YuiPause();*/
 }
 //////////////////////////////////////////////////////////////////////////////
 
