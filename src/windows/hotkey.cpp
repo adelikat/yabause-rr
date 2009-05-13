@@ -189,6 +189,151 @@ static TCHAR szClassName[] = _T("InputCustom");
 
 /////////////
 
+DWORD hKeyInputTimer;
+
+int KeyInDelayInCount=10;
+
+static int lastTime = timeGetTime();
+int repeattime;
+
+/////////////
+
+bool S9xGetState (WORD KeyIdent)
+{
+	if(KeyIdent == 0 || KeyIdent == VK_ESCAPE) // if it's the 'disabled' key, it's never pressed
+		return true;
+
+	//TODO - option for background game keys
+	if(YabWin != GetForegroundWindow())
+		return true;
+
+    if (KeyIdent & 0x8000) // if it's a joystick 'key':
+    {
+        int j = (KeyIdent >> 8) & 15;
+
+		//S9xUpdateJoyState();
+
+        switch (KeyIdent & 0xff)
+        {
+/*            case 0: return !Joystick [j].Left;  //TODO maybe
+            case 1: return !Joystick [j].Right;
+            case 2: return !Joystick [j].Up;
+            case 3: return !Joystick [j].Down;
+            case 4: return !Joystick [j].PovLeft;
+            case 5: return !Joystick [j].PovRight;
+            case 6: return !Joystick [j].PovUp;
+            case 7: return !Joystick [j].PovDown;
+			case 49:return !Joystick [j].PovDnLeft;
+			case 50:return !Joystick [j].PovDnRight;
+			case 51:return !Joystick [j].PovUpLeft;
+			case 52:return !Joystick [j].PovUpRight;
+            case 41:return !Joystick [j].ZUp;
+            case 42:return !Joystick [j].ZDown;
+            case 43:return !Joystick [j].RUp;
+            case 44:return !Joystick [j].RDown;
+            case 45:return !Joystick [j].UUp;
+            case 46:return !Joystick [j].UDown;
+            case 47:return !Joystick [j].VUp;
+            case 48:return !Joystick [j].VDown;*/
+
+            default:
+                if ((KeyIdent & 0xff) > 40)
+                    return true; // not pressed
+
+//                return !Joystick [j].Button [(KeyIdent & 0xff) - 8]; //TODO maybe
+        }
+    }
+
+	// the pause key is special, need this to catch all presses of it
+	// Both GetKeyState and GetAsyncKeyState cannot catch it anyway,
+	// so this should be handled in WM_KEYDOWN message.
+	if(KeyIdent == VK_PAUSE)
+	{
+		return true; // not pressed
+//		if(GetAsyncKeyState(VK_PAUSE)) // not &'ing this with 0x8000 is intentional and necessary
+//			return false;
+	}
+
+	SHORT gks = GetKeyState (KeyIdent);
+    return ((gks & 0x80) == 0);
+}
+
+
+/////////////
+
+VOID CALLBACK KeyInputTimer( UINT idEvent, UINT uMsg, DWORD_PTR dwUser, DWORD_PTR dw1, DWORD_PTR dw2)
+{
+	//
+//	if(timeGetTime() - lastTime > 5)
+//	{
+		bool S9xGetState (WORD KeyIdent);
+
+		/*		if(GUI.JoystickHotkeys)
+		{
+		static uint32 joyState [256];
+
+		for(int i = 0 ; i < 255 ; i++)
+		{
+		bool active = !S9xGetState(0x8000|i);
+
+		if(active)
+		{
+		if(joyState[i] < ULONG_MAX) // 0xffffffffUL
+		joyState[i]++;
+		if(joyState[i] == 1 || joyState[i] >= (unsigned) KeyInDelayInCount)
+		PostMessage(GUI.hWnd, WM_CUSTKEYDOWN, (WPARAM)(0x8000|i),(LPARAM)(NULL));
+		}
+		else
+		{
+		if(joyState[i])
+		{
+		joyState[i] = 0;
+		PostMessage(GUI.hWnd, WM_CUSTKEYUP, (WPARAM)(0x8000|i),(LPARAM)(NULL));
+		}
+		}
+		}
+		}*/
+		//		if((!GUI.InactivePause || !Settings.ForcedPause)
+		//				|| (GUI.BackgroundInput || !(Settings.ForcedPause & (PAUSE_INACTIVE_WINDOW | PAUSE_WINDOW_ICONISED))))
+		//		{
+		static u32 joyState [256];//TODO
+		for(int i = 0 ; i < 255 ; i++)
+		{
+			bool active = !S9xGetState(i);
+			if(active)
+			{
+				if(joyState[i] < ULONG_MAX) // 0xffffffffUL
+					joyState[i]++;
+				if(joyState[i] == 1 || joyState[i] >= (unsigned) KeyInDelayInCount) {
+					//sort of fix the auto repeating
+					//TODO find something better
+				//	repeattime++;
+				//	if(repeattime % 10 == 0) {
+
+						PostMessage(YabWin, WM_CUSTKEYDOWN, (WPARAM)(i),(LPARAM)(NULL));
+						repeattime=0;
+				//	}
+				}
+			}
+			else
+			{
+				if(joyState[i])
+				{
+					joyState[i] = 0;
+					PostMessage(YabWin, WM_CUSTKEYUP, (WPARAM)(i),(LPARAM)(NULL));
+				}
+			}
+		}
+		//	}
+	//	lastTime = timeGetTime();
+//	}
+}
+
+
+
+/////////////
+
+
 bool IsReserved (WORD Key, int modifiers)
 {
 	// keys that do other stuff in Windows
@@ -967,8 +1112,8 @@ switch(msg)
 		SendDlgItemMessage(hDlg,IDC_HKCOMBO,CB_SETCURSEL,(WPARAM)0,0);
 
 		InitCustomKeys(&keys);
-	//	CopyCustomKeys(&keys, &CustomKeys); //TODO
-		CopyCustomKeys(&CustomKeys, &keys); // TODO TODO TODO why did I have to reverse this?
+		CopyCustomKeys(&keys, &CustomKeys); //TODO
+//		CopyCustomKeys(&CustomKeys, &keys); // TODO TODO TODO why did I have to reverse this?
 		for( i=0;i<256;i++)
 		{
 			GetAsyncKeyState(i);
@@ -1260,8 +1405,12 @@ void HK_PreviousSaveSlot(int) {
 
 bool FrameAdvance;
 
-void HK_FrameAdvanceKeyDown(int) { FrameAdvance=true; }
-void HK_FrameAdvanceKeyUp(int) { FrameAdvance=false; }
+void HK_FrameAdvanceKeyDown(int) { 
+	FrameAdvance=true; 
+}
+void HK_FrameAdvanceKeyUp(int) { 
+	FrameAdvance=false; 
+}
 /*
 void HK_Pause(int) { Pause(); }
 void HK_FastForwardToggle(int) { FastForward ^=1; }
