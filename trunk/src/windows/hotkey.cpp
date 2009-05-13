@@ -27,6 +27,8 @@
 #include <commctrl.h>
 extern "C" {
 #include "../movie.h"
+#include "../vdp2.h"
+#include "../vdp1.h"
 
 }
 extern HWND YabWin;
@@ -39,6 +41,7 @@ extern void SaveState(int num);
 extern void LoadState(int num);
 extern void YuiPlayMovie(HWND hWnd);
 extern void YuiRecordMovie(HWND hWnd);
+extern void ToggleFullScreenHK();
 
 static TCHAR szHotkeysClassName[] = _T("InputCustomHot");
 
@@ -1373,6 +1376,13 @@ void HK_PlayMovie(int)   {YuiPlayMovie(YabWin); };
 void HK_RecordMovie(int) {YuiRecordMovie(YabWin); };
 void HK_StopMovie(int)   {StopMovie(); };
 
+void HK_ToggleNBG0(int) {ToggleNBG0();}
+void HK_ToggleNBG1(int) {ToggleNBG1();}
+void HK_ToggleNBG2(int) {ToggleNBG2();}
+void HK_ToggleNBG3(int) {ToggleNBG3();}
+void HK_ToggleRBG0(int) {ToggleRBG0();}
+void HK_ToggleVDP1(int) {ToggleVDP1();}				
+void HK_ToggleOSD(int) {ToggleFPS();}			
 /*
 void HK_AutoHoldKeyDown(int) {AutoHoldPressed = true;}
 void HK_AutoHoldKeyUp(int) {AutoHoldPressed = false;}
@@ -1413,6 +1423,9 @@ void HK_TurboStartKeyUp(int) { Turbo.Start = false; }
 void HK_TurboSelectKeyDown(int) { Turbo.Select = true; }
 void HK_TurboSelectKeyUp(int) { Turbo.Select = false; }
 */
+
+void HK_ToggleFullScreen(int) { ToggleFullScreenHK(); }
+
 void HK_NextSaveSlot(int) { 
 /*	lastSaveState++; 
 	if(lastSaveState>9) 
@@ -1699,6 +1712,49 @@ void InitCustomKeys (SCustomKeys *keys)
 	keys->TurboStart.page = HOTKEY_PAGE_TURBO;
 	keys->TurboStart.key = NULL;
 */
+
+	keys->ToggleOSD.handleKeyDown = HK_ToggleOSD;
+	keys->ToggleOSD.code = "ToggleOSD";
+	keys->ToggleOSD.name = L"Toggle OSD";
+	keys->ToggleOSD.page = HOTKEY_PAGE_MAIN;
+	keys->ToggleOSD.key = NULL;
+
+	keys->ToggleNBG0.handleKeyDown = HK_ToggleNBG0;
+	keys->ToggleNBG0.code = "ToggleNBG0";
+	keys->ToggleNBG0.name = L"Toggle NBG0";
+	keys->ToggleNBG0.page = HOTKEY_PAGE_MAIN;
+	keys->ToggleNBG0.key = NULL;
+
+	keys->ToggleNBG1.handleKeyDown = HK_ToggleNBG1;
+	keys->ToggleNBG1.code = "ToggleNBG1";
+	keys->ToggleNBG1.name = L"Toggle NBG1";
+	keys->ToggleNBG1.page = HOTKEY_PAGE_MAIN;
+	keys->ToggleNBG1.key = NULL;
+
+	keys->ToggleNBG2.handleKeyDown = HK_ToggleNBG2;
+	keys->ToggleNBG2.code = "ToggleNBG2";
+	keys->ToggleNBG2.name = L"Toggle NBG2";
+	keys->ToggleNBG2.page = HOTKEY_PAGE_MAIN;
+	keys->ToggleNBG2.key = NULL;
+
+	keys->ToggleNBG3.handleKeyDown = HK_ToggleNBG3;
+	keys->ToggleNBG3.code = "ToggleNBG3";
+	keys->ToggleNBG3.name = L"Toggle NBG3";
+	keys->ToggleNBG3.page = HOTKEY_PAGE_MAIN;
+	keys->ToggleNBG3.key = NULL;
+
+	keys->ToggleRBG0.handleKeyDown = HK_ToggleRBG0;
+	keys->ToggleRBG0.code = "ToggleRBG0";
+	keys->ToggleRBG0.name = L"Toggle RBG0";
+	keys->ToggleRBG0.page = HOTKEY_PAGE_MAIN;
+	keys->ToggleRBG0.key = NULL;
+
+	keys->ToggleVDP1.handleKeyDown = HK_ToggleVDP1;
+	keys->ToggleVDP1.code = "ToggleVDP1";
+	keys->ToggleVDP1.name = L"Toggle VDP1";
+	keys->ToggleVDP1.page = HOTKEY_PAGE_MAIN;
+	keys->ToggleVDP1.key = NULL;
+
 	keys->NextSaveSlot.handleKeyDown = HK_NextSaveSlot;
 	keys->NextSaveSlot.code = "NextSaveSlot";
 	keys->NextSaveSlot.name = L"Next Save Slot";
@@ -1710,6 +1766,12 @@ void InitCustomKeys (SCustomKeys *keys)
 	keys->PreviousSaveSlot.name = L"Previous Save Slot";
 	keys->PreviousSaveSlot.page = HOTKEY_PAGE_STATE_SLOTS;
 	keys->PreviousSaveSlot.key = NULL;
+
+	keys->ToggleFullScreen.handleKeyDown = HK_ToggleFullScreen;
+	keys->ToggleFullScreen.code = "ToggleFullScreen";
+	keys->ToggleFullScreen.name = L"Toggle Full Screen";
+	keys->ToggleFullScreen.page = HOTKEY_PAGE_MAIN;
+	keys->ToggleFullScreen.key = NULL;
 	
 	keys->QuickSave.handleKeyDown = HK_StateQuickSaveSlot;
 	keys->QuickSave.code = "QuickSave";

@@ -1563,53 +1563,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
                YuiTempUnPause();
                break;
             }
-            case IDM_TOGGLEFULLSCREEN:
-            {
-               // Normally I should be using the function provided in vdp2.c,
-               // but it doesn't support odd custom resolutions.
-               if (isfullscreenset)
-                  VIDCore->Resize(windowwidth, windowheight, 0);
-               else
-                  VIDCore->Resize(fullscreenwidth, fullscreenheight, 1);
-
-               break;
-            }
-            case IDM_TOGGLENBG0:
-            {
-               ToggleNBG0();
-               break;
-            }
-            case IDM_TOGGLENBG1:
-            {
-               ToggleNBG1();
-               break;
-            }
-            case IDM_TOGGLENBG2:
-            {
-               ToggleNBG2();
-               break;
-            }
-            case IDM_TOGGLENBG3:
-            {
-               ToggleNBG3();
-               break;
-            }
-            case IDM_TOGGLERBG0:
-            {
-               ToggleRBG0();
-               break;
-            }
-            case IDM_TOGGLEVDP1:
-            {
-               ToggleVDP1();
-               break;
-            }
-            case IDM_TOGGLEFPS:
-            {
-               ToggleFPS();
-               break;
-            }
-            case IDM_SAVESTATEAS:
+             case IDM_SAVESTATEAS:
             {
                WCHAR filter[1024];
                OPENFILENAME ofn;
@@ -2161,3 +2115,15 @@ void YuiRecordMovie(HWND hWnd)
 		SaveMovie(text);
 	}
 }
+
+void ToggleFullScreenHK() {
+
+	// Normally I should be using the function provided in vdp2.c,
+	// but it doesn't support odd custom resolutions.
+	if (isfullscreenset)
+		VIDCore->Resize(windowwidth, windowheight, 0);
+	else
+		VIDCore->Resize(fullscreenwidth, fullscreenheight, 1);
+}
+					
+			
