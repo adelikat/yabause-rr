@@ -1369,6 +1369,7 @@ void HK_ToggleReadOnly(int) {
 }
 
 void HK_PlayMovie(int) { YuiPlayMovie(YabWin); };
+void HK_StopMovie(int) { StopMovie(); };
 /*
 void HK_AutoHoldKeyDown(int) {AutoHoldPressed = true;}
 void HK_AutoHoldKeyUp(int) {AutoHoldPressed = false;}
@@ -1602,6 +1603,13 @@ void InitCustomKeys (SCustomKeys *keys)
 	keys->PlayMovie.name = L"Play Movie";
 	keys->PlayMovie.page = HOTKEY_PAGE_MOVIE;
 	keys->PlayMovie.key = 'R';
+
+	keys->StopMovie.handleKeyDown = HK_StopMovie;
+	keys->StopMovie.code = "StopMovie";
+	keys->StopMovie.name = L"Stop Movie";
+	keys->StopMovie.page = HOTKEY_PAGE_MOVIE;
+	keys->StopMovie.key = 'S';
+
 /*
 	keys->RecordAVI.handleKeyDown = HK_RecordAVI;
 	keys->RecordAVI.code = "RecordAVI";
