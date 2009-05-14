@@ -1304,7 +1304,7 @@ void HK_StateSaveSlot(int num)
 {
 	char str[64];
 	SaveState(num);
-	sprintf(str, "State %d saved.", SaveStateSlot);	
+	sprintf(str, "State %d saved.", num);	
 	DisplayMessage(str);
 }
 
@@ -1312,7 +1312,7 @@ void HK_StateLoadSlot(int num)
 {
 	char str[64];
 	LoadState(num);
-	sprintf(str, "State %d loaded.", SaveStateSlot);	
+	sprintf(str, "State %d loaded.", num);	
 	DisplayMessage(str);
 }
 
