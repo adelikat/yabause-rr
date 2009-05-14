@@ -1781,8 +1781,8 @@ invalid_field:
 						ListView_Update(GetDlgItem(hDlg,IDC_RAMLIST), -1);
 
 						//bring up the ram watch window if it's not already showing so the user knows where the watch went
-//						if(inserted && !RamWatchHWnd)
-						SendMessage(YabWin, WM_COMMAND, ID_RAM_WATCH, 0);
+						if(inserted && !RamWatchHWnd)
+							SendMessage(YabWin, WM_COMMAND, ID_RAM_WATCH, 0);
 						SetForegroundWindow(RamSearchHWnd);
 					}
 					{rv = true; break;}
