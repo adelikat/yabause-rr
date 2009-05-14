@@ -1302,43 +1302,32 @@ void HK_Screenshot(int param)
 
 void HK_StateSaveSlot(int num)
 {
-//	if (!paused)
-//	{
-//		NDS_Pause();
-//		savestate_slot(num);	//Savestate
-//		NDS_UnPause();
-//	}
-//	else
-//		savestate_slot(num);	//Savestate
-	
-//	lastSaveState = num;		//Set last savestate used
-//	SaveStateMessages(num, 0);	//Display state loaded message
-//	LoadSaveStateInfo();
 	SaveState(num);
+	DisplayMessage("State %d saved.", SaveStateSlot);
 }
 
 void HK_StateLoadSlot(int num)
 {
 	LoadState(num);
-	VIDCore->OnScreenDebugMessage("State %d loaded", num);
+	DisplayMessage("State %d loaded.", SaveStateSlot);
 }
 
 void HK_StateSetSlot(int num)
 {
 	SaveStateSlot=num;
-	VIDCore->OnScreenDebugMessage("State %d selected", num);
+	DisplayMessage("State %d selected.", SaveStateSlot);
 }
 
 void HK_StateQuickSaveSlot(int)
 {
 	SaveState(SaveStateSlot);
-	DisplayMessage("State saved");
+	DisplayMessage("State %d saved.", SaveStateSlot);
 }
 
 void HK_StateQuickLoadSlot(int)
 {
 	LoadState(SaveStateSlot);
-	VIDCore->OnScreenDebugMessage("State %d loaded", SaveStateSlot);
+	DisplayMessage("State %d loaded.", SaveStateSlot);
 }
 
 void HK_AutoHoldClearKeyDown(int) {
