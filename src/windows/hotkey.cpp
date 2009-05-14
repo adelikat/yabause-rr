@@ -1319,27 +1319,12 @@ void HK_StateSaveSlot(int num)
 
 void HK_StateLoadSlot(int num)
 {
-/*	BOOL wasPaused = paused;
-	NDS_Pause();
-	loadstate_slot(num);		//Loadstate
-	lastSaveState = num;		//Set last savestate used
-	SaveStateMessages(num, 1);	//Display state loaded message
-
-	Update_RAM_Watch();			//adelikat: TODO this should be a single function call in main, that way we can expand as future dialogs need updating
-	Update_RAM_Search();		//main.cpp - case IDM_STATE_LOAD: also calls these functions
-
-	if(!wasPaused)
-		NDS_UnPause();
-	else
-		Display();*/
 	LoadState(num);
 }
 
 void HK_StateSetSlot(int num)
 {
 	SaveStateSlot=num;
-//	lastSaveState = num;
-//	SaveStateMessages(num,2);	
 }
 
 void HK_StateQuickSaveSlot(int)
