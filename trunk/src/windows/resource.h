@@ -236,6 +236,7 @@
 #define IDC_SETTINGSTAB                 1020
 #define IDC_CPB                         1020
 #define IDC_CHEATSEARCHET               1020
+#define IDC_PROMPT_TEXT2                1020
 #define IDC_XPB                         1021
 #define IDC_CTSEARCHRESTARTBT           1021
 #define IDC_YPB                         1022
