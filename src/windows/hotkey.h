@@ -84,6 +84,7 @@ struct SCustomKeys
 	SCustomKey ToggleLag;
 	*/
 
+	SCustomKey FastForward;
 	SCustomKey ToggleNBG0, ToggleNBG1, ToggleNBG2, ToggleNBG3, ToggleRBG0, ToggleVDP1;
 
 	SCustomKey ToggleFullScreen;
