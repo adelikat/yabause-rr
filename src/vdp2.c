@@ -65,7 +65,7 @@ void SetODSToggle(int toggle)
 
 //////////////////////////////////////////////////////////////////////////////
 //adelikat: This function will handle the OSDMessage variable properly, it should be used by other functions for displaying information to the user
-void DisplayMessage(const char* str, ...)
+void DisplayMessage(const char* str)
 {
 	strcpy(OSDMessage, str);
 	OSDMessageTimer = 120;
