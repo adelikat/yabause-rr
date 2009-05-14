@@ -1332,7 +1332,7 @@ void HK_StateSetSlot(int num)
 void HK_StateQuickSaveSlot(int)
 {
 	SaveState(SaveStateSlot);
-	VIDCore->OnScreenDebugMessage("State %d saved", SaveStateSlot);
+	DisplayMessage("State saved");
 }
 
 void HK_StateQuickLoadSlot(int)
