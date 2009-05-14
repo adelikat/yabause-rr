@@ -42,7 +42,7 @@ int movieLoaded = 0;	//Boolean value, 1 if a movie is playing or recording
 int framecounter;
 int lagframecounter;
 int LagFrameFlag;
-
+char OSDMessage[64] = "Test";
 int FrameAdvanceVariable=0;
 
 //////////////////////////////////////////////////////////////////////////////

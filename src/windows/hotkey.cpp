@@ -1320,23 +1320,25 @@ void HK_StateSaveSlot(int num)
 void HK_StateLoadSlot(int num)
 {
 	LoadState(num);
+	VIDCore->OnScreenDebugMessage("State %d loaded", num);
 }
 
 void HK_StateSetSlot(int num)
 {
 	SaveStateSlot=num;
+	VIDCore->OnScreenDebugMessage("State %d selected", num);
 }
 
 void HK_StateQuickSaveSlot(int)
 {
 	SaveState(SaveStateSlot);
-//	HK_StateSaveSlot(lastSaveState);
+	VIDCore->OnScreenDebugMessage("State %d saved", SaveStateSlot);
 }
 
 void HK_StateQuickLoadSlot(int)
 {
 	LoadState(SaveStateSlot);
-//	HK_StateLoadSlot(lastSaveState);
+	VIDCore->OnScreenDebugMessage("State %d loaded", SaveStateSlot);
 }
 
 void HK_AutoHoldClearKeyDown(int) {

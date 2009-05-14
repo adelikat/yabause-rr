@@ -61,4 +61,5 @@ extern int lagframecounter;
 extern char MovieStatus[40];
 extern char InputDisplayString[40];
 extern int FrameAdvanceVariable;
+extern char OSDMessage[64];
 #endif

@@ -284,7 +284,7 @@ void FPSDisplay(void)
 {
    if (fpstoggle)
    {
-      VIDCore->OnScreenDebugMessage("%02d/%02d FPS %d %d %s %s", fps, yabsys.IsPal ? 50 : 60, framecounter, lagframecounter, MovieStatus, InputDisplayString);
+      VIDCore->OnScreenDebugMessage("%02d/%02d FPS %d %d %s %s %s", fps, yabsys.IsPal ? 50 : 60, framecounter, lagframecounter, MovieStatus, InputDisplayString, OSDMessage);
 
       fpsframecount++;
       if(YabauseGetTicks() >= fpsticks + yabsys.tickfreq)
