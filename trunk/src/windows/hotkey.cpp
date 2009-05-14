@@ -43,6 +43,8 @@ extern void YuiPlayMovie(HWND hWnd);
 extern void YuiRecordMovie(HWND hWnd);
 extern void ToggleFullScreenHK();
 extern void YuiScreenshot(HWND hWnd);
+extern void YuiRecordAvi(HWND hWnd);
+extern void YuiStopAvi();
 
 static TCHAR szHotkeysClassName[] = _T("InputCustomHot");
 
@@ -1360,8 +1362,8 @@ void HK_AutoHoldClearKeyDown(int) {
 void HK_Reset(int) {ResetGame();}
 void HK_HardReset(int) {HardResetGame();}
 
-//void HK_RecordAVI(int) {AviRecordTo();}
-//void HK_StopAVI(int) {AviEnd();}
+void HK_RecordAVI(int) {YuiRecordAvi(YabWin);}
+void HK_StopAVI(int) {YuiStopAvi();}
 
 //void HK_ToggleFrame(int) {frameCounterDisplay ^= true;}
 //void HK_ToggleFPS(int) {FpsDisplay ^= true;}
@@ -1619,7 +1621,7 @@ void InitCustomKeys (SCustomKeys *keys)
 	keys->StopMovie.page = HOTKEY_PAGE_MOVIE;
 	keys->StopMovie.key = 'S';
 
-/*
+
 	keys->RecordAVI.handleKeyDown = HK_RecordAVI;
 	keys->RecordAVI.code = "RecordAVI";
 	keys->RecordAVI.name = L"Record AVI";
