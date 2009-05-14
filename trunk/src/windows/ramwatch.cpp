@@ -89,9 +89,9 @@ int InsertWatch(const struct AddressWatcher *Watch, char *Comment)
 
 	i = WatchCount++;
 
-	NewWatch = &rswatches[i];
+	//NewWatch = &rswatches[i];
 	//	NewWatch = Watch;
-	//if (NewWatch.comment) free(NewWatch.comment);
+	if (NewWatch->comment) free(NewWatch->comment);
 	NewWatch->comment = (char *) malloc(strlen(Comment)+2);
 	NewWatch->CurValue = GetCurrentValue((AddressWatcher*)Watch);;//Watch->CurValue;//GetCurrentValue(NewWatch);
 	NewWatch->Address = Watch->Address;
@@ -153,8 +153,7 @@ LRESULT CALLBACK PromptWatchNameProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM
 				return 1;
 				break;
 			}
-			//	case ID_CANCEL:
-		case IDCANCEL:
+		case ID_CANCEL:
 			EndDialog(hDlg, 0);
 			return 0;
 			break;
