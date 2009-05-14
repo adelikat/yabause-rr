@@ -1453,15 +1453,15 @@ void HK_FrameAdvanceKeyUp(int) {
 
 void HK_Pause(int) { TogglePause(); }
 
-/*
-void HK_FastForwardToggle(int) { FastForward ^=1; }
-void HK_FastForwardKeyDown(int) { FastForward = 1; }
-void HK_FastForwardKeyUp(int) { FastForward = 0; }
-void HK_IncreaseSpeed(int) { IncreaseSpeed(); }
-void HK_DecreaseSpeed(int) { DecreaseSpeed(); }
+
+//void HK_FastForwardToggle(int) { FastForward ^=1; }
+void HK_FastForwardKeyDown(int) { SpeedThrottleEnable(); }
+void HK_FastForwardKeyUp(int) { SpeedThrottleDisable(); }
+//void HK_IncreaseSpeed(int) { IncreaseSpeed(); }
+//void HK_DecreaseSpeed(int) { DecreaseSpeed(); }
 
 
-*/
+
 //======================================================================================
 //=====================================DEFINITIONS======================================
 //======================================================================================
@@ -1518,14 +1518,14 @@ void InitCustomKeys (SCustomKeys *keys)
 	keys->FrameAdvance.name = L"Frame Advance";
 	keys->FrameAdvance.page = HOTKEY_PAGE_MAIN;
 	keys->FrameAdvance.key = 'N';
-/*
+
 	keys->FastForward.handleKeyDown = HK_FastForwardKeyDown;
 	keys->FastForward.handleKeyUp = HK_FastForwardKeyUp;
 	keys->FastForward.code = "FastForward";
 	keys->FastForward.name = L"Fast Forward";
 	keys->FastForward.page = HOTKEY_PAGE_MAIN;
 	keys->FastForward.key = VK_TAB;
-
+/*
 	keys->FastForwardToggle.handleKeyDown = HK_FastForwardToggle;
 	keys->FastForwardToggle.code = "FastForwardToggle";
 	keys->FastForwardToggle.name = L"Fast Forward Toggle";
