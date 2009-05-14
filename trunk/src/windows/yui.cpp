@@ -1297,6 +1297,10 @@ YabauseSetup:
 				SendMessage(RamWatchHWnd, msg.message, msg.wParam, msg.lParam);
 			continue;
 		 }
+
+int KeyInRepeatMSec=20;
+hKeyInputTimer = timeSetEvent (KeyInRepeatMSec, 0, KeyInputTimer, 0, TIME_PERIODIC);
+
 		 if (TranslateAccelerator(YabWin, hAccel, &msg) == 0)
          {
             TranslateMessage(&msg);
