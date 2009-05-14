@@ -1298,11 +1298,11 @@ YabauseSetup:
 			continue;
 		 }
 
-		 //if (TranslateAccelerator(YabWin, hAccel, &msg) == 0)
-         //{
-         //   TranslateMessage(&msg);
-         //   DispatchMessage(&msg);
-         //}
+		 if (TranslateAccelerator(YabWin, hAccel, &msg) == 0)
+         {
+            TranslateMessage(&msg);
+            DispatchMessage(&msg);
+         }
       }
 
       if (!paused && PERCore->HandleEvents() != 0)
@@ -1938,7 +1938,7 @@ case WM_CUSTKEYUP:
 		EnableMenuItem(YabMenu, MENU_PLAY_MOVIE,    MF_BYCOMMAND | (!IsMovieLoaded())     ? MF_ENABLED : MF_GRAYED);
 		EnableMenuItem(YabMenu, MENU_STOP_MOVIE,    MF_BYCOMMAND | (IsMovieLoaded())      ? MF_ENABLED : MF_GRAYED);
 		
-		CheckMenuItem(YabMenu, IDM_PAUSE, paused ? MF_CHECKED:MF_UNCHECKED);
+		CheckMenuItem(YabMenu, IDM_PAUSE, FrameAdvanceVariable ? MF_CHECKED:MF_UNCHECKED);
 		
 		return 0L;
       }
