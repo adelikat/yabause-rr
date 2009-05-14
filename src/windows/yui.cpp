@@ -2137,6 +2137,8 @@ void LoadState(int num) {
 	YuiTempPause();
 	if (YabLoadStateSlot(ysspath, num) != 0)
 		MessageBox (YabWin, (LPCWSTR)_16("Couldn't load state file"), (LPCWSTR)_16("Error"),  MB_OK | MB_ICONINFORMATION);
+	Update_RAM_Search();
+	Update_RAM_Watch();
 	YuiTempUnPause();
 }
 
