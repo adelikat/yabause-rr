@@ -1160,7 +1160,7 @@ int YuiInit(LPSTR lpCmdLine)
       yabwinh = 224 + (GetSystemMetrics(SM_CYSIZEFRAME) * 2) + GetSystemMetrics(SM_CYMENU) + GetSystemMetrics(SM_CYCAPTION);
    }
 
-  // hAccel = LoadAccelerators(y_hInstance, MAKEINTRESOURCE(IDR_MAIN_ACCEL));
+   hAccel = LoadAccelerators(y_hInstance, MAKEINTRESOURCE(IDR_MAIN_ACCEL));
 
    // Set up and register window class
    MyWndClass.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
