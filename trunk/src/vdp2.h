@@ -397,4 +397,6 @@ void ToggleFullScreen(void);
 void EnableAutoFrameSkip(void);
 void DisableAutoFrameSkip(void);
 
+void DisplayMessage(const char* str);
+
 #endif
