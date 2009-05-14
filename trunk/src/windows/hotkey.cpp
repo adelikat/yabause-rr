@@ -1355,14 +1355,9 @@ void HK_StopAVI(int) {YuiStopAvi();}
 //void HK_ToggleFPS(int) {FpsDisplay ^= true;}
 //void HK_ToggleInput(int) {ShowInputDisplay ^= true;}
 //void HK_ToggleLag(int) {ShowLagFrameCounter ^= true;}
-void HK_ToggleReadOnly(int) {
+void HK_ToggleReadOnly(int) 
+{
 	MovieToggleReadOnly();
-	//adelikat: TODO: add message on screen
-	//movie_readonly ^= true; 
-	//if(movie_readonly)
-	//SetMessageToDisplay("Read Only");
-	//else
-	//SetMessageToDisplay("Read+Write");
 }
 
 void HK_PlayMovie(int)   {YuiPlayMovie(YabWin); };
