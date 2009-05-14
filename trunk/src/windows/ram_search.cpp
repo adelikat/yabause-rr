@@ -1776,13 +1776,13 @@ invalid_field:
 						tempWatch.Type = rs_t;
 						tempWatch.WrongEndian = 0; //Replace when I get little endian working
 						tempWatch.comment = NULL;
+						
+						bool inserted = InsertWatchHwnd(&tempWatch, hDlg);
+						ListView_Update(GetDlgItem(hDlg,IDC_RAMLIST), -1);
 
-					//	bool inserted = InsertWatch(tempWatch, hDlg); TODO
-						//ListView_Update(GetDlgItem(hDlg,IDC_RAMLIST), -1);
-
-						// bring up the ram watch window if it's not already showing so the user knows where the watch went
-//						if(inserted && !RamWatchHWnd) //TODO
-							SendMessage(YabWin, WM_COMMAND, ID_RAM_WATCH, 0);
+						//bring up the ram watch window if it's not already showing so the user knows where the watch went
+//						if(inserted && !RamWatchHWnd)
+						SendMessage(YabWin, WM_COMMAND, ID_RAM_WATCH, 0);
 						SetForegroundWindow(RamSearchHWnd);
 					}
 					{rv = true; break;}
