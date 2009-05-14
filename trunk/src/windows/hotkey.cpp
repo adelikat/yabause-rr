@@ -1302,32 +1302,42 @@ void HK_Screenshot(int param)
 
 void HK_StateSaveSlot(int num)
 {
+	char str[64];
 	SaveState(num);
-	DisplayMessage("State %d saved.", SaveStateSlot);
+	sprintf(str, "State %d saved.", SaveStateSlot);	
+	DisplayMessage(str);
 }
 
 void HK_StateLoadSlot(int num)
 {
+	char str[64];
 	LoadState(num);
-	DisplayMessage("State %d loaded.", SaveStateSlot);
+	sprintf(str, "State %d loaded.", SaveStateSlot);	
+	DisplayMessage(str);
 }
 
 void HK_StateSetSlot(int num)
 {
+	char str[64];
 	SaveStateSlot=num;
-	DisplayMessage("State %d selected.", SaveStateSlot);
+	sprintf(str, "State %d selected.", SaveStateSlot);	
+	DisplayMessage(str);
 }
 
 void HK_StateQuickSaveSlot(int)
 {
+	char str[64];
 	SaveState(SaveStateSlot);
-	DisplayMessage("State %d saved.", SaveStateSlot);
+	sprintf(str, "State %d saved.", SaveStateSlot);	
+	DisplayMessage(str);
 }
 
 void HK_StateQuickLoadSlot(int)
 {
+	char str[64];
 	LoadState(SaveStateSlot);
-	DisplayMessage("State %d loaded.", SaveStateSlot);
+	sprintf(str, "State %d loaded.", SaveStateSlot);	
+	DisplayMessage(str);
 }
 
 void HK_AutoHoldClearKeyDown(int) {
