@@ -73,10 +73,10 @@ struct SCustomKeys
 	SCustomKey TurboRight, TurboLeft, TurboDown, TurboUp, TurboSelect, TurboStart, TurboB, TurboA, TurboY, TurboX, TurboR, TurboL;
 
 	SCustomKey AutoHold, AutoHoldClear;
-
+*/
 
 	SCustomKey RecordAVI, StopAVI;
-
+/*
 	SCustomKey ToggleFrameCounter;
 	SCustomKey ToggleFPS;
 	SCustomKey ToggleInput;

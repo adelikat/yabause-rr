@@ -68,6 +68,8 @@ void HardResetGame();
 void YuiPlayMovie(HWND hWnd);
 void YuiRecordMovie(HWND hWnd);
 void YuiScreenshot(HWND hWnd);
+void YuiRecordAvi(HWND hWnd);
+void YuiStopAvi();
 
 HANDLE emuthread=INVALID_HANDLE_VALUE;
 int KillEmuThread=0;
@@ -1710,33 +1712,10 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
                break;
             }*/
 			case IDM_FILE_RECORDAVI:
-				{
-					WCHAR filter[1024];
-					OPENFILENAME ofn;
-
-					YuiTempPause();
-
-					CreateFilter(filter, 1024,
-						"AVI Files *.avi)", "*.avi",
-						"All files (*.*)", "*.*", NULL);
-
-					SetupOFN(&ofn, OFN_DEFAULTSAVE, hWnd, filter,
-						avifilename, sizeof(avifilename)/sizeof(TCHAR));
-					ofn.lpstrDefExt = (LPCWSTR)_16("AVI");
-
-					if (GetSaveFileName(&ofn))
-					{
-						WideCharToMultiByte(CP_ACP, 0, avifilename, -1, text, sizeof(text), NULL, NULL);
-
-						DRV_AviBegin(text, hWnd);
-						AVIRecording=1;
-					}
-					YuiTempUnPause();
-					break;
-				}
+				YuiRecordAvi(hWnd);
+				break;
 			case IDM_FILE_STOPAVI:
-				DRV_AviEnd();
-				AVIRecording=0;
+				YuiStopAvi();
 				break;
 			case MENU_RECORD_MOVIE:
 				YuiRecordMovie(hWnd);
@@ -2197,4 +2176,36 @@ void YuiScreenshot(HWND hWnd)
 		 MessageBox (hWnd, (LPCWSTR)_16("Couldn't save capture file"), (LPCWSTR)_16("Error"),  MB_OK | MB_ICONINFORMATION);
 	}
 	YuiTempUnPause();
+}
+
+void YuiRecordAvi(HWND hWnd)
+{
+	WCHAR filter[1024];
+	char text[MAX_PATH];
+	OPENFILENAME ofn;
+
+	YuiTempPause();
+
+	CreateFilter(filter, 1024,
+		"AVI Files *.avi)", "*.avi",
+		"All files (*.*)", "*.*", NULL);
+
+	SetupOFN(&ofn, OFN_DEFAULTSAVE, hWnd, filter,
+		avifilename, sizeof(avifilename)/sizeof(TCHAR));
+	ofn.lpstrDefExt = (LPCWSTR)_16("AVI");
+
+	if (GetSaveFileName(&ofn))
+	{
+		WideCharToMultiByte(CP_ACP, 0, avifilename, -1, text, sizeof(text), NULL, NULL);
+
+		DRV_AviBegin(text, hWnd);
+		AVIRecording=1;
+	}
+	YuiTempUnPause();
+}
+
+void YuiStopAvi()
+{
+	DRV_AviEnd();
+	AVIRecording=0;
 }
