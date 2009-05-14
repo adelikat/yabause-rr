@@ -52,6 +52,18 @@ static u64 fpsticks;
 static int fpstoggle=0;
 
 //////////////////////////////////////////////////////////////////////////////
+int GetOSDToggle()
+{
+	return fpstoggle;
+}
+
+//////////////////////////////////////////////////////////////////////////////
+void SetODSToggle(int toggle)
+{
+	fpstoggle = toggle;
+}
+
+//////////////////////////////////////////////////////////////////////////////
 //adelikat: This function will handle the OSDMessage variable properly, it should be used by other functions for displaying information to the user
 void DisplayMessage(const char* str)
 {

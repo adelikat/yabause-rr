@@ -1050,6 +1050,11 @@ int YuiInit(LPSTR lpCmdLine)
 			sprintf(str, "Recent Watch %d", i+1);
 			GetPrivateProfileStringA("Watches", str, "", &rw_recent_files[i][0], 1024, inifilename);
 		}
+	
+	// Grab OSD Toggle setting
+	GetPrivateProfileStringA("Video", "OSD Display", "0", tempstr, MAX_PATH, inifilename);
+	int x = atoi(tempstr);
+	SetODSToggle(x);
 
 #if DEBUG
    // Grab Logging settings
@@ -2065,6 +2070,11 @@ void WriteToINI()
 		sprintf(str, "Recent Watch %d", i+1);
 		WritePrivateProfileStringA("Watches", str, &rw_recent_files[i][0], inifilename);	
 	}
+
+	//OSD Display
+	//extern int fpstoggle;
+	sprintf(text, "%1d", GetOSDToggle());
+	WritePrivateProfileStringA("Video", "OSD Display", text, inifilename);
 }
 
 //////////////////////////////////////////////////////////////////////////////

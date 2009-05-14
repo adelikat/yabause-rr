@@ -398,5 +398,7 @@ void EnableAutoFrameSkip(void);
 void DisableAutoFrameSkip(void);
 
 void DisplayMessage(const char* str);
+int GetOSDToggle();
+void SetODSToggle(int toggle);
 
 #endif
