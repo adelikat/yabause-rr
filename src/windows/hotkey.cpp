@@ -42,6 +42,7 @@ extern void LoadState(int num);
 extern void YuiPlayMovie(HWND hWnd);
 extern void YuiRecordMovie(HWND hWnd);
 extern void ToggleFullScreenHK();
+extern void YuiScreenshot(HWND hWnd);
 
 static TCHAR szHotkeysClassName[] = _T("InputCustomHot");
 
@@ -1260,9 +1261,10 @@ void CopyCustomKeys (SCustomKeys *dst, const SCustomKeys *src)
 //=====================================HANDLERS=========================================
 //======================================================================================
 //void HK_OpenROM(int) {OpenFile();}
-void HK_PrintScreen(int param)
+void HK_Screenshot(int param)
 {
-    OPENFILENAME ofn;
+    /*
+	OPENFILENAME ofn;
 	char * ptr;
     char filename[MAX_PATH] = "";
     ZeroMemory(&ofn, sizeof(ofn));
@@ -1291,6 +1293,9 @@ void HK_PrintScreen(int param)
 	//		NDS_WritePNG(filename);
 		}
 	}
+	*/
+	//adelikat: TODO: I guess we should delete the above code?
+	YuiScreenshot(YabWin);
 }
 
 void HK_StateSaveSlot(int num)
@@ -1558,13 +1563,13 @@ void InitCustomKeys (SCustomKeys *keys)
 	keys->AutoHoldClear.page = HOTKEY_PAGE_MAIN;
 	keys->AutoHoldClear.key = NULL;
 */
-/*
-	keys->PrintScreen.handleKeyDown = HK_PrintScreen;
-	keys->PrintScreen.code = "SaveScreenshotas";
-	keys->PrintScreen.name = L"Save Screenshot as";
-	keys->PrintScreen.page = HOTKEY_PAGE_MAIN;
-	keys->PrintScreen.key = VK_F12;
-*/
+
+	keys->Screenshot.handleKeyDown = HK_Screenshot;
+	keys->Screenshot.code = "Screenshot";
+	keys->Screenshot.name = L"Screenshot";
+	keys->Screenshot.page = HOTKEY_PAGE_MAIN;
+	keys->Screenshot.key = VK_F12;
+
 /*	keys->ToggleFrameCounter.handleKeyDown = HK_ToggleFrame;
 	keys->ToggleFrameCounter.code = "ToggleFrameDisplay";
 	keys->ToggleFrameCounter.name = L"Toggle Frame Display";

@@ -67,6 +67,7 @@ void ResetGame();
 void HardResetGame();
 void YuiPlayMovie(HWND hWnd);
 void YuiRecordMovie(HWND hWnd);
+void YuiScreenshot(HWND hWnd);
 
 HANDLE emuthread=INVALID_HANDLE_VALUE;
 int KillEmuThread=0;
@@ -1807,29 +1808,8 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
                YuiTempUnPause();
                break;
             case IDM_CAPTURESCREEN:
-            {
-               WCHAR filter[1024];
-               OPENFILENAME ofn;
-               
-               YuiTempPause();
-
-               CreateFilter(filter, 1024,
-                  "Bitmap Files", "*.BMP",
-                  "All files (*.*)", "*.*", NULL);
-
-               SetupOFN(&ofn, OFN_DEFAULTSAVE, hWnd, filter,
-                       bmpfilename, sizeof(bmpfilename)/sizeof(TCHAR));
-               ofn.lpstrDefExt = (LPCWSTR)_16("BMP");
-
-               if (GetSaveFileName(&ofn))
-               {
-                  WideCharToMultiByte(CP_ACP, 0, bmpfilename, -1, text, sizeof(text), NULL, NULL);
-                  if (YuiCaptureScreen(text))
-                     MessageBox (hWnd, (LPCWSTR)_16("Couldn't save capture file"), (LPCWSTR)_16("Error"),  MB_OK | MB_ICONINFORMATION);
-               }
-               YuiTempUnPause();
-               break;
-            }
+				YuiScreenshot(hWnd);
+				break;
             case IDM_EXIT:
             {
                ScspMuteAudio();
@@ -2195,4 +2175,26 @@ void ToggleFullScreenHK() {
 		VIDCore->Resize(fullscreenwidth, fullscreenheight, 1);
 }
 					
-			
+void YuiScreenshot(HWND hWnd)
+{
+	OPENFILENAME ofn;
+    char text[MAX_PATH];        
+	WCHAR filter[1024];
+	YuiTempPause();
+
+	CreateFilter(filter, 1024,
+	  "Bitmap Files", "*.BMP",
+	  "All files (*.*)", "*.*", NULL);
+
+	SetupOFN(&ofn, OFN_DEFAULTSAVE, hWnd, filter,
+		   bmpfilename, sizeof(bmpfilename)/sizeof(TCHAR));
+	ofn.lpstrDefExt = (LPCWSTR)_16("BMP");
+
+	if (GetSaveFileName(&ofn))
+	{
+	  WideCharToMultiByte(CP_ACP, 0, bmpfilename, -1, text, sizeof(text), NULL, NULL);
+	  if (YuiCaptureScreen(text))
+		 MessageBox (hWnd, (LPCWSTR)_16("Couldn't save capture file"), (LPCWSTR)_16("Error"),  MB_OK | MB_ICONINFORMATION);
+	}
+	YuiTempUnPause();
+}
