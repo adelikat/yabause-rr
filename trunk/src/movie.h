@@ -22,6 +22,8 @@ struct MovieStruct
 	const char* filename;
 };
 
+extern struct MovieStruct Movie;
+
 struct MovieBufferStruct
 {
 	int size;
