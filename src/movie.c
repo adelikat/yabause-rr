@@ -222,13 +222,11 @@ void MovieToggleReadOnly(void) {
 		{
 			Movie.ReadOnly=0;
 			strcpy(MovieStatus, "Read+Write");
-			DisplayMessage("Movie is now read+write.");
 		}
 		else 
 		{
 			Movie.ReadOnly=1;
 			strcpy(MovieStatus, "Read Only");
-			DisplayMessage("Movie is now read only.");
 		}
 	}
 }

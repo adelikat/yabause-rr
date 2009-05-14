@@ -27,7 +27,7 @@
 #include "yabause.h"
 #include "movie.h"
 
-char OSDMessage[64] = "";	//adelikat: For showing on screen messages such as savestate loaded/saved
+char OSDMessage[32] = "";	//adelikat: For showing on screen messages such as savestate loaded/saved
 int OSDMessageTimer = 120;
 
 u8 * Vdp2Ram;
