@@ -218,13 +218,17 @@ void MovieToggleReadOnly(void) {
 
 	if(Movie.Status == Playback) {
 
-		if(Movie.ReadOnly == 1) {
+		if(Movie.ReadOnly == 1) 
+		{
 			Movie.ReadOnly=0;
 			strcpy(MovieStatus, "Read+Write");
+			DisplayMessage("Movie is now read+write.");
 		}
-		else {
+		else 
+		{
 			Movie.ReadOnly=1;
 			strcpy(MovieStatus, "Read Only");
+			DisplayMessage("Movie is now read only.");
 		}
 	}
 }
