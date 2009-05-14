@@ -1160,7 +1160,7 @@ int YuiInit(LPSTR lpCmdLine)
       yabwinh = 224 + (GetSystemMetrics(SM_CYSIZEFRAME) * 2) + GetSystemMetrics(SM_CYMENU) + GetSystemMetrics(SM_CYCAPTION);
    }
 
-   hAccel = LoadAccelerators(y_hInstance, MAKEINTRESOURCE(IDR_MAIN_ACCEL));
+  // hAccel = LoadAccelerators(y_hInstance, MAKEINTRESOURCE(IDR_MAIN_ACCEL));
 
    // Set up and register window class
    MyWndClass.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
@@ -1298,11 +1298,11 @@ YabauseSetup:
 			continue;
 		 }
 
-		 if (TranslateAccelerator(YabWin, hAccel, &msg) == 0)
-         {
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
-         }
+		 //if (TranslateAccelerator(YabWin, hAccel, &msg) == 0)
+         //{
+         //   TranslateMessage(&msg);
+         //   DispatchMessage(&msg);
+         //}
       }
 
       if (!paused && PERCore->HandleEvents() != 0)
