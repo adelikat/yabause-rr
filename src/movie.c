@@ -1,31 +1,3 @@
-/*
-
-****MOVIE TODO****
-
-NOW
-
-Update the screen when a state is loaded, even if the emulator is paused
-
-Input currently will "stick" after playback, reset input after playback is done
-
-LATER
-
-Setting the internal clock constantly to 0 might not be a good idea, neither is setting it to the computer's clock
-
-Port 2 isn't recorded/only 8 bytes recorded of port 1
-
-No movie header
-No hotkey remapping
-
-No slowdown modes - Yabause's current throttling methods need to be discussed more
-No export to avi
-No recording power on/resets
-No recording CD changes
-Movie format needs to load settings
-Real record/save movie dialogs for Windows
-
-*/
-
 #include "peripheral.h"
 #include "scsp.h"
 #include "movie.h"
@@ -270,6 +242,7 @@ int SaveMovie(const char *filename) {
 	framecounter=0;
 	Movie.Status=Recording;
 	strcpy(MovieStatus, "Recording Started");
+	BupFormat(0);
 	YabauseReset();
 	return 0;
 }
@@ -295,6 +268,7 @@ int PlayMovie(const char *filename) {
 	Movie.Status=Playback;
 	Movie.Size = MovieGetSize(Movie.fp);
 	strcpy(MovieStatus, "Playback Started");
+	BupFormat(0);
 	YabauseReset();
 	return 0;
 }
