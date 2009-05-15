@@ -240,7 +240,7 @@ void SmpcINTBACKStatus(void) {
 	   movietime.tm_wday=0x04;
 	   movietime.tm_mday=0x01;
 	   movietime.tm_mon=0;
-	   totalseconds = (framecounter / 60) + noon);
+	   totalseconds = ((framecounter / 60) + noon);
 
 	   movietime.tm_sec=totalseconds % 60;
 	   movietime.tm_min=totalseconds/60;
