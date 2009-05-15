@@ -487,6 +487,16 @@ void YglCachedQuad2(YglSprite * input, int * cache, YglColor * colors) {
 
 //////////////////////////////////////////////////////////////////////////////
 
+void YglText(int xpos, int ypos) {
+	int i;
+	#if HAVE_LIBGLUT
+	glRasterPos2i(xpos, ypos);
+	for (i = 0; i < _Ygl->msglength; i++) { 
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, _Ygl->message[i]);
+	}
+	#endif
+}
+
 void YglRender(void) {
    YglLevel * level;
 
@@ -542,11 +552,19 @@ void YglRender(void) {
 #if HAVE_LIBGLUT
    if (_Ygl->msglength > 0) {
       int i;
-      glColor3f(1.0f, 0.0f, 0.0f);
-      glRasterPos2i(10, 22);
-      for (i = 0; i < _Ygl->msglength; i++) {
-         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, _Ygl->message[i]);
-      }
+
+	  //black outline
+	  glColor4f(0, 0, 0, 1);
+	  YglText(10, 21);
+	  YglText(13, 23);
+	  YglText(13, 21);
+	  YglText(10, 23);
+
+	  //bold white
+      glColor3f(1.0f, 1.0f, 1.0f);
+	  YglText(12, 22);
+	  YglText(11, 22);
+
       glColor3f(1, 1, 1);
    }
 #endif
