@@ -2765,17 +2765,6 @@ void VIDSoftVdp2DrawStart(void)
 
 //////////////////////////////////////////////////////////////////////////////
 
-void SoftText(int xpos, int ypos) {
-	int i;
-	#if HAVE_LIBGLUT
-	glRasterPos2i(xpos, ypos);
-	for (i = 0; i < msglength; i++) { 
-		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, message[i]);
-	}
-	#endif
-}
-
-
 void VIDSoftVdp2DrawEnd(void)
 {
    int i, i2;
@@ -2969,19 +2958,11 @@ void VIDSoftVdp2DrawEnd(void)
 
 #if HAVE_LIBGLUT
    if (msglength > 0) {
-
-	  //black outline
-	  glColor4f(0, 0, 0, 1);
-	  SoftText(10, 21);
-	  SoftText(13, 23);
-	  SoftText(13, 21);
-	  SoftText(10, 23);
-
-	  //bold white
-      glColor3f(1.0f, 1.0f, 1.0f);
-	  SoftText(12, 22);
-	  SoftText(11, 22);
-
+      glColor3f(1.0f, 0.0f, 0.0f);
+      glRasterPos2i(10, 22);
+      for (i = 0; i < msglength; i++) {
+         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, message[i]);
+      }
       glColor3f(1, 1, 1);
       msglength = 0;
    }
