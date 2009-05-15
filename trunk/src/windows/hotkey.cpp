@@ -1587,7 +1587,7 @@ void InitCustomKeys (SCustomKeys *keys)
 	keys->PlayMovie.code = "PlayMovie";
 	keys->PlayMovie.name = L"Play Movie";
 	keys->PlayMovie.page = HOTKEY_PAGE_MOVIE;
-	keys->PlayMovie.key = 'R';
+	keys->PlayMovie.key = NULL;
 
 	keys->RecordMovie.handleKeyDown = HK_RecordMovie;
 	keys->RecordMovie.code = "RecordMovie";
@@ -1600,7 +1600,7 @@ void InitCustomKeys (SCustomKeys *keys)
 	keys->StopMovie.code = "StopMovie";
 	keys->StopMovie.name = L"Stop Movie";
 	keys->StopMovie.page = HOTKEY_PAGE_MOVIE;
-	keys->StopMovie.key = 'S';
+	keys->StopMovie.key = NULL;
 
 
 	keys->RecordAVI.handleKeyDown = HK_RecordAVI;
