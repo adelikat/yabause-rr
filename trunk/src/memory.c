@@ -1081,6 +1081,8 @@ int YabLoadState(const char *filename)
    int totalsize;
    int outputwidth;
    int outputheight;
+   int curroutputwidth;
+   int curroutputheight;
 
    MakeMovieStateName(filename);
 
@@ -1263,6 +1265,8 @@ int YabLoadState(const char *filename)
 
    YuiSwapBuffers();
    glRasterPos2i(0, 0);
+   VIDCore->GetGlSize(&curroutputwidth, &curroutputheight);
+   glPixelZoom((float)curroutputwidth / (float)outputwidth, 0 - ((float)curroutputheight / (float)outputheight));
    glDrawPixels(outputwidth, outputheight, GL_RGBA, GL_UNSIGNED_BYTE, buf);
    YuiSwapBuffers();
 
