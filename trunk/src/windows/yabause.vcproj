@@ -644,7 +644,7 @@
 				Name="windows specific"
 				>
 				<File
-					RelativePath=".\aviout.cpp"
+					RelativePath=".\aviout.c"
 					>
 				</File>
 				<File

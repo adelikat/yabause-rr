@@ -26,6 +26,8 @@
 #include "settings/settings.h"
 #include "aviout.h"
 
+//extern HWND YabWin;
+
 void EMU_PrintError(const char* msg) {
 //	LOG(msg);
 }
@@ -325,7 +327,7 @@ static int AviNextSegment(HWND HWnd)
 }
 
 
-bool DRV_AviBegin(const char* fname, HWND HWnd)
+int DRV_AviBegin(const char* fname, HWND HWnd)
 {
 	WAVEFORMATEX wf;
 	BITMAPINFOHEADER bi;
@@ -371,7 +373,7 @@ bool DRV_AviBegin(const char* fname, HWND HWnd)
 	if(!avi_open(fname, &bi, pwf, HWnd))
 	{
 		saved_avi_fname[0]='\0';
-		return false;
+		return 0;
 	}
 
 	// Don't display at file splits
@@ -388,7 +390,7 @@ bool DRV_AviBegin(const char* fname, HWND HWnd)
 		strcpy(saved_avi_ext,dot);
 		dot[0]='\0';
 	}
-	return true;
+	return 1;
 }
 
 void DRV_AviVideoUpdate(const u16* buffer, HWND HWnd)
@@ -396,7 +398,7 @@ void DRV_AviVideoUpdate(const u16* buffer, HWND HWnd)
 	if(!avi_file || !avi_file->valid)
 		return;
 
-//	do_video_conversion(buffer); TODO
+	do_video_conversion((const u8*)buffer);
 
     if(FAILED(AVIStreamWrite(avi_file->compressed_streams[VIDEO_STREAM],
                                  avi_file->video_frames, 1, avi_file->convert_buffer,
@@ -448,10 +450,10 @@ void DRV_AviEnd()
 	avi_destroy(&avi_file);
 }
 
-bool DRV_AviIsRecording()
+int DRV_AviIsRecording()
 {
 	if(avi_file)
-		return true;
+		return 1;
 
-	return false;
+	return 0;
 }

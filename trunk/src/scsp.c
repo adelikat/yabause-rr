@@ -90,6 +90,10 @@
 #include "yabause.h"
 #include "scsp.h"
 
+#ifdef WIN32
+#include "windows/aviout.h"
+#endif
+
 ////////////////////////////////////////////////////////////////
 
 #ifndef PI
@@ -139,7 +143,6 @@
 #define SCSP_DECAY_R		(u32) (12 * SCSP_ATTACK_R)
 
 ////////////////////////////////////////////////////////////////
-void DRV_AviSoundUpdate(void* soundData, int soundLen);
 
 typedef struct slot_t
 {
@@ -3154,7 +3157,7 @@ void ScspExec() {
       SNDCore->UpdateAudio(scspchannel[0].data32, (u32 *)scspchannel[1].data32, audiosize);
 	  #ifdef WIN32
       ScspConvert32uto16s((s32 *)scspchannel[0].data32, (s32 *)scspchannel[1].data32, (s16 *)stereodata16, audiosize);
-//	  DRV_AviSoundUpdate(stereodata16, audiosize); TODO
+	  DRV_AviSoundUpdate(stereodata16, audiosize);
 	  #endif
 
    }
