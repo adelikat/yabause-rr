@@ -978,6 +978,7 @@ int YabSaveState(const char *filename)
    int totalsize;
    int outputwidth;
    int outputheight;
+   int movieposition;
 
    //use a second set of savestates for movies
    MakeMovieStateName(filename);
@@ -1004,6 +1005,11 @@ int YabSaveState(const char *filename)
    ywrite(&check, (void *)&i, sizeof(i), 1, fp);
 
    //write frame number
+   ywrite(&check, (void *)&framecounter, 4, 1, fp);
+
+   movieposition=ftell(fp);
+
+   //this will be updated with the movie position later
    ywrite(&check, (void *)&framecounter, 4, 1, fp);
 
    // Go through each area and write each state
@@ -1052,7 +1058,9 @@ int YabSaveState(const char *filename)
    ywrite(&check, (void *)&outputwidth, sizeof(outputwidth), 1, fp);
    ywrite(&check, (void *)&outputheight, sizeof(outputheight), 1, fp);
 
-   ywrite(&check, (void *)&buf, sizeof(buf), 1, fp);
+   ywrite(&check, (void *)buf, sizeof(buf), 1, fp);
+
+   movieposition=ftell(fp);
 
    //write the movie to the end of the savestate
    SaveMovieInState(fp, check);
@@ -1062,6 +1070,8 @@ int YabSaveState(const char *filename)
    // Go back and update size
    fseek(fp, 8, SEEK_SET);
    ywrite(&check, (void *)&i, sizeof(i), 1, fp);
+   fseek(fp, 16, SEEK_SET);
+   ywrite(&check, (void *)&movieposition, sizeof(movieposition), 1, fp);
 
    fclose(fp);
 
@@ -1083,6 +1093,7 @@ int YabLoadState(const char *filename)
    int outputheight;
    int curroutputwidth;
    int curroutputheight;
+   int movieposition;
 
    MakeMovieStateName(filename);
 
@@ -1112,7 +1123,9 @@ int YabLoadState(const char *filename)
       case 2:
          /* version 2 adds video recording */
          yread(&check, (void *)&framecounter, 4, 1, fp);
-         headersize = 0x10;
+		 movieposition=ftell(fp);
+		 yread(&check, (void *)&movieposition, 4, 1, fp);
+         headersize = 0x14;
          break;
       default:
          /* we're trying to open a save state using a future version
@@ -1261,7 +1274,7 @@ int YabLoadState(const char *filename)
       return -2;
    }
 
-   yread(&check, (void *)&buf, totalsize, 1, fp);
+   yread(&check, (void *)buf, totalsize, 1, fp);
 
    YuiSwapBuffers();
    glRasterPos2i(0, outputheight/2);
@@ -1269,6 +1282,8 @@ int YabLoadState(const char *filename)
    glPixelZoom((float)curroutputwidth / (float)outputwidth, ((float)curroutputheight / (float)outputheight));
    glDrawPixels(outputwidth, outputheight, GL_RGBA, GL_UNSIGNED_BYTE, buf);
    YuiSwapBuffers();
+
+   fseek(fp, movieposition, SEEK_SET);
 
    if (headerversion > 1) MovieReadState(fp, filename);
    fclose(fp);

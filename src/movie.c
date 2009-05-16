@@ -1,6 +1,7 @@
 #include "peripheral.h"
 #include "scsp.h"
 #include "movie.h"
+#include "cs2.h"
 
 int RecordingFileOpened;
 int PlaybackFileOpened;
@@ -15,6 +16,54 @@ int framecounter;
 int lagframecounter;
 int LagFrameFlag;
 int FrameAdvanceVariable=0;
+
+int headersize=512;
+
+//////////////////////////////////////////////////////////////////////////////
+
+void ReadHeader(FILE* fp) {
+
+	int x;
+
+	fseek(fp, 0, SEEK_SET);
+
+
+	fseek(fp, 172, SEEK_SET);
+	fread(&Movie.Rerecords, sizeof(Movie.Rerecords), 1, fp);
+
+//	x = fgetc(fp);
+
+//	if(x=1)
+	//	Movie.startsfromsavestate=1;
+
+	fseek(fp, headersize, SEEK_SET);
+}
+
+//////////////////////////////////////////////////////////////////////////////
+
+void WriteHeader(FILE* fp) {
+
+	int x;
+
+	fseek(fp, 0, SEEK_SET);
+
+	fwrite("YMV", sizeof("YMV"), 1, fp);
+	fwrite(VERSION, sizeof(VERSION), 1, fp);
+	fwrite(cdip->cdinfo, sizeof(cdip->cdinfo), 1, fp);
+	fwrite(cdip->itemnum, sizeof(cdip->itemnum), 1, fp);
+	fwrite(cdip->version, sizeof(cdip->version), 1, fp);
+	fwrite(cdip->date, sizeof(cdip->date), 1, fp);
+	fwrite(cdip->gamename, sizeof(cdip->gamename), 1, fp);
+	fwrite(cdip->region, sizeof(cdip->region), 1, fp);
+	fwrite(&Movie.Rerecords, sizeof(Movie.Rerecords), 1, fp);
+
+//	fputc(Movie.startsfromsavestate, fp);
+
+//	for(x=0; x<7; x++) //padding
+//		fputc(0, fp);
+
+	fseek(fp, headersize, SEEK_SET);
+}
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -126,22 +175,21 @@ void DoMovie(void) {
 
 void MovieLoadState(const char * filename) {
 
-	int headersize=0;
 
 	if (Movie.ReadOnly == 1 && Movie.Status == Playback)  {
 		//Movie.Status = Playback;
-		fseek (Movie.fp,headersize+framecounter * framelength,SEEK_SET);
+		fseek (Movie.fp,headersize+(framecounter * framelength),SEEK_SET);
 	}
 
 	if(Movie.Status == Recording)
-		fseek (Movie.fp,headersize+framecounter * framelength,SEEK_SET);
+		fseek (Movie.fp,headersize+(framecounter * framelength),SEEK_SET);
 
 	if(Movie.Status == Playback && Movie.ReadOnly == 0) {
 		Movie.Status = Recording;
 		RecordingFileOpened=1;
 		strcpy(MovieStatus, "Recording Resumed");
 		TruncateMovie(Movie);
-		fseek (Movie.fp,headersize+framecounter * framelength,SEEK_SET);
+		fseek (Movie.fp,headersize+(framecounter * framelength),SEEK_SET);
 	}
 }
 
@@ -153,7 +201,7 @@ void TruncateMovie(struct MovieStruct Movie) {
 	//potential garbage data at the end
 
 	struct MovieBufferStruct tempbuffer;
-
+/*//TODO
 	fseek(Movie.fp,0,SEEK_SET);
 	tempbuffer=ReadMovieIntoABuffer(Movie.fp);
 	fclose(Movie.fp);
@@ -164,7 +212,7 @@ void TruncateMovie(struct MovieStruct Movie) {
 	fclose(Movie.fp);
 
 	Movie.fp=fopen(Movie.filename,"r+b");
-
+*/
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -178,7 +226,7 @@ int MovieGetSize(FILE* fp) {
 	fseek (fp,0,SEEK_END);
 	size=ftell(fp);
 
-	Movie.Frames=size/ framelength;
+	Movie.Frames=(size-headersize)/ framelength;
 
 	fseek(fp, fpos, SEEK_SET); //reset back to correct pos
 	return(size);
@@ -243,6 +291,8 @@ int SaveMovie(const char *filename) {
 	Movie.Status=Recording;
 	strcpy(MovieStatus, "Recording Started");
 	BupFormat(0);
+	Movie.Rerecords=0;
+	WriteHeader(Movie.fp);
 	YabauseReset();
 	return 0;
 }
@@ -269,6 +319,7 @@ int PlayMovie(const char *filename) {
 	Movie.Size = MovieGetSize(Movie.fp);
 	strcpy(MovieStatus, "Playback Started");
 	BupFormat(0);
+	ReadHeader(Movie.fp);
 	YabauseReset();
 	return 0;
 }
@@ -308,12 +359,17 @@ void ReadMovieInState(FILE* fp) {
 
 		fpos=ftell(fp);//where we are in the savestate
 		fread(&tempbuffer.size, 4, 1, fp);//size
-		tempbuffer.data = (char*) malloc (sizeof(char)*tempbuffer.size);
+		if ((tempbuffer.data = (u8 *)malloc(tempbuffer.size)) == NULL)
+		{
+			return;
+		}
+	//	tempbuffer.data = (char*) malloc (sizeof(char)*tempbuffer.size);
 		fread(tempbuffer.data, 1, tempbuffer.size, fp);//movie
 		fseek(fp, fpos, SEEK_SET);//reset savestate position
 
 		rewind(Movie.fp);
 		fwrite(tempbuffer.data, 1, tempbuffer.size, Movie.fp);
+		rewind(Movie.fp);
 	}
 }
 
