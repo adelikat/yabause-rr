@@ -27,7 +27,6 @@ void ReadHeader(FILE* fp) {
 
 	fseek(fp, 0, SEEK_SET);
 
-
 	fseek(fp, 172, SEEK_SET);
 	fread(&Movie.Rerecords, sizeof(Movie.Rerecords), 1, fp);
 
@@ -58,9 +57,6 @@ void WriteHeader(FILE* fp) {
 	fwrite(&Movie.Rerecords, sizeof(Movie.Rerecords), 1, fp);
 
 //	fputc(Movie.startsfromsavestate, fp);
-
-//	for(x=0; x<7; x++) //padding
-//		fputc(0, fp);
 
 	fseek(fp, headersize, SEEK_SET);
 }
@@ -181,8 +177,10 @@ void MovieLoadState(const char * filename) {
 		fseek (Movie.fp,headersize+(framecounter * framelength),SEEK_SET);
 	}
 
-	if(Movie.Status == Recording)
+	if(Movie.Status == Recording) {
 		fseek (Movie.fp,headersize+(framecounter * framelength),SEEK_SET);
+		Movie.Rerecords++;
+	}
 
 	if(Movie.Status == Playback && Movie.ReadOnly == 0) {
 		Movie.Status = Recording;
@@ -190,6 +188,7 @@ void MovieLoadState(const char * filename) {
 		strcpy(MovieStatus, "Recording Resumed");
 		TruncateMovie(Movie);
 		fseek (Movie.fp,headersize+(framecounter * framelength),SEEK_SET);
+		Movie.Rerecords++;
 	}
 }
 
@@ -256,6 +255,7 @@ void MovieToggleReadOnly(void) {
 void StopMovie(void) {
 
 	if(Movie.Status == Recording && RecordingFileOpened) {
+		WriteHeader(Movie.fp);
 		fclose(Movie.fp);
 		RecordingFileOpened=0;
 		Movie.Status = Stopped;
