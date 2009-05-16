@@ -141,6 +141,9 @@ static int rbg0priority=0;
 
 static u32 Vdp2ColorRamGetColor(u32 colorindex, int alpha);
 
+int GlHeight=320;
+int GlWidth=224;
+
 //////////////////////////////////////////////////////////////////////////////
 
 static void FASTCALL Vdp1ReadTexture(vdp1cmd_struct *cmd, YglSprite *sprite, YglTexture *texture)
@@ -1409,6 +1412,9 @@ void VIDOGLResize(unsigned int w, unsigned int h, int on)
    glViewport(0, 0, w, h);
 
    SetSaturnResolution(vdp2width, vdp2height);
+
+   GlHeight=h;
+   GlWidth=w;
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -2748,5 +2754,11 @@ void FASTCALL VIDOGLVdp2SetPriorityRBG0(int priority)
 }
 
 //////////////////////////////////////////////////////////////////////////////
+
+void YglGetGlSize(int *width, int *height)
+{
+   *width = GlWidth;
+   *height = GlHeight;
+}
 
 #endif

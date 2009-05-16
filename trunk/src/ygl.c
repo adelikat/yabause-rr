@@ -627,12 +627,4 @@ void YglCacheReset(void) {
 
 //////////////////////////////////////////////////////////////////////////////
 
-void YglGetGlSize(int *width, int *height)
-{
-
-   *width = 0;
-   *height = 0;
-}
-
-
 #endif
