@@ -232,7 +232,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\;.\ddk;.\mini18n\"
+				AdditionalIncludeDirectories=".\;.\ddk;.\mini18n\;.\zlib123\"
 				PreprocessorDefinitions="WIN32;_DEBUG;DEBUG;_WINDOWS;_WIN32_IE=0x500;_WIN32_WINNT=0x400;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;HAVE_C99_VARIADIC_MACROS;HAVE_LIBGLUT;HAVE_LIBGL;USEM68KCORE;VERSION=\&quot;0.9.9\&quot;;C68K_NO_JUMP_TABLE;HAVE_LIBMINI18N"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -256,9 +256,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="comctl32.lib dxguid.lib dinput8.lib dxerr9.lib dsound.lib mini18n.lib vfw32.lib"
+				AdditionalDependencies="comctl32.lib dxguid.lib dinput8.lib dxerr9.lib dsound.lib mini18n.lib vfw32.lib zlib-2008-x32.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories=".\GL;.\mini18n\"
+				AdditionalLibraryDirectories=".\GL;.\mini18n\;.\zlib123\"
 				IgnoreDefaultLibraryNames="libcmt.lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"

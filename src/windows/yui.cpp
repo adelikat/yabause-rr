@@ -35,7 +35,7 @@ extern "C" {
 #include "../m68kcore.h"
 #include "../movie.h"
 }
-
+#include <zlib.h>
 #include "snddx.h"
 #include "perdx.h"
 
@@ -1400,6 +1400,171 @@ void ChangeLanguage(int id)
    CheckMenuItem(YabMenu, id, MF_CHECKED);
 }
 
+static int WritePNGChunk(FILE *fp, u32 size, const char *type, const u8 *data)
+{
+	u32 crc;
+
+	u8 tempo[4];
+
+	tempo[0]=size>>24;
+	tempo[1]=size>>16;
+	tempo[2]=size>>8;
+	tempo[3]=size;
+
+	if(fwrite(tempo,4,1,fp)!=1)
+		return 0;
+	if(fwrite(type,4,1,fp)!=1)
+		return 0;
+
+	if(size)
+		if(fwrite(data,1,size,fp)!=size)
+			return 0;
+
+	crc = crc32(0,(u8 *)type,4);
+	if(size)
+		crc = crc32(crc,data,size);
+
+	tempo[0]=crc>>24;
+	tempo[1]=crc>>16;
+	tempo[2]=crc>>8;
+	tempo[3]=crc;
+
+	if(fwrite(tempo,4,1,fp)!=1)
+		return 0;
+	return 1;
+}
+
+int NDS_WritePNG(const char *fname)
+{
+	u8 *buf;
+	int totalsize=screenwidth * screenheight * sizeof(u32);
+
+	if ((buf = (u8 *)malloc(totalsize)) == NULL)
+	{
+		return -2;
+	}
+
+//	int x, y;
+	int width=screenwidth;
+	int height=screenheight;
+	u16 * bmp = (u16 *)buf;
+	FILE *pp=NULL;
+	u8 *compmem = NULL;
+	uLongf compmemsize = (uLongf)( (height * (width + 1) * 3 * 1.001 + 1) + 12 );
+
+	if(!(compmem=(u8 *)malloc(compmemsize)))
+		return 0;
+
+	if(!(pp=fopen(fname, "wb")))
+	{
+		return 0;
+	}
+	{
+		static u8 header[8]={137,80,78,71,13,10,26,10};
+		if(fwrite(header,8,1,pp)!=1)
+			goto PNGerr;
+	}
+
+	{
+		u8 chunko[13];
+
+		chunko[0] = width >> 24;		// Width
+		chunko[1] = width >> 16;
+		chunko[2] = width >> 8;
+		chunko[3] = width;
+
+		chunko[4] = height >> 24;		// Height
+		chunko[5] = height >> 16;
+		chunko[6] = height >> 8;
+		chunko[7] = height;
+
+		chunko[8]=8;				// 8 bits per sample(24 bits per pixel)
+		chunko[9]=2;				// Color type; RGB triplet
+		chunko[10]=0;				// compression: deflate
+		chunko[11]=0;				// Basic adapative filter set(though none are used).
+		chunko[12]=0;				// No interlace.
+
+		if(!WritePNGChunk(pp,13,"IHDR",chunko))
+			goto PNGerr;
+	}
+
+	{
+
+		u8 *tmp_buffer;
+		u8 *tmp_inc;
+		tmp_inc = tmp_buffer =(u8 *)malloc(totalsize); //(u8 *)malloc((width * 3 + 1) * height);
+
+		SwapBuffers(YabHDC);
+		glReadBuffer(GL_BACK);
+		glReadPixels(0, 0, screenwidth, screenheight, GL_RGB, GL_UNSIGNED_BYTE, buf);
+		SwapBuffers(YabHDC);
+
+
+		tmp_buffer=buf;//wrong
+
+
+		//	u8* tmp_buffer = avi_file->convert_buffer; //+ 320*(224-1)*3;
+
+		/*  for (int i = 0; i < (screenwidth * screenheight); i++)
+		{
+		u8 temp;
+
+		temp = buf[i * 4];
+		buf[i * 4] = buf[(i * 4) + 2];
+		buf[(i * 4) + 2] = temp;
+		}*/
+		/*
+		
+
+		/*
+		for(y=0;y<height;y++)
+		{
+		*tmp_inc = 0;
+		tmp_inc++;
+		for(x=0;x<width;x++)
+		{
+		int r,g,b;
+		u16 pixel = bmp[y*width+x];
+		r = pixel>>10;
+		pixel-=r<<10;
+		g = pixel>>5;
+		pixel-=g<<5;
+		b = pixel;
+		r*=255/31;
+		g*=255/31;
+		b*=255/31;
+		tmp_inc[0] = b;
+		tmp_inc[1] = g;
+		tmp_inc[2] = r;
+		tmp_inc += 3;
+		}
+		}
+		*/
+		if(compress(compmem, &compmemsize, tmp_buffer, height * (width * 3 + 1))!=Z_OK)
+		{
+			if(tmp_buffer) free(tmp_buffer);
+			goto PNGerr;
+		}
+		if(tmp_buffer) free(tmp_buffer);
+		if(!WritePNGChunk(pp,compmemsize,"IDAT",compmem))
+			goto PNGerr;
+	}
+	if(!WritePNGChunk(pp,0,"IEND",0))
+		goto PNGerr;
+
+	free(compmem);
+	fclose(pp);
+
+	return 1;
+
+PNGerr:
+	if(compmem)
+		free(compmem);
+	if(pp)
+		fclose(pp);
+	return(0);
+}
+
 //////////////////////////////////////////////////////////////////////////////
 LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 {
@@ -1792,21 +1957,62 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
                YuiTempUnPause();
                break;
             case IDM_CAPTURESCREEN:
-				YuiScreenshot(hWnd);
+            {
+               WCHAR filter[1024];
+               OPENFILENAME ofn;
+               
+               YuiTempPause();
+
+               CreateFilter(filter, 1024,
+				  "png files", "*.png",
+                  "Bitmap Files", "*.BMP",
+                  "All files (*.*)", "*.*", NULL);
+
+               SetupOFN(&ofn, OFN_DEFAULTSAVE, hWnd, filter,
+				   bmpfilename, sizeof(bmpfilename)/sizeof(TCHAR));
+			   ofn.lpstrDefExt = (LPCWSTR)_16("png");
+
+			   if (GetSaveFileName(&ofn))
+			   {
+				   WideCharToMultiByte(CP_ACP, 0, bmpfilename, -1, text, sizeof(text), NULL, NULL);
+
+			//	   char * ptr;
+			//	   ptr = strrchr((char*)bmpfilename,'.');//look for the last . in the filename
+
+			//	   if ( ptr != 0 ) {
+			//		   if (( strcmp ( ptr, ".BMP" ) == 0 ) ||
+			//			   ( strcmp ( ptr, ".bmp" ) == 0 )) 
+//					   {
+			//			   if (YuiCaptureScreen(text))
+			//	      MessageBox (hWnd, (LPCWSTR)_16("Couldn't save capture file"), (LPCWSTR)_16("Error"),  MB_OK | MB_ICONINFORMATION);
+			//			   //			NDS_WriteBMP(filename);
+			//		   }
+			//		   if (( strcmp ( ptr, ".PNG" ) == 0 ) ||
+			//			   ( strcmp ( ptr, ".png" ) == 0 )) 
+			//		   {
+						   		NDS_WritePNG(text);
+			//		   }
+			//	   }
+
+				   //if (YuiCaptureScreen(text))
+				   //   MessageBox (hWnd, (LPCWSTR)_16("Couldn't save capture file"), (LPCWSTR)_16("Error"),  MB_OK | MB_ICONINFORMATION);
+			   }
+			   YuiTempUnPause();
+			   break;
+			}
+			case IDM_EXIT:
+				{
+					ScspMuteAudio();
+					PostMessage(hWnd, WM_CLOSE, 0, 0);
+					break;
+				}
+
+				//adelikat: These don't apply anymoer
+				/* 
+				case IDM_WEBSITE:
+				{
+				ShellExecuteA(NULL, "open", "http://yabause.sourceforge.net", NULL, NULL, SW_SHOWNORMAL);
 				break;
-            case IDM_EXIT:
-            {
-               ScspMuteAudio();
-               PostMessage(hWnd, WM_CLOSE, 0, 0);
-               break;
-            }
-            
-			//adelikat: These don't apply anymoer
-			/* 
-			case IDM_WEBSITE:
-            {
-               ShellExecuteA(NULL, "open", "http://yabause.sourceforge.net", NULL, NULL, SW_SHOWNORMAL);
-               break;
             }
             case IDM_FORUM:
             {
