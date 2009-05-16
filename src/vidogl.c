@@ -90,6 +90,7 @@ void FASTCALL VIDOGLVdp2SetPriorityNBG1(int priority);
 void FASTCALL VIDOGLVdp2SetPriorityNBG2(int priority);
 void FASTCALL VIDOGLVdp2SetPriorityNBG3(int priority);
 void FASTCALL VIDOGLVdp2SetPriorityRBG0(int priority);
+void YglGetGlSize(int *width, int *height);
 
 VideoInterface_struct VIDOGL = {
 VIDCORE_OGL,
@@ -120,7 +121,8 @@ VIDOGLVdp2SetPriorityNBG1,
 VIDOGLVdp2SetPriorityNBG2,
 VIDOGLVdp2SetPriorityNBG3,
 VIDOGLVdp2SetPriorityRBG0,
-YglOnScreenDebugMessage
+YglOnScreenDebugMessage,
+YglGetGlSize
 };
 
 static float vdp1wratio=1;
