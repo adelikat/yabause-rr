@@ -8,10 +8,9 @@
 
   * Ram-watch - values don't update
   * Ram-Search - values don't update while holding frame advance
-  * Savestates - save and load gfx buffer and update OSD
 ===Low===
 
   * Make it so that it can start without an ini
   * No setup menu when you first start it, just go to the main window
-  * Screenshots - .png format
+  * Fix png dumper
   * Auto-hold
