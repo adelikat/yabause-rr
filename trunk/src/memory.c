@@ -966,10 +966,6 @@ void FormatBackupRam(void *mem, u32 size)
 #include "ygl.h"
 #endif
 
-   int totalsize;
-   int outputwidth=320;
-   int outputheight=224;
-
 //////////////////////////////////////////////////////////////////////////////
 
 int YabSaveState(const char *filename)
@@ -979,6 +975,9 @@ int YabSaveState(const char *filename)
    int offset;
    IOCheck_struct check;
    u8 *buf;
+   int totalsize;
+   int outputwidth;
+   int outputheight;
 
    //use a second set of savestates for movies
    MakeMovieStateName(filename);
@@ -1035,6 +1034,8 @@ int YabSaveState(const char *filename)
    ywrite(&check, (void *)&yabsys.CurSH2FreqType, sizeof(int), 1, fp);
    ywrite(&check, (void *)&yabsys.IsPal, sizeof(int), 1, fp);
 
+   VIDCore->GetGlSize(&outputwidth, &outputheight);
+
    totalsize=outputwidth * outputheight * sizeof(u32);
 
    if ((buf = (u8 *)malloc(totalsize)) == NULL)
@@ -1077,6 +1078,9 @@ int YabLoadState(const char *filename)
    int headerversion, version, size, chunksize, headersize;
    IOCheck_struct check;
    u8* buf;
+   int totalsize;
+   int outputwidth;
+   int outputheight;
 
    MakeMovieStateName(filename);
 
