@@ -1264,9 +1264,9 @@ int YabLoadState(const char *filename)
    yread(&check, (void *)&buf, totalsize, 1, fp);
 
    YuiSwapBuffers();
-   glRasterPos2i(0, 0);
+   glRasterPos2i(0, outputheight/2);
    VIDCore->GetGlSize(&curroutputwidth, &curroutputheight);
-   glPixelZoom((float)curroutputwidth / (float)outputwidth, 0 - ((float)curroutputheight / (float)outputheight));
+   glPixelZoom((float)curroutputwidth / (float)outputwidth, ((float)curroutputheight / (float)outputheight));
    glDrawPixels(outputwidth, outputheight, GL_RGBA, GL_UNSIGNED_BYTE, buf);
    YuiSwapBuffers();
 
