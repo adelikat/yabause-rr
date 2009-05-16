@@ -142,7 +142,7 @@ void DoMovie(void) {
 		}
 
 		//if we get to the end of the movie
-		if((ftell(Movie.fp)/framelength) >= Movie.Frames) {
+		if(((ftell(Movie.fp)-headersize)/framelength) >= Movie.Frames) {
 			fclose(Movie.fp);
 			PlaybackFileOpened=0;
 			Movie.Status = Stopped;
