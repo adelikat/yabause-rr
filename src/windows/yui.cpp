@@ -534,8 +534,7 @@ void YuiCaptureVideo(void)
 	glReadPixels(0, 0, screenwidth, screenheight, GL_RGBA, GL_UNSIGNED_BYTE, buf);
 	SwapBuffers(YabHDC);
 
-//	DRV_AviVideoUpdate((const u16*)buf, YabWin);
-//	DRV_AviVideoUpdate((const u16*)buf); //TODO
+	DRV_AviVideoUpdate((const u16*)buf, YabWin);
 }
 
 //////////////////////////////////////////////////////////////////////////////
