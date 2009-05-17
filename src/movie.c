@@ -2,6 +2,7 @@
 #include "scsp.h"
 #include "movie.h"
 #include "cs2.h"
+#include "yabause.h"
 
 int RecordingFileOpened;
 int PlaybackFileOpened;
@@ -55,7 +56,8 @@ void WriteHeader(FILE* fp) {
 	fwrite(cdip->gamename, sizeof(cdip->gamename), 1, fp);
 	fwrite(cdip->region, sizeof(cdip->region), 1, fp);
 	fwrite(&Movie.Rerecords, sizeof(Movie.Rerecords), 1, fp);
-
+	fwrite(&yabsys.emulatebios, sizeof(yabsys.emulatebios), 1, fp);
+	fwrite(&yabsys.IsPal, sizeof(yabsys.IsPal), 1, fp);
 //	fputc(Movie.startsfromsavestate, fp);
 
 	fseek(fp, headersize, SEEK_SET);
