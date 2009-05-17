@@ -966,6 +966,9 @@ void FormatBackupRam(void *mem, u32 size)
 #include "ygl.h"
 #endif
 
+#include "vidsoft.h"
+#include "vidogl.h"
+
 //////////////////////////////////////////////////////////////////////////////
 
 int YabSaveState(const char *filename)
@@ -1058,10 +1061,9 @@ int YabSaveState(const char *filename)
    ywrite(&check, (void *)&outputwidth, sizeof(outputwidth), 1, fp);
    ywrite(&check, (void *)&outputheight, sizeof(outputheight), 1, fp);
 
-   ywrite(&check, (void *)buf, sizeof(buf), 1, fp);
+   ywrite(&check, (void *)buf, totalsize, 1, fp);
 
    movieposition=ftell(fp);
-
    //write the movie to the end of the savestate
    SaveMovieInState(fp, check);
 
@@ -1277,7 +1279,11 @@ int YabLoadState(const char *filename)
    yread(&check, (void *)buf, totalsize, 1, fp);
 
    YuiSwapBuffers();
-   glRasterPos2i(0, outputheight/2);
+   if(VIDCore->id == VIDCORE_SOFT)
+     glRasterPos2i(0, outputheight);
+   if(VIDCore->id == VIDCORE_OGL)
+	 glRasterPos2i(0, outputheight/2);
+
    VIDCore->GetGlSize(&curroutputwidth, &curroutputheight);
    glPixelZoom((float)curroutputwidth / (float)outputwidth, ((float)curroutputheight / (float)outputheight));
    glDrawPixels(outputwidth, outputheight, GL_RGBA, GL_UNSIGNED_BYTE, buf);
