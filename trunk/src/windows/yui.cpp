@@ -132,7 +132,7 @@ NULL
 extern "C" CDInterface *CDCoreList[] = {
 &DummyCD,
 &ISOCD,
-//&ArchCD, //TODO
+&ArchCD,
 NULL
 };
 
@@ -906,8 +906,8 @@ int YuiInit(LPSTR lpCmdLine)
          if (ret != TRUE)
          {
             // exit program with error
-            MessageBox (NULL, (LPCWSTR)_16("yabause.ini must be properly setup before program can be used."), (LPCWSTR)_16("Error"),  MB_OK | MB_ICONINFORMATION);
-            return -1;
+         //   MessageBox (NULL, (LPCWSTR)_16("yabause.ini must be properly setup before program can be used."), (LPCWSTR)_16("Error"),  MB_OK | MB_ICONINFORMATION);
+         //   return -1;
          }
       }
    }

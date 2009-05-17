@@ -60,7 +60,7 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="true"
-				AdditionalIncludeDirectories=".\;.\ddk;.\mini18n\"
+				AdditionalIncludeDirectories=".\;.\ddk;.\mini18n\;.\zlib123"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_WIN32_IE=0x500;_WIN32_WINNT=0x400;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;HAVE_C99_VARIADIC_MACROS;HAVE_LIBGLUT;HAVE_LIBGL;USEM68KCORE;VERSION=\&quot;0.9.9\&quot;;C68K_NO_JUMP_TABLE;HAVE_LIBMINI18N"
 				RuntimeLibrary="0"
 				FloatingPointModel="2"
@@ -82,9 +82,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="comctl32.lib dxguid.lib dinput8.lib dxerr9.lib dsound.lib mini18n.lib vfw32.lib"
+				AdditionalDependencies="comctl32.lib dxguid.lib dinput8.lib dxerr9.lib dsound.lib mini18n.lib vfw32.lib zlib-2008-x32.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories=".\GL;.\mini18n\"
+				AdditionalLibraryDirectories=".\GL;.\mini18n\;.\zlib123"
 				IgnoreDefaultLibraryNames="libcmt.lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -325,7 +325,7 @@
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="true"
 				WholeProgramOptimization="false"
-				AdditionalIncludeDirectories=".\;.\ddk;.\mini18n\;directx"
+				AdditionalIncludeDirectories=".\;.\ddk;.\mini18n\;directx;.\zlib123\"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_WIN32_IE=0x500;_WIN32_WINNT=0x400;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;HAVE_C99_VARIADIC_MACROS;HAVE_LIBGLUT;HAVE_LIBGL;USEM68KCORE;VERSION=\&quot;0.9.9\&quot;;C68K_NO_JUMP_TABLE;HAVE_LIBMINI18N"
 				RuntimeLibrary="0"
 				FloatingPointModel="2"
@@ -347,9 +347,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="comctl32.lib dxguid.lib dinput8.lib dxerr9.lib dsound.lib mini18n.lib vfw32.lib"
+				AdditionalDependencies="comctl32.lib dxguid.lib dinput8.lib dxerr9.lib dsound.lib mini18n.lib vfw32.lib zlib-2008-x32.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories=".\GL;.\mini18n\;directx"
+				AdditionalLibraryDirectories=".\GL;.\mini18n\;directx;.\zlib123\"
 				IgnoreDefaultLibraryNames="libcmt.lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -652,7 +652,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\cd-windows.cpp"
+					RelativePath="..\cd-windows.c"
 					>
 					<FileConfiguration
 						Name="Release|Win32"
@@ -676,6 +676,7 @@
 						<Tool
 							Name="VCCLCompilerTool"
 							WarningLevel="3"
+							CompileAs="1"
 						/>
 					</FileConfiguration>
 					<FileConfiguration
@@ -684,6 +685,7 @@
 						<Tool
 							Name="VCCLCompilerTool"
 							WarningLevel="2"
+							CompileAs="1"
 						/>
 					</FileConfiguration>
 					<FileConfiguration
@@ -882,6 +884,14 @@
 				<File
 					RelativePath="..\movie.c"
 					>
+					<FileConfiguration
+						Name="Release FastBuild|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath="..\netlink.c"
