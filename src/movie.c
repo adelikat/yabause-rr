@@ -24,7 +24,7 @@ int headersize=512;
 
 void ReadHeader(FILE* fp) {
 
-	int x;
+	//int x;
 
 	fseek(fp, 0, SEEK_SET);
 
@@ -43,7 +43,7 @@ void ReadHeader(FILE* fp) {
 
 void WriteHeader(FILE* fp) {
 
-	int x;
+	//int x;
 
 	fseek(fp, 0, SEEK_SET);
 
