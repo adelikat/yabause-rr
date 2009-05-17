@@ -1,1 +1,14 @@
 .ymv file format specifications
+
+0x000 YMV indicator
+0x004 Emulator Version - 0.9.9
+0x00a CD cdinfo - this and the following are extracted from the cd header
+0x013 CD itemnum
+0x01e CD version
+0x025 CD date
+0x030 CD gamename - internal name of cd
+0x0a1 CD region - the region of the cd
+0x0ac Re-records
+0x0b0 emulatebios - whether yabause's bios replacement is used or a real one
+0x0b4 IsPal - whether the emulated system is pal or not
+0x0b8 padding
