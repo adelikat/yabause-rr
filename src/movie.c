@@ -119,7 +119,7 @@ void IncrementLagAndFrameCounter(void)
 
 //////////////////////////////////////////////////////////////////////////////
 
-int framelength=8;
+int framelength=16;
 
 void DoMovie(void) {
 
@@ -134,11 +134,17 @@ void DoMovie(void) {
 		for (x = 0; x < 8; x++) {
 			fwrite(&PORTDATA1.data[x], 1, 1, Movie.fp);
 		}
+		for (x = 0; x < 8; x++) {
+			fwrite(&PORTDATA2.data[x], 1, 1, Movie.fp);
+		}
 	}
 
 	if(Movie.Status == Playback) {
 		for (x = 0; x < 8; x++) {
 			fread(&PORTDATA1.data[x], 1, 1, Movie.fp);
+		}
+		for (x = 0; x < 8; x++) {
+			fread(&PORTDATA2.data[x], 1, 1, Movie.fp);
 		}
 
 		//if we get to the end of the movie
