@@ -61,7 +61,7 @@
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="true"
 				AdditionalIncludeDirectories=".\;.\ddk;.\mini18n\;.\zlib123"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_WIN32_IE=0x500;_WIN32_WINNT=0x400;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;HAVE_C99_VARIADIC_MACROS;HAVE_LIBGLUT;HAVE_LIBGL;USEM68KCORE;VERSION=\&quot;0.9.9\&quot;;C68K_NO_JUMP_TABLE;HAVE_LIBMINI18N"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_WIN32_IE=0x500;_WIN32_WINNT=0x400;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;HAVE_C99_VARIADIC_MACROS;HAVE_LIBGLUT;HAVE_LIBGL;USEM68KCORE;VERSION=\&quot;0.9.9\&quot;;C68K_NO_JUMP_TABLE;HAVE_LIBMINI18N;SCSP_FRAME_ACCURATE"
 				RuntimeLibrary="0"
 				FloatingPointModel="2"
 				UsePrecompiledHeader="0"
@@ -233,7 +233,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories=".\;.\ddk;.\mini18n\;.\zlib123\"
-				PreprocessorDefinitions="WIN32;_DEBUG;DEBUG;_WINDOWS;_WIN32_IE=0x500;_WIN32_WINNT=0x400;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;HAVE_C99_VARIADIC_MACROS;HAVE_LIBGLUT;HAVE_LIBGL;USEM68KCORE;VERSION=\&quot;0.9.9\&quot;;C68K_NO_JUMP_TABLE;HAVE_LIBMINI18N"
+				PreprocessorDefinitions="WIN32;_DEBUG;DEBUG;_WINDOWS;_WIN32_IE=0x500;_WIN32_WINNT=0x400;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;HAVE_C99_VARIADIC_MACROS;HAVE_LIBGLUT;HAVE_LIBGL;USEM68KCORE;VERSION=\&quot;0.9.9\&quot;;C68K_NO_JUMP_TABLE;HAVE_LIBMINI18N;SCSP_FRAME_ACCURATE;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -326,7 +326,7 @@
 				OmitFramePointers="true"
 				WholeProgramOptimization="false"
 				AdditionalIncludeDirectories=".\;.\ddk;.\mini18n\;directx;.\zlib123\"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_WIN32_IE=0x500;_WIN32_WINNT=0x400;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;HAVE_C99_VARIADIC_MACROS;HAVE_LIBGLUT;HAVE_LIBGL;USEM68KCORE;VERSION=\&quot;0.9.9\&quot;;C68K_NO_JUMP_TABLE;HAVE_LIBMINI18N"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_WIN32_IE=0x500;_WIN32_WINNT=0x400;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;HAVE_C99_VARIADIC_MACROS;HAVE_LIBGLUT;HAVE_LIBGL;USEM68KCORE;VERSION=\&quot;0.9.9\&quot;;C68K_NO_JUMP_TABLE;HAVE_LIBMINI18N;SCSP_FRAME_ACCURATE"
 				RuntimeLibrary="0"
 				FloatingPointModel="2"
 				UsePrecompiledHeader="0"
@@ -646,10 +646,26 @@
 				<File
 					RelativePath=".\aviout.c"
 					>
+					<FileConfiguration
+						Name="Release FastBuild|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
 				</File>
 				<File
-					RelativePath=".\bup-manager.cpp"
+					RelativePath=".\bup-manager.c"
 					>
+					<FileConfiguration
+						Name="Release FastBuild|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath="..\cd-windows.c"
@@ -714,16 +730,32 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath=".\cheats.cpp"
+					RelativePath=".\cheats.c"
 					>
+					<FileConfiguration
+						Name="Release FastBuild|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath=".\hotkey.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\perdx.cpp"
+					RelativePath=".\perdx.c"
 					>
+					<FileConfiguration
+						Name="Release FastBuild|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath=".\ram_search.cpp"
@@ -734,8 +766,16 @@
 					>
 				</File>
 				<File
-					RelativePath=".\snddx.cpp"
+					RelativePath=".\snddx.c"
 					>
+					<FileConfiguration
+						Name="Release FastBuild|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							CompileAs="1"
+						/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath=".\yui.cpp"
@@ -745,84 +785,228 @@
 					Name="custom controls"
 					>
 					<File
-						RelativePath=".\custctl.cpp"
+						RelativePath=".\custctl.c"
 						>
+						<FileConfiguration
+							Name="Release FastBuild|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="1"
+							/>
+						</FileConfiguration>
 					</File>
 					<File
-						RelativePath=".\disasm.cpp"
+						RelativePath=".\disasm.c"
 						>
+						<FileConfiguration
+							Name="Release FastBuild|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="1"
+							/>
+						</FileConfiguration>
 					</File>
 					<File
-						RelativePath=".\hexedit.cpp"
+						RelativePath=".\hexedit.c"
 						>
+						<FileConfiguration
+							Name="Release FastBuild|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="1"
+							/>
+						</FileConfiguration>
 					</File>
 				</Filter>
 				<Filter
 					Name="settings"
 					>
 					<File
-						RelativePath=".\settings\settings-basic.cpp"
+						RelativePath=".\settings\settings-basic.c"
 						>
+						<FileConfiguration
+							Name="Release FastBuild|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="1"
+							/>
+						</FileConfiguration>
 					</File>
 					<File
-						RelativePath=".\settings\settings-input.cpp"
+						RelativePath=".\settings\settings-input.c"
 						>
+						<FileConfiguration
+							Name="Release FastBuild|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="1"
+							/>
+						</FileConfiguration>
 					</File>
 					<File
-						RelativePath=".\settings\settings-log.cpp"
+						RelativePath=".\settings\settings-log.c"
 						>
+						<FileConfiguration
+							Name="Release FastBuild|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="1"
+							/>
+						</FileConfiguration>
 					</File>
 					<File
-						RelativePath=".\settings\settings-netlink.cpp"
+						RelativePath=".\settings\settings-netlink.c"
 						>
+						<FileConfiguration
+							Name="Release FastBuild|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="1"
+							/>
+						</FileConfiguration>
 					</File>
 					<File
-						RelativePath=".\settings\settings-sound.cpp"
+						RelativePath=".\settings\settings-sound.c"
 						>
+						<FileConfiguration
+							Name="Release FastBuild|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="1"
+							/>
+						</FileConfiguration>
 					</File>
 					<File
-						RelativePath=".\settings\settings-video.cpp"
+						RelativePath=".\settings\settings-video.c"
 						>
+						<FileConfiguration
+							Name="Release FastBuild|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="1"
+							/>
+						</FileConfiguration>
 					</File>
 					<File
-						RelativePath=".\settings\settings.cpp"
+						RelativePath=".\settings\settings.c"
 						>
+						<FileConfiguration
+							Name="Release FastBuild|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="1"
+							/>
+						</FileConfiguration>
 					</File>
 				</Filter>
 				<Filter
 					Name="debug"
 					>
 					<File
-						RelativePath=".\cpudebug\debug-68k.cpp"
+						RelativePath=".\cpudebug\debug-68k.c"
 						>
+						<FileConfiguration
+							Name="Release FastBuild|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="1"
+							/>
+						</FileConfiguration>
 					</File>
 					<File
-						RelativePath=".\cpudebug\debug-scsp.cpp"
+						RelativePath=".\cpudebug\debug-scsp.c"
 						>
+						<FileConfiguration
+							Name="Release FastBuild|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="1"
+							/>
+						</FileConfiguration>
 					</File>
 					<File
-						RelativePath=".\cpudebug\debug-scu.cpp"
+						RelativePath=".\cpudebug\debug-scu.c"
 						>
+						<FileConfiguration
+							Name="Release FastBuild|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="1"
+							/>
+						</FileConfiguration>
 					</File>
 					<File
-						RelativePath=".\cpudebug\debug-sh2.cpp"
+						RelativePath=".\cpudebug\debug-sh2.c"
 						>
+						<FileConfiguration
+							Name="Release FastBuild|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="1"
+							/>
+						</FileConfiguration>
 					</File>
 					<File
-						RelativePath=".\cpudebug\debug-smpc.cpp"
+						RelativePath=".\cpudebug\debug-smpc.c"
 						>
+						<FileConfiguration
+							Name="Release FastBuild|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="1"
+							/>
+						</FileConfiguration>
 					</File>
 					<File
-						RelativePath=".\cpudebug\debug-vdp1.cpp"
+						RelativePath=".\cpudebug\debug-vdp1.c"
 						>
+						<FileConfiguration
+							Name="Release FastBuild|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="1"
+							/>
+						</FileConfiguration>
 					</File>
 					<File
-						RelativePath=".\cpudebug\debug-vdp2.cpp"
+						RelativePath=".\cpudebug\debug-vdp2.c"
 						>
+						<FileConfiguration
+							Name="Release FastBuild|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="1"
+							/>
+						</FileConfiguration>
 					</File>
 					<File
-						RelativePath=".\cpudebug\yuidebug.cpp"
+						RelativePath=".\cpudebug\yuidebug.c"
 						>
+						<FileConfiguration
+							Name="Release FastBuild|Win32"
+							>
+							<Tool
+								Name="VCCLCompilerTool"
+								CompileAs="1"
+							/>
+						</FileConfiguration>
 					</File>
 				</Filter>
 			</Filter>
