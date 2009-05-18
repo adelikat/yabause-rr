@@ -97,7 +97,6 @@ void VIDSoftGetGlSize(int *width, int *height);
 void VIDSoftVdp1SwapFrameBuffer(void);
 void VIDSoftVdp1EraseFrameBuffer(void);
 
-
 VideoInterface_struct VIDSoft = {
 VIDCORE_SOFT,
 "Software Video Interface",

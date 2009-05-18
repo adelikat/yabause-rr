@@ -141,8 +141,8 @@ static int rbg0priority=0;
 
 static u32 Vdp2ColorRamGetColor(u32 colorindex, int alpha);
 
-int GlHeight=320;
-int GlWidth=224;
+static int GlHeight=320;
+static int GlWidth=224;
 
 //////////////////////////////////////////////////////////////////////////////
 

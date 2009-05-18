@@ -1,3 +1,20 @@
+/*  
+    This file is part of Yabause.
+
+    Yabause is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    Yabause is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Yabause; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
+*/
 #include "peripheral.h"
 #include "scsp.h"
 #include "movie.h"
@@ -24,17 +41,10 @@ int headersize=512;
 
 void ReadHeader(FILE* fp) {
 
-	//int x;
-
 	fseek(fp, 0, SEEK_SET);
 
 	fseek(fp, 172, SEEK_SET);
 	fread(&Movie.Rerecords, sizeof(Movie.Rerecords), 1, fp);
-
-//	x = fgetc(fp);
-
-//	if(x=1)
-	//	Movie.startsfromsavestate=1;
 
 	fseek(fp, headersize, SEEK_SET);
 }
@@ -42,8 +52,6 @@ void ReadHeader(FILE* fp) {
 //////////////////////////////////////////////////////////////////////////////
 
 void WriteHeader(FILE* fp) {
-
-	//int x;
 
 	fseek(fp, 0, SEEK_SET);
 
@@ -58,7 +66,6 @@ void WriteHeader(FILE* fp) {
 	fwrite(&Movie.Rerecords, sizeof(Movie.Rerecords), 1, fp);
 	fwrite(&yabsys.emulatebios, sizeof(yabsys.emulatebios), 1, fp);
 	fwrite(&yabsys.IsPal, sizeof(yabsys.IsPal), 1, fp);
-//	fputc(Movie.startsfromsavestate, fp);
 
 	fseek(fp, headersize, SEEK_SET);
 }
@@ -371,7 +378,6 @@ void ReadMovieInState(FILE* fp) {
 		{
 			return;
 		}
-	//	tempbuffer.data = (char*) malloc (sizeof(char)*tempbuffer.size);
 		fread(tempbuffer.data, 1, tempbuffer.size, fp);//movie
 		fseek(fp, fpos, SEEK_SET);//reset savestate position
 
