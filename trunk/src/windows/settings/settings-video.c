@@ -21,12 +21,11 @@
 #undef FASTCALL
 #include "../resource.h"
 #include "settings.h"
-extern "C" {
 #include "../../vidogl.h"
 #include "../../vdp1.h"
 #include "../../vdp2.h"
-}
-extern "C" VideoInterface_struct *VIDCoreList[];
+
+extern VideoInterface_struct *VIDCoreList[];
 
 char vidcoretype=VIDCORE_OGL;
 int enableautofskip=0;
@@ -112,9 +111,9 @@ LRESULT CALLBACK VideoSettingsDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
          // Setup window width and height
          sprintf(tempstr, "%d", windowwidth);
          _16(tempstr);
-         SetDlgItemText(hDlg, IDC_WIDTHEDIT, (LPCWSTR)_16(tempstr));
+         SetDlgItemText(hDlg, IDC_WIDTHEDIT, _16(tempstr));
          sprintf(tempstr, "%d", windowheight);
-         SetDlgItemText(hDlg, IDC_HEIGHTEDIT, (LPCWSTR)_16(tempstr));
+         SetDlgItemText(hDlg, IDC_HEIGHTEDIT, _16(tempstr));
 
          return TRUE;
       }

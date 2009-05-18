@@ -34,31 +34,29 @@ extern "C" {
 #include "../debug.h"
 #include "../m68kcore.h"
 #include "../movie.h"
-}
-#include <zlib.h>
 #include "snddx.h"
+#include "cheats.h"
 #include "perdx.h"
+#include "cd.h"
+#include "aviout.h"
+#include "cpudebug/yuidebug.h"
+#include "disasm.h"
+#include "hexedit.h"
+#include "settings/settings.h"
+}
 
 #include "resource.h"
-#include "settings/settings.h"
-#include "cd.h"
 #include "ram_search.h"
-#include "aviout.h"
-#include "cheats.h"
 
 #ifdef NOC68K
 #include "../m68kc68k.h"
 #endif
 //#include "../m68khle.h"
-#include "cpudebug/yuidebug.h"
-#include "disasm.h"
-#include "hexedit.h"
-
-#include "aviout.h"
 
 #define DONT_PROFILE
 extern "C" {
 #include "../profile.h"
+#include "yuiwin.h"
 }
 #include "ramwatch.h"
 
@@ -70,6 +68,7 @@ void YuiRecordMovie(HWND hWnd);
 void YuiScreenshot(HWND hWnd);
 void YuiRecordAvi(HWND hWnd);
 void YuiStopAvi();
+void WriteToINI();
 
 HANDLE emuthread=INVALID_HANDLE_VALUE;
 int KillEmuThread=0;
@@ -81,7 +80,6 @@ int yabwinh;
 int screenwidth;
 int screenheight;
 
-HINSTANCE y_hInstance;
 HWND YabWin=NULL;
 HMENU YabMenu=NULL;
 HDC YabHDC=NULL;
@@ -114,8 +112,6 @@ TCHAR bmpfilename[MAX_PATH] = TEXT("\0");
 
 LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam);
 void YuiReleaseVideo(void);
-
-void WriteToINI();
 
 extern "C" SH2Interface_struct *SH2CoreList[] = {
 &SH2Interpreter,
@@ -423,100 +419,17 @@ int YuiCaptureScreen(const char *filename)
 
    return 0;
 }
-void DRV_AviEnd();
+
 //////////////////////////////////////////////////////////////////////////////
 
 static void AviEnd()
-	  	 {
-//	  	         NDS_Pause();
-	  	         DRV_AviEnd();
-//	  	         NDS_UnPause();
-	  	 }
+{
+	DRV_AviEnd();
+}
 	  	
-
 //////////////////////////////////////////////////////////////////////////////
 
-//Shows an Open File menu and starts recording an AVI
-//static void AviRecordTo()
-//	  	 {
-// 	  	         NDS_Pause();
- 	/*  	 
-	  	         OPENFILENAME ofn;
-	  	         char szChoice[MAX_PATH] = {0};
-	  	 
-	  	         ////if we are playing a movie, construct the filename from the current movie.
- 	  	         ////else construct it from the filename.
- 	  	         //if(FCEUMOV_Mode(MOVIEMODE_PLAY|MOVIEMODE_RECORD))
- 	  	         //{
- 	  	         //      extern char curMovieFilename[];
-	  	         //      strcpy(szChoice, curMovieFilename);
- 	  	         //      char* dot = strrchr(szChoice,'.');
- 	  	 
- 	  	         //      if (dot)
- 	  	         //      {
-	  	         //              *dot='\0';
- 	  	         //      }
-	  	 
- 	  	         //      strcat(szChoice, ".avi");
- 	  	         //}
- 	  	         //else
- 	  	         //{
- 	  	         //      extern char FileBase[];
- 	  	         //      sprintf(szChoice, "%s.avi", FileBase);
- 	  	         //}
- 	  	 
-	  	         // avi record file browser
- 	  	         memset(&ofn, 0, sizeof(ofn));
- 	  	         ofn.lStructSize = sizeof(ofn);
- 	  	         ofn.hwndOwner = YabWin; //TODO is this correct?
- 	  	         ofn.lpstrFilter = "AVI Files (*.avi)\0*.avi\0\0";
- 	  	         ofn.lpstrFile = szChoice;
- 	  	         ofn.lpstrDefExt = "avi";
- 	  	         ofn.lpstrTitle = "Save AVI as";
- 	  	 
-	  	         ofn.nMaxFile = MAX_PATH;
-	  	         ofn.Flags = OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT;
-	  	 
-	  	         if(GetSaveFileName(&ofn))
-	  	         {
-	  	                 DRV_AviBegin(szChoice);
-	  	         }
-	  	 
-//	  	         NDS_UnPause();
-	  	 }
-
-*/
-/*            {
-				char text[MAX_PATH];
-               WCHAR filter[1024];
-               OPENFILENAME ofn;
-
-               YuiTempPause();
-
-               CreateFilter(filter, 1024,
-                  "AVI Files *.avi)", "*.avi",
-                  "All files (*.*)", "*.*", NULL);
-
-               SetupOFN(&ofn, OFN_DEFAULTLOAD, YabWin, filter,
-                        avifilename, sizeof(avifilename)/sizeof(TCHAR));
-
-               if (GetOpenFileName(&ofn))
-               {
-                  WideCharToMultiByte(CP_ACP, 0, avifilename, -1, text, sizeof(text), NULL, NULL);
-
-				  DRV_AviBegin(text);
-
-                 // if (YabLoadState(text) != 0)
-                  //   MessageBox (hWnd, _16("Couldn't load state file"), _16("Error"),  MB_OK | MB_ICONINFORMATION);
-               }
-               YuiTempUnPause();
-
-//               break;
-            }
-//}*/
-//////////////////////////////////////////////////////////////////////////////
-
-void YuiCaptureVideo(void)
+extern "C" void YuiCaptureVideo(void)
 {
 	u8 *buf;
 	int totalsize=screenwidth * screenheight * sizeof(u32);
@@ -601,11 +514,6 @@ void YuiTempUnPause()
 void TogglePause()
 {
 	PauseOrUnpause();
-	/*
-	if (paused)
-		YuiUnPause();
-	else
-		YuiPause();*/
 }
 //////////////////////////////////////////////////////////////////////////////
 
@@ -906,8 +814,8 @@ int YuiInit(LPSTR lpCmdLine)
          if (ret != TRUE)
          {
             // exit program with error
-         //   MessageBox (NULL, (LPCWSTR)_16("yabause.ini must be properly setup before program can be used."), (LPCWSTR)_16("Error"),  MB_OK | MB_ICONINFORMATION);
-         //   return -1;
+            MessageBox (NULL, (LPCWSTR)_16("yabause.ini must be properly setup before program can be used."), (LPCWSTR)_16("Error"),  MB_OK | MB_ICONINFORMATION);
+            return -1;
          }
       }
    }
@@ -1053,7 +961,7 @@ int YuiInit(LPSTR lpCmdLine)
 	// Grab OSD Toggle setting
 	GetPrivateProfileStringA("Video", "OSD Display", "0", tempstr, MAX_PATH, inifilename);
 	int x = atoi(tempstr);
-	SetODSToggle(x);
+	SetOSDToggle(x);
 
 #if DEBUG
    // Grab Logging settings
@@ -1391,177 +1299,12 @@ void ChangeLanguage(int id)
 
    if (langfiles[id-IDM_GERMAN])
    {
-      if (mini18n_set_locale(langfiles[id-IDM_GERMAN]) == -1) //TODO
+      if (mini18n_set_locale(langfiles[id-IDM_GERMAN]) == -1)
          return;
    }
 
    ClearMenuChecks(YabMenu, IDM_GERMAN, IDM_SPANISH);
    CheckMenuItem(YabMenu, id, MF_CHECKED);
-}
-
-static int WritePNGChunk(FILE *fp, u32 size, const char *type, const u8 *data)
-{
-	u32 crc;
-
-	u8 tempo[4];
-
-	tempo[0]=size>>24;
-	tempo[1]=size>>16;
-	tempo[2]=size>>8;
-	tempo[3]=size;
-
-	if(fwrite(tempo,4,1,fp)!=1)
-		return 0;
-	if(fwrite(type,4,1,fp)!=1)
-		return 0;
-
-	if(size)
-		if(fwrite(data,1,size,fp)!=size)
-			return 0;
-
-	crc = crc32(0,(u8 *)type,4);
-	if(size)
-		crc = crc32(crc,data,size);
-
-	tempo[0]=crc>>24;
-	tempo[1]=crc>>16;
-	tempo[2]=crc>>8;
-	tempo[3]=crc;
-
-	if(fwrite(tempo,4,1,fp)!=1)
-		return 0;
-	return 1;
-}
-
-int NDS_WritePNG(const char *fname)
-{
-	u8 *buf;
-	int totalsize=screenwidth * screenheight * sizeof(u32);
-
-	if ((buf = (u8 *)malloc(totalsize)) == NULL)
-	{
-		return -2;
-	}
-
-//	int x, y;
-	int width=screenwidth;
-	int height=screenheight;
-	u16 * bmp = (u16 *)buf;
-	FILE *pp=NULL;
-	u8 *compmem = NULL;
-	uLongf compmemsize = (uLongf)( (height * (width + 1) * 3 * 1.001 + 1) + 12 );
-
-	if(!(compmem=(u8 *)malloc(compmemsize)))
-		return 0;
-
-	if(!(pp=fopen(fname, "wb")))
-	{
-		return 0;
-	}
-	{
-		static u8 header[8]={137,80,78,71,13,10,26,10};
-		if(fwrite(header,8,1,pp)!=1)
-			goto PNGerr;
-	}
-
-	{
-		u8 chunko[13];
-
-		chunko[0] = width >> 24;		// Width
-		chunko[1] = width >> 16;
-		chunko[2] = width >> 8;
-		chunko[3] = width;
-
-		chunko[4] = height >> 24;		// Height
-		chunko[5] = height >> 16;
-		chunko[6] = height >> 8;
-		chunko[7] = height;
-
-		chunko[8]=8;				// 8 bits per sample(24 bits per pixel)
-		chunko[9]=2;				// Color type; RGB triplet
-		chunko[10]=0;				// compression: deflate
-		chunko[11]=0;				// Basic adapative filter set(though none are used).
-		chunko[12]=0;				// No interlace.
-
-		if(!WritePNGChunk(pp,13,"IHDR",chunko))
-			goto PNGerr;
-	}
-
-	{
-
-		u8 *tmp_buffer;
-		u8 *tmp_inc;
-		tmp_inc = tmp_buffer =(u8 *)malloc(totalsize); //(u8 *)malloc((width * 3 + 1) * height);
-
-		SwapBuffers(YabHDC);
-		glReadBuffer(GL_BACK);
-		glReadPixels(0, 0, screenwidth, screenheight, GL_RGB, GL_UNSIGNED_BYTE, buf);
-		SwapBuffers(YabHDC);
-
-
-		tmp_buffer=buf;//wrong
-
-
-		//	u8* tmp_buffer = avi_file->convert_buffer; //+ 320*(224-1)*3;
-
-		/*  for (int i = 0; i < (screenwidth * screenheight); i++)
-		{
-		u8 temp;
-
-		temp = buf[i * 4];
-		buf[i * 4] = buf[(i * 4) + 2];
-		buf[(i * 4) + 2] = temp;
-		}*/
-		/*
-		
-
-		/*
-		for(y=0;y<height;y++)
-		{
-		*tmp_inc = 0;
-		tmp_inc++;
-		for(x=0;x<width;x++)
-		{
-		int r,g,b;
-		u16 pixel = bmp[y*width+x];
-		r = pixel>>10;
-		pixel-=r<<10;
-		g = pixel>>5;
-		pixel-=g<<5;
-		b = pixel;
-		r*=255/31;
-		g*=255/31;
-		b*=255/31;
-		tmp_inc[0] = b;
-		tmp_inc[1] = g;
-		tmp_inc[2] = r;
-		tmp_inc += 3;
-		}
-		}
-		*/
-		if(compress(compmem, &compmemsize, tmp_buffer, height * (width * 3 + 1))!=Z_OK)
-		{
-			if(tmp_buffer) free(tmp_buffer);
-			goto PNGerr;
-		}
-		if(tmp_buffer) free(tmp_buffer);
-		if(!WritePNGChunk(pp,compmemsize,"IDAT",compmem))
-			goto PNGerr;
-	}
-	if(!WritePNGChunk(pp,0,"IEND",0))
-		goto PNGerr;
-
-	free(compmem);
-	fclose(pp);
-
-	return 1;
-
-PNGerr:
-	if(compmem)
-		free(compmem);
-	if(pp)
-		fclose(pp);
-	return(0);
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -1595,9 +1338,6 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 			case IDM_PAUSE:
             {
                TogglePause();
-				//YuiPause();
-               //EnableMenuItem(YabMenu, IDM_PAUSE, MF_GRAYED);
-               //EnableMenuItem(YabMenu, IDM_RUN, MF_ENABLED);
                break;
             }
             case IDM_RESET:
@@ -1686,8 +1426,6 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 					{
 						char tempstr[512];
 
-
-						//          GetDlgItemText(hDlg, IDC_IMAGEEDIT, tempwstr, MAX_PATH);
 						WideCharToMultiByte(CP_ACP, 0, tempwstr, -1, tempstr, MAX_PATH, NULL, NULL);
 
 						if (strcmp(tempstr, cdrompath) != 0)
@@ -1695,27 +1433,16 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 							strcpy(cdrompath, tempstr);
 					//		cdromchanged = TRUE;
 						}
-				//	}
 
 					WritePrivateProfileStringA("General", "CDROMDrive", cdrompath, inifilename);
-
-					// adjust appropriate edit box
-					//  SetDlgItemText(hWnd, IDC_IMAGEEDIT, tempwstr);
-
-					//	if (cdromchanged && nocorechange == 0)
-					//	{
 #ifndef USETHREADS
-					//		if (IsPathCdrom(cdrompath))
-					//			Cs2ChangeCDCore(CDCORE_SPTI, cdrompath);
-					//		else
-								Cs2ChangeCDCore(CDCORE_ISO, cdrompath);
+					Cs2ChangeCDCore(CDCORE_ISO, cdrompath);
 #else
-							corechanged = 0;
-							changecore |= 1;
-							while (corechanged == 0) { Sleep(0); }
+					corechanged = 0;
+					changecore |= 1;
+					while (corechanged == 0) { Sleep(0); }
 #endif
-					//	}
-							YabauseReset();
+					YabauseReset();
 					}
 
 					YuiTempUnPause();
@@ -1803,7 +1530,53 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
                YuiTempUnPause();
                break;
             }
-             case IDM_SAVESTATEAS:
+            case IDM_TOGGLEFULLSCREEN:
+            {
+               // Normally I should be using the function provided in vdp2.c,
+               // but it doesn't support odd custom resolutions.
+               if (isfullscreenset)
+                  VIDCore->Resize(windowwidth, windowheight, 0);
+               else
+                  VIDCore->Resize(fullscreenwidth, fullscreenheight, 1);
+
+               break;
+            }
+            case IDM_TOGGLENBG0:
+            {
+               ToggleNBG0();
+               break;
+            }
+            case IDM_TOGGLENBG1:
+            {
+               ToggleNBG1();
+               break;
+            }
+            case IDM_TOGGLENBG2:
+            {
+               ToggleNBG2();
+               break;
+            }
+            case IDM_TOGGLENBG3:
+            {
+               ToggleNBG3();
+               break;
+            }
+            case IDM_TOGGLERBG0:
+            {
+               ToggleRBG0();
+               break;
+            }
+            case IDM_TOGGLEVDP1:
+            {
+               ToggleVDP1();
+               break;
+            }
+            case IDM_TOGGLEFPS:
+            {
+               ToggleFPS();
+               break;
+            }
+            case IDM_SAVESTATEAS:
             {
                WCHAR filter[1024];
                OPENFILENAME ofn;
@@ -1851,35 +1624,6 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 
                break;
             }
-/*			case IDM_FILE_RECORDAVI:
-				           {
-			//	char text[MAX_PATH];
-               WCHAR filter[1024];
-               OPENFILENAME ofn;
-
-               YuiTempPause();
-
-               CreateFilter(filter, 1024,
-                  "AVI Files *.avi)", "*.avi",
-                  "All files (*.*)", "*.*", NULL);
-
-               SetupOFN(&ofn, OFN_DEFAULTSAVE, hWnd, filter,
-                        avifilename, sizeof(avifilename)/sizeof(TCHAR));
-			   ofn.lpstrDefExt = (LPCWSTR)_16("AVI");
-
-               if (GetSaveFileName(&ofn))
-               {
-                  WideCharToMultiByte(CP_ACP, 0, avifilename, -1, text, sizeof(text), NULL, NULL);
-
-				  DRV_AviBegin(text, hWnd);
-
-                 // if (YabLoadState(text) != 0)
-                  //   MessageBox (hWnd, _16("Couldn't load state file"), _16("Error"),  MB_OK | MB_ICONINFORMATION);
-               }
-               YuiTempUnPause();
-
-               break;
-            }*/
 			case IDM_FILE_RECORDAVI:
 				YuiRecordAvi(hWnd);
 				break;
@@ -1889,35 +1633,9 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 			case MENU_RECORD_MOVIE:
 				YuiRecordMovie(hWnd);
 				break;
-
-/*			case MENU_RECORD_MOVIE_FROM_NOW:
-				{
-			   WCHAR filter[1024];
-               OPENFILENAME ofn;
-
-               YuiTempPause();
-
-               CreateFilter(filter, 1024,
-                  "Yabause Movie file", "*.YMV",
-                  "All files (*.*)", "*.*", NULL);
-
-               SetupOFN(&ofn, OFN_DEFAULTSAVE, hWnd, filter,
-                        ymvfilename, sizeof(ymvfilename)/sizeof(TCHAR));
-               ofn.lpstrDefExt = (LPCWSTR)_16("YMV");
-
-               if (GetSaveFileName(&ofn))
-               {
-                  WideCharToMultiByte(CP_ACP, 0, ymvfilename, -1, text, sizeof(text), NULL, NULL);
-               SaveMovie(text);
-               }
-				}
-				break;*/
-
-			  case MENU_PLAY_MOVIE:
-            {
+			case MENU_PLAY_MOVIE:
                YuiPlayMovie(hWnd);
 			   break;
-            }
 			case MENU_STOP_MOVIE:
 				StopMovie();
 				break;
@@ -1956,62 +1674,18 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
                YuiTempUnPause();
                break;
             case IDM_CAPTURESCREEN:
-            {
-               WCHAR filter[1024];
-               OPENFILENAME ofn;
-               
-               YuiTempPause();
-
-               CreateFilter(filter, 1024,
-				  "png files", "*.png",
-                  "Bitmap Files", "*.BMP",
-                  "All files (*.*)", "*.*", NULL);
-
-               SetupOFN(&ofn, OFN_DEFAULTSAVE, hWnd, filter,
-				   bmpfilename, sizeof(bmpfilename)/sizeof(TCHAR));
-			   ofn.lpstrDefExt = (LPCWSTR)_16("png");
-
-			   if (GetSaveFileName(&ofn))
-			   {
-				   WideCharToMultiByte(CP_ACP, 0, bmpfilename, -1, text, sizeof(text), NULL, NULL);
-
-			//	   char * ptr;
-			//	   ptr = strrchr((char*)bmpfilename,'.');//look for the last . in the filename
-
-			//	   if ( ptr != 0 ) {
-			//		   if (( strcmp ( ptr, ".BMP" ) == 0 ) ||
-			//			   ( strcmp ( ptr, ".bmp" ) == 0 )) 
-//					   {
-			//			   if (YuiCaptureScreen(text))
-			//	      MessageBox (hWnd, (LPCWSTR)_16("Couldn't save capture file"), (LPCWSTR)_16("Error"),  MB_OK | MB_ICONINFORMATION);
-			//			   //			NDS_WriteBMP(filename);
-			//		   }
-			//		   if (( strcmp ( ptr, ".PNG" ) == 0 ) ||
-			//			   ( strcmp ( ptr, ".png" ) == 0 )) 
-			//		   {
-						   		NDS_WritePNG(text);
-			//		   }
-			//	   }
-
-				   //if (YuiCaptureScreen(text))
-				   //   MessageBox (hWnd, (LPCWSTR)_16("Couldn't save capture file"), (LPCWSTR)_16("Error"),  MB_OK | MB_ICONINFORMATION);
-			   }
-			   YuiTempUnPause();
-			   break;
-			}
-			case IDM_EXIT:
-				{
-					ScspMuteAudio();
-					PostMessage(hWnd, WM_CLOSE, 0, 0);
-					break;
-				}
-
-				//adelikat: These don't apply anymoer
-				/* 
-				case IDM_WEBSITE:
-				{
-				ShellExecuteA(NULL, "open", "http://yabause.sourceforge.net", NULL, NULL, SW_SHOWNORMAL);
+				YuiScreenshot(hWnd);
 				break;
+            case IDM_EXIT:
+            {
+               ScspMuteAudio();
+               PostMessage(hWnd, WM_CLOSE, 0, 0);
+               break;
+            }
+			case IDM_WEBSITE:
+            {
+               ShellExecuteA(NULL, "open", "http://yabause.sourceforge.net", NULL, NULL, SW_SHOWNORMAL);
+               break;
             }
             case IDM_FORUM:
             {
@@ -2032,8 +1706,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
             {
                ShellExecuteA(NULL, "open", "http://www.emu-compatibility.com/yabause/index.php?lang=uk", NULL, NULL, SW_SHOWNORMAL);
                break;
-            }
-			*/
+            }			
             case IDM_ABOUT:
             {
                YuiTempPause();
@@ -2046,42 +1719,28 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
          return 0L;
       }
 
-case WM_KEYDOWN:
-//	if(wParam != VK_PAUSE)
-//		break;
-case WM_SYSKEYDOWN:
-case WM_CUSTKEYDOWN:
-	{
-		int modifiers = GetModifiers(wParam);
-		if(!HandleKeyMessage(wParam,lParam, modifiers))
-			return 0;
+	case WM_KEYDOWN:
+		//	if(wParam != VK_PAUSE)
+		//		break;
+	case WM_SYSKEYDOWN:
+	case WM_CUSTKEYDOWN:
+		{
+			int modifiers = GetModifiers(wParam);
+			if(!HandleKeyMessage(wParam,lParam, modifiers))
+				return 0;
+			break;
+		}
+	case WM_KEYUP:
+		//	if(wParam != VK_PAUSE)
+		//		break;
+	case WM_SYSKEYUP:
+	case WM_CUSTKEYUP:
+		{
+			int modifiers = GetModifiers(wParam);
+			HandleKeyUp(wParam, lParam, modifiers);
+		}
 		break;
-	}
-case WM_KEYUP:
-//	if(wParam != VK_PAUSE)
-//		break;
-case WM_SYSKEYUP:
-case WM_CUSTKEYUP:
-	{
-		int modifiers = GetModifiers(wParam);
-		HandleKeyUp(wParam, lParam, modifiers);
-	}
-	break;
 
-				/*
-      case WM_KEYDOWN:
-      {
-         if(wParam == VK_OEM_3) // ~ key
-            SpeedThrottleEnable();
-
-         return 0L;
-      }
-      case WM_KEYUP:
-      {
-         if(wParam == VK_OEM_3) // ~ key
-             SpeedThrottleDisable();
-         return 0L;
-      }*/
       case WM_ENTERMENULOOP:
       {
 #ifndef USETHREADS
@@ -2225,7 +1884,7 @@ int PASCAL WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
                    LPSTR lpCmdLine, int nCmdShow)
 {
 #ifdef HAVE_LIBMINI18N
-   mini18n_set_domain("trans"); //TODO
+   mini18n_set_domain("trans");
 #endif
 
    InitCustomControls();

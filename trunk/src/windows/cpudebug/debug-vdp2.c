@@ -22,10 +22,8 @@
 #include <windows.h>
 #undef FASTCALL
 #include "../resource.h"
-extern "C" {
 #include "../../core.h"
 #include "../../vdp2debug.h"
-}
 #include "../settings/settings.h"
 #include "yuidebug.h"
 #include "../yuiwin.h"
@@ -94,7 +92,7 @@ LRESULT CALLBACK VDP2ViewerDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
                   "All files (*.*)", "*.*", NULL);
 
                SetupOFN(&ofn, OFN_DEFAULTSAVE, hDlg, filter, filename, sizeof(filename)/sizeof(TCHAR));
-               ofn.lpstrDefExt = (LPCWSTR)_16("BMP");
+               ofn.lpstrDefExt = _16("BMP");
 
                if (GetSaveFileName(&ofn))
                {
@@ -128,7 +126,7 @@ LRESULT CALLBACK VDP2ViewerDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
          {
             SetBkColor(hdc, RGB(0,0,0));
             SetTextColor(hdc, RGB(255,255,255));
-            TextOut(hdc, 0, 0, (LPCWSTR)_16("Not Available"), 13);
+            TextOut(hdc, 0, 0, _16("Not Available"), 13);
          }
          else
          {
@@ -195,7 +193,7 @@ LRESULT CALLBACK VDP2DebugDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
          if (isscrenabled)
          {
             SendMessage(GetDlgItem(hDlg, IDC_NBG0ENABCB), BM_SETCHECK, BST_CHECKED, 0);
-            SetDlgItemText(hDlg, IDC_NBG0ET, (LPCWSTR)_16(tempstr));
+            SetDlgItemText(hDlg, IDC_NBG0ET, _16(tempstr));
          }
          else
             SendMessage(GetDlgItem(hDlg, IDC_NBG0ENABCB), BM_SETCHECK, BST_UNCHECKED, 0);
@@ -207,7 +205,7 @@ LRESULT CALLBACK VDP2DebugDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
          {
             // enabled
             SendMessage(GetDlgItem(hDlg, IDC_NBG1ENABCB), BM_SETCHECK, BST_CHECKED, 0);
-            SetDlgItemText(hDlg, IDC_NBG1ET, (LPCWSTR)_16(tempstr));
+            SetDlgItemText(hDlg, IDC_NBG1ET, _16(tempstr));
          }
          else
             // disabled
@@ -220,7 +218,7 @@ LRESULT CALLBACK VDP2DebugDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
          {
             // enabled
             SendMessage(GetDlgItem(hDlg, IDC_NBG2ENABCB), BM_SETCHECK, BST_CHECKED, 0);
-            SetDlgItemText(hDlg, IDC_NBG2ET, (LPCWSTR)_16(tempstr));
+            SetDlgItemText(hDlg, IDC_NBG2ET, _16(tempstr));
          }
          else
             // disabled
@@ -233,7 +231,7 @@ LRESULT CALLBACK VDP2DebugDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
          {
             // enabled
             SendMessage(GetDlgItem(hDlg, IDC_NBG3ENABCB), BM_SETCHECK, BST_CHECKED, 0);
-            SetDlgItemText(hDlg, IDC_NBG3ET, (LPCWSTR)_16(tempstr));
+            SetDlgItemText(hDlg, IDC_NBG3ET, _16(tempstr));
          }
          else
             // disabled
@@ -246,7 +244,7 @@ LRESULT CALLBACK VDP2DebugDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
          {
             // enabled
             SendMessage(GetDlgItem(hDlg, IDC_RBG0ENABCB), BM_SETCHECK, BST_CHECKED, 0);
-            SetDlgItemText(hDlg, IDC_RBG0ET, (LPCWSTR)_16(tempstr));
+            SetDlgItemText(hDlg, IDC_RBG0ET, _16(tempstr));
          }
          else
             // disabled
@@ -258,7 +256,7 @@ LRESULT CALLBACK VDP2DebugDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
          {
             // enabled
             SendMessage(GetDlgItem(hDlg, IDC_DISPENABCB), BM_SETCHECK, BST_CHECKED, 0);
-            SetDlgItemText(hDlg, IDC_VDP2GENET, (LPCWSTR)_16(tempstr));
+            SetDlgItemText(hDlg, IDC_VDP2GENET, _16(tempstr));
          }
          else
             // disabled

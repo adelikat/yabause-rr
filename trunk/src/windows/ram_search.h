@@ -36,7 +36,7 @@ void reset_address_info();
 void signal_new_frame();
 void signal_new_size();
 void UpdateRamSearchTitleBar(int percent = 0);
-void Update_RAM_Search();
+extern "C" void Update_RAM_Search();
 void SetRamSearchUndoType(HWND hDlg, int type);
 unsigned int ReadValueAtHardwareAddress(unsigned int address, unsigned int size);
 bool WriteValueAtHardwareRAMAddress(unsigned int address, unsigned int value, unsigned int size, bool hookless=false);

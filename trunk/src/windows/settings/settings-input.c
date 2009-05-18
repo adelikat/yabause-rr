@@ -372,7 +372,7 @@ void DoControlConfig(HWND hDlg, u8 cursel, int controlid, int basecontrolid, int
 
    if ((ret = PERDXFetchNextPress(hDlg, cursel, buttonname)) >= 0)
    {
-      SetDlgItemText(hDlg, controlid, (LPCWSTR)_16(buttonname));
+      SetDlgItemText(hDlg, controlid, _16(buttonname));
       controlmap[controlid - basecontrolid] = ret;
    }
 }

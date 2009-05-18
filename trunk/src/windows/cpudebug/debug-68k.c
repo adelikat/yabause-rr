@@ -21,12 +21,9 @@
 
 #include <windows.h>
 #undef FASTCALL
-
 #include "../disasm.h"
 #include "../resource.h"
-extern "C" {
 #include "../../scsp.h"
-}
 #include "yuidebug.h"
 #include "../yuiwin.h"
 
@@ -69,7 +66,7 @@ void M68KUpdateRegList(HWND hDlg, m68kregs_struct *regs)
 void M68KBreakpointHandler (u32 addr)
 {
    ScspMuteAudio();
-   MessageBox (YabWin, (LPCWSTR)_16("Breakpoint Reached"), (LPCWSTR)_16("Notice"),  MB_OK | MB_ICONINFORMATION);
+   MessageBox (YabWin, _16("Breakpoint Reached"), _16("Notice"),  MB_OK | MB_ICONINFORMATION);
    DialogBox(y_hInstance, MAKEINTRESOURCE(IDD_M68KDEBUG), YabWin, (DLGPROC)M68KDebugDlgProc);
    ScspUnMuteAudio();
 }

@@ -17,13 +17,10 @@
     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
 */
 
-
-
 #include <windows.h>
 #include "resource.h"
-extern "C" {
 #include "../bios.h"
-}
+
 u32 currentbupdevice=0;
 deviceinfo_struct *devices=NULL;
 int numbupdevices=0;
@@ -47,7 +44,7 @@ void RefreshSaveList(HWND hDlg)
 
    BupGetStats(currentbupdevice, &freespace, &maxspace);
    sprintf(tempstr, "%d/%d blocks free", (int)freespace, (int)maxspace);
-   SetDlgItemText(hDlg, IDC_BUPFREESPACELT, (LPCWSTR)_16(tempstr));                     
+   SetDlgItemText(hDlg, IDC_BUPFREESPACELT, _16(tempstr));                     
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -117,34 +114,34 @@ LRESULT CALLBACK BackupRamDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
                         }
                      }
 
-                     SetDlgItemText(hDlg, IDC_BUPFILENAMEET, (LPCWSTR)_16(saves[cursel].filename));
-                     SetDlgItemText(hDlg, IDC_BUPCOMMENTET, (LPCWSTR)_16(saves[cursel].comment));
+                     SetDlgItemText(hDlg, IDC_BUPFILENAMEET, _16(saves[cursel].filename));
+                     SetDlgItemText(hDlg, IDC_BUPCOMMENTET, _16(saves[cursel].comment));
                      switch(saves[cursel].language)
                      {
                         case 0:
-                           SetDlgItemText(hDlg, IDC_BUPLANGUAGEET, (LPCWSTR)_16("Japanese"));
+                           SetDlgItemText(hDlg, IDC_BUPLANGUAGEET, _16("Japanese"));
                            break;
                         case 1:
-                           SetDlgItemText(hDlg, IDC_BUPLANGUAGEET, (LPCWSTR)_16("English"));
+                           SetDlgItemText(hDlg, IDC_BUPLANGUAGEET, _16("English"));
                            break;
                         case 2:
-                           SetDlgItemText(hDlg, IDC_BUPLANGUAGEET, (LPCWSTR)_16("French"));
+                           SetDlgItemText(hDlg, IDC_BUPLANGUAGEET, _16("French"));
                            break;
                         case 3:
-                           SetDlgItemText(hDlg, IDC_BUPLANGUAGEET, (LPCWSTR)_16("German"));
+                           SetDlgItemText(hDlg, IDC_BUPLANGUAGEET, _16("German"));
                            break;
                         case 4:
-                           SetDlgItemText(hDlg, IDC_BUPLANGUAGEET, (LPCWSTR)_16("Spanish"));
+                           SetDlgItemText(hDlg, IDC_BUPLANGUAGEET, _16("Spanish"));
                            break;
                         case 5:
-                           SetDlgItemText(hDlg, IDC_BUPLANGUAGEET, (LPCWSTR)_16("Italian"));
+                           SetDlgItemText(hDlg, IDC_BUPLANGUAGEET, _16("Italian"));
                            break;
                         default: break;
                      }
                      sprintf(tempstr, "%d", (int)saves[cursel].datasize);
-                     SetDlgItemText(hDlg, IDC_BUPDATASIZEET, (LPCWSTR)_16(tempstr));
+                     SetDlgItemText(hDlg, IDC_BUPDATASIZEET, _16(tempstr));
                      sprintf(tempstr, "%d", saves[cursel].blocksize);
-                     SetDlgItemText(hDlg, IDC_BUPBLOCKSIZEET, (LPCWSTR)_16(tempstr));
+                     SetDlgItemText(hDlg, IDC_BUPBLOCKSIZEET, _16(tempstr));
                      return TRUE;
                   }
                   default: break;
@@ -162,7 +159,7 @@ LRESULT CALLBACK BackupRamDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
                SendDlgItemMessage(hDlg, IDC_BUPSAVELB, LB_GETTEXT, cursel, (LPARAM)tempstr);
 
                sprintf(tempstr2, "Are you sure you want to delete %s?", tempstr);
-               if (MessageBox (hDlg, (LPCWSTR)_16(tempstr2), (LPCWSTR)_16("Confirm Delete"),  MB_YESNO | MB_ICONEXCLAMATION) == IDYES)
+               if (MessageBox (hDlg, _16(tempstr2), _16("Confirm Delete"),  MB_YESNO | MB_ICONEXCLAMATION) == IDYES)
                {
                   BupDeleteSave(currentbupdevice, tempstr);
                   RefreshSaveList(hDlg);
@@ -172,7 +169,7 @@ LRESULT CALLBACK BackupRamDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
             case IDC_BUPFORMATBT:
             {
                sprintf(tempstr, "Are you sure you want to format %s?", devices[currentbupdevice].name);
-               if (MessageBox (hDlg, (LPCWSTR)_16(tempstr), (LPCWSTR)_16("Confirm Delete"),  MB_YESNO | MB_ICONEXCLAMATION | MB_DEFBUTTON2) == IDYES)
+               if (MessageBox (hDlg, _16(tempstr), _16("Confirm Delete"),  MB_YESNO | MB_ICONEXCLAMATION | MB_DEFBUTTON2) == IDYES)
                {
                   BupFormat(currentbupdevice);
                   RefreshSaveList(hDlg);

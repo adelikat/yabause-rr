@@ -21,13 +21,11 @@
 #include <commctrl.h>
 #undef FASTCALL
 #include "../resource.h"
-extern "C" {
 #include "../../scsp.h"
-}
 #include "settings.h"
 #include "../snddx.h"
 
-extern "C" SoundInterface_struct *SNDCoreList[];
+extern SoundInterface_struct *SNDCoreList[];
 
 char sndcoretype=SNDCORE_DIRECTX;
 int sndvolume=100;

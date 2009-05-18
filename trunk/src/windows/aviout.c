@@ -26,8 +26,6 @@
 #include "settings/settings.h"
 #include "aviout.h"
 
-//extern HWND YabWin;
-
 void EMU_PrintError(const char* msg) {
 //	LOG(msg);
 }

@@ -23,18 +23,11 @@
 #undef FASTCALL
 #include "../disasm.h"
 #include "../resource.h"
-extern "C" {
 #include "../../scsp.h"
 #include "../../sh2d.h"
-}
-
 #include "yuidebug.h"
 #include "../yuiwin.h"
-extern "C" {
 #include "../../sh2int.h"
-}
-
-extern "C" SH2Interface_struct *SH2Core;
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -101,7 +94,7 @@ void SH2UpdateCodeList(HWND hDlg, u32 addr)
 void SH2BreakpointHandler (SH2_struct *context, u32 addr)
 {
    ScspMuteAudio();
-   MessageBox (YabWin, (LPCWSTR)_16("Breakpoint Reached"), (LPCWSTR)_16("Notice"),  MB_OK | MB_ICONINFORMATION);
+   MessageBox (YabWin, _16("Breakpoint Reached"), _16("Notice"),  MB_OK | MB_ICONINFORMATION);
 
    debugsh = context;
    DialogBox(y_hInstance, MAKEINTRESOURCE(IDD_SH2DEBUG), YabWin, (DLGPROC)SH2DebugDlgProc);
@@ -204,11 +197,11 @@ LRESULT CALLBACK SH2DebugDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
             {
                char bptext[10];
                u32 addr=0;
-               
+               extern SH2Interface_struct *SH2Core;
 
                if (SH2Core->id != SH2CORE_DEBUGINTERPRETER)
                {
-                  MessageBox (hDlg, (LPCWSTR)_16("Breakpoints only supported by SH2 Debug Interpreter"), (LPCWSTR)_16("Error"),  MB_OK | MB_ICONINFORMATION);
+                  MessageBox (hDlg, _16("Breakpoints only supported by SH2 Debug Interpreter"), _16("Error"),  MB_OK | MB_ICONINFORMATION);
                   break;
                }
                   
@@ -230,6 +223,7 @@ LRESULT CALLBACK SH2DebugDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
                LRESULT ret;
                char bptext[10];
                u32 addr=0;
+               extern SH2Interface_struct *SH2Core;
 
                if (SH2Core->id != SH2CORE_DEBUGINTERPRETER)
                   break;
@@ -451,7 +445,7 @@ LRESULT CALLBACK SH2DebugDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
 
                      if (SH2Core->id != SH2CORE_DEBUGINTERPRETER)
                      {
-                        MessageBox (hDlg, (LPCWSTR)_16("Breakpoints only supported by SH2 Debug Interpreter"), (LPCWSTR)_16("Error"),  MB_OK | MB_ICONINFORMATION);
+                        MessageBox (hDlg, _16("Breakpoints only supported by SH2 Debug Interpreter"), _16("Error"),  MB_OK | MB_ICONINFORMATION);
                         break;
                      }
 

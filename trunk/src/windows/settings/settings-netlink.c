@@ -41,7 +41,7 @@ LRESULT CALLBACK NetlinkSettingsDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
          SendDlgItemMessage(hDlg, IDC_LOCALREMOTEIP, IPM_SETADDRESS, 0, netlinklocalremoteip);
 
          sprintf(tempstr, "%d", netlinkport);
-         SetDlgItemText(hDlg, IDC_PORTET, (LPCWSTR)_16(tempstr));
+         SetDlgItemText(hDlg, IDC_PORTET, _16(tempstr));
 
          return TRUE;
       }

@@ -4,18 +4,19 @@
 #include "resource.h"
 #include "ramwatch.h"
 
-#include "./settings/settings.h"
-#include "./cpudebug/yuidebug.h"
+
 
 extern "C" {
 #include "../cs2.h"
 #include "../memory.h"
+#include "./settings/settings.h"
+#include "./cpudebug/yuidebug.h"
 }
 #include "windows.h"
 #include "commctrl.h"
 
-extern HWND YabWin;
-extern HINSTANCE y_hInstance;
+extern "C" HWND YabWin;
+extern "C" HINSTANCE y_hInstance;
 
 HWND RamWatchHWnd = NULL;
 
@@ -190,7 +191,7 @@ int InsertWatchHwnd(const struct AddressWatcher *Watch, HWND parent)
 	return WatchCount > prevWatchCount;
 }
 
-void Update_RAM_Watch()
+extern "C" void Update_RAM_Watch()
 {
 	if (!RamWatchHWnd) return;
 	
