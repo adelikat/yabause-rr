@@ -23,16 +23,17 @@
 #include "resource.h"
 #include "ramwatch.h"		//In order to call UpdateRamWatch (for loadstate functions)
 #include "ram_search.h"		//In order to call UpdateRamSearch (for loadstate functions)
-#include "./settings/settings.h"
+
 #include <commctrl.h>
 extern "C" {
 #include "../movie.h"
 #include "../vdp2.h"
 #include "../vdp1.h"
+#include "./settings/settings.h"
 
 }
-extern HWND YabWin;
-extern HINSTANCE y_hInstance;
+extern "C" HWND YabWin;
+extern "C" HINSTANCE y_hInstance;
 
 extern void TogglePause();	//adelikat: TODO: maybe there should be a driver.h or a main.h to put this and the handles in
 extern void ResetGame();

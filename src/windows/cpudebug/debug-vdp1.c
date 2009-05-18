@@ -22,10 +22,8 @@
 #include <windows.h>
 #include "../resource.h"
 #include "../settings/settings.h"
-extern "C" {
 #include "../../vdp1.h"
 #include "../../yabause.h"
-}
 #include "yuidebug.h"
 
 u32 *vdp1texture=NULL;
@@ -83,7 +81,7 @@ LRESULT CALLBACK VDP1DebugDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
                      cursel = (u32)SendDlgItemMessage(hDlg, IDC_VDP1CMDLB, LB_GETCURSEL, 0, 0);
 
                      Vdp1DebugCommand(cursel, tempstr);
-                     SetDlgItemText(hDlg, IDC_VDP1CMDET, (LPCWSTR)_16(tempstr));
+                     SetDlgItemText(hDlg, IDC_VDP1CMDET, _16(tempstr));
 
                      if (vdp1texture)
                         free(vdp1texture);
@@ -109,7 +107,7 @@ LRESULT CALLBACK VDP1DebugDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
                   "All files (*.*)", "*.*", NULL);
 
                SetupOFN(&ofn, OFN_DEFAULTSAVE, hDlg, filter, filename, sizeof(filename)/sizeof(TCHAR));
-               ofn.lpstrDefExt = (LPCWSTR)_16("BMP");
+               ofn.lpstrDefExt = _16("BMP");
 
                if (vdp1texture && GetSaveFileName(&ofn))
                {
@@ -147,7 +145,7 @@ LRESULT CALLBACK VDP1DebugDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
          {
             SetBkColor(hdc, RGB(0,0,0));
             SetTextColor(hdc, RGB(255,255,255));
-            TextOut(hdc, 0, 0, (LPCWSTR)_16("Not Available"), 13);
+            TextOut(hdc, 0, 0, _16("Not Available"), 13);
          }
          else
          {

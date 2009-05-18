@@ -335,22 +335,20 @@ static INLINE void DummyWriteWord(Dummy UNUSED * d, u32 UNUSED a, u16 UNUSED v) 
 static INLINE void DummyWriteLong(Dummy UNUSED * d, u32 UNUSED a, u32 UNUSED v) {}
 
 void MappedMemoryInit();
-#ifdef __cplusplus
-extern "C" {
-#endif
 u8 FASTCALL MappedMemoryReadByte(u32 addr);
 u16 FASTCALL MappedMemoryReadWord(u32 addr);
 u32 FASTCALL MappedMemoryReadLong(u32 addr);
 void FASTCALL MappedMemoryWriteByte(u32 addr, u8 val);
 void FASTCALL MappedMemoryWriteWord(u32 addr, u16 val);
 void FASTCALL MappedMemoryWriteLong(u32 addr, u32 val);
+#ifdef __cplusplus
+extern "C" {
+#endif
 extern u8 *HighWram;
-extern u8 *LowWram;
 #ifdef __cplusplus
 }
 #endif
-
-
+extern u8 *LowWram;
 extern u8 *BiosRom;
 extern u8 *BupRam;
 

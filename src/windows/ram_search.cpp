@@ -50,8 +50,8 @@
 
 HWND RamSearchHWnd = NULL;
 
-extern HWND YabWin;
-extern HINSTANCE y_hInstance;
+extern "C" HWND YabWin;
+extern "C" HINSTANCE y_hInstance;
 
 extern HWND RamWatchHWnd;
 
@@ -1195,7 +1195,7 @@ LRESULT CustomDraw (LPARAM lParam)
 }
 
 //extern "C" int disableRamSearchUpdate;
-void Update_RAM_Search() //keeps RAM values up to date in the search and watch windows
+extern "C" void Update_RAM_Search() //keeps RAM values up to date in the search and watch windows
 {
 	
 	if (!RamSearchHWnd) return;

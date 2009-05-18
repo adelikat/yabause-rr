@@ -19,13 +19,11 @@
 
 #include <windows.h>
 #include <ctype.h>
-extern "C" {
 #include "../cd.h"
 //#undef FASTCALL
 #include "../../cs0.h"
 #include "../../cs2.h"
 #include "../resource.h"
-}
 #include "settings.h"
 
 char biosfilename[MAX_PATH] = "\0";
@@ -152,7 +150,7 @@ LRESULT CALLBACK BasicSettingsDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
             SendDlgItemMessage(hDlg, IDC_DISCTYPECB, CB_SETCURSEL, 1, 0);
             EnableWindow(GetDlgItem(hDlg, IDC_IMAGEEDIT), TRUE);
             EnableWindow(GetDlgItem(hDlg, IDC_IMAGEBROWSE), TRUE);
-            SetDlgItemText(hDlg, IDC_IMAGEEDIT, (LPCWSTR)_16(cdrompath));
+            SetDlgItemText(hDlg, IDC_IMAGEEDIT, _16(cdrompath));
 
             EnableWindow(GetDlgItem(hDlg, IDC_DRIVELETTERCB), FALSE);
          }
@@ -226,13 +224,13 @@ LRESULT CALLBACK BasicSettingsDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
          }
 
          // Set Default Bios ROM File
-         SetDlgItemText(hDlg, IDC_BIOSEDIT, (LPCWSTR)_16(biosfilename));
+         SetDlgItemText(hDlg, IDC_BIOSEDIT, _16(biosfilename));
 
          // Set Default Backup RAM File
-         SetDlgItemText(hDlg, IDC_BACKUPRAMEDIT, (LPCWSTR)_16(backupramfilename));
+         SetDlgItemText(hDlg, IDC_BACKUPRAMEDIT, _16(backupramfilename));
 
          // Set Default MPEG ROM File
-         SetDlgItemText(hDlg, IDC_MPEGROMEDIT, (LPCWSTR)_16(mpegromfilename));
+         SetDlgItemText(hDlg, IDC_MPEGROMEDIT, _16(mpegromfilename));
 
          // Setup Cart Type Combo box
          SendDlgItemMessage(hDlg, IDC_CARTTYPECB, CB_RESETCONTENT, 0, 0);
@@ -252,7 +250,7 @@ LRESULT CALLBACK BasicSettingsDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
          SendDlgItemMessage(hDlg, IDC_CARTTYPECB, CB_SETCURSEL, carttype, 0);
 
          // Set Default Cart File
-         SetDlgItemText(hDlg, IDC_CARTEDIT, (LPCWSTR)_16(cartfilename));
+         SetDlgItemText(hDlg, IDC_CARTEDIT, _16(cartfilename));
 
          // Set Cart File window status
          switch (carttype)
