@@ -7,7 +7,8 @@
 //
 // Generated from the TEXTINCLUDE 2 resource.
 //
-#include <windows.h>
+#include <windows.h>
+
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
 
@@ -476,7 +477,7 @@ END
 
 IDD_BASICSETTINGS DIALOGEX 0, 0, 246, 206
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
-FONT 8, "MS Shell Dlg", 0, 0, 0x0
+FONT 8, "Courier New", 0, 0, 0x0
 BEGIN
     GROUPBOX        "Yabause Basic Settings",-1,3,2,240,200
     LTEXT           "Disc Type",-1,10,14,40,10
@@ -1078,6 +1079,7 @@ BEGIN
         MENUITEM "&Memory Transfer",            IDM_MEMTRANSFER
         MENUITEM SEPARATOR
         MENUITEM "&Settings",                   IDM_SETTINGS
+		MENUITEM "Hotkey Config",               IDM_HOTKEY_CONFIG
         MENUITEM "&Backup Ram Manager",         IDM_BACKUPRAMMANAGER
         POPUP "Language", GRAYED
         BEGIN
@@ -1136,8 +1138,10 @@ BEGIN
         MENUITEM "Reset",                       IDM_RESET
         MENUITEM "Hard Reset",                  IDM_HARDRESET
     END
-    POPUP "&Cheats"
+    POPUP "&Tools"
     BEGIN
+	    MENUITEM "RAM Watch...",                ID_RAM_WATCH
+        MENUITEM "RAM Search...",               ID_RAM_SEARCH
         MENUITEM "&Cheat List...",              IDM_CHEATLIST
         MENUITEM "Cheat &Search...",            IDM_CHEATSEARCH
     END
@@ -1152,9 +1156,6 @@ BEGIN
         MENUITEM "SCSP...",                     IDM_SCSPDEBUG
         MENUITEM "SMPC...",                     IDM_SMPCDEBUG
         MENUITEM "Memory Editor...",            IDM_MEMORYEDITOR
-        MENUITEM "RAM Watch...",                ID_RAM_WATCH
-        MENUITEM "RAM Search...",               ID_RAM_SEARCH
-        MENUITEM "Hotkey Config",               IDM_HOTKEY_CONFIG
     END
     POPUP "&Help"
     BEGIN
@@ -1245,7 +1246,8 @@ END
 //
 // Generated from the TEXTINCLUDE 3 resource.
 //
-
+
+
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
 
