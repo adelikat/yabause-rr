@@ -42,6 +42,17 @@
 #include "yabause.h"
 #include "movie.h"
 
+#ifdef HAVE_LIBGL
+#define USE_OPENGL
+#endif
+
+#ifdef USE_OPENGL
+#include "ygl.h"
+#endif
+
+#include "vidsoft.h"
+#include "vidogl.h"
+
 //////////////////////////////////////////////////////////////////////////////
 
 writebytefunc WriteByteList[0x1000];
@@ -958,17 +969,6 @@ void FormatBackupRam(void *mem, u32 size)
    }
 }
 
-#ifdef HAVE_LIBGL
-#define USE_OPENGL
-#endif
-
-#ifdef USE_OPENGL
-#include "ygl.h"
-#endif
-
-#include "vidsoft.h"
-#include "vidogl.h"
-
 //////////////////////////////////////////////////////////////////////////////
 
 int YabSaveState(const char *filename)
@@ -1009,8 +1009,6 @@ int YabSaveState(const char *filename)
 
    //write frame number
    ywrite(&check, (void *)&framecounter, 4, 1, fp);
-
-   movieposition=ftell(fp);
 
    //this will be updated with the movie position later
    ywrite(&check, (void *)&framecounter, 4, 1, fp);
@@ -1053,9 +1051,11 @@ int YabSaveState(const char *filename)
    }
 
    YuiSwapBuffers();
+   #ifdef USE_OPENGL
    glPixelZoom(1,1);
    glReadBuffer(GL_BACK);
    glReadPixels(0, 0, outputwidth, outputheight, GL_RGBA, GL_UNSIGNED_BYTE, buf);
+   #endif
    YuiSwapBuffers();
 
    ywrite(&check, (void *)&outputwidth, sizeof(outputwidth), 1, fp);
@@ -1266,6 +1266,8 @@ int YabLoadState(const char *filename)
    yread(&check, (void *)&yabsys.CurSH2FreqType, sizeof(int), 1, fp);
    yread(&check, (void *)&yabsys.IsPal, sizeof(int), 1, fp);
 
+   if (headerversion > 1) {
+
    yread(&check, (void *)&outputwidth, sizeof(outputwidth), 1, fp);
    yread(&check, (void *)&outputheight, sizeof(outputheight), 1, fp);
 
@@ -1279,19 +1281,25 @@ int YabLoadState(const char *filename)
    yread(&check, (void *)buf, totalsize, 1, fp);
 
    YuiSwapBuffers();
+
+   #ifdef USE_OPENGL
    if(VIDCore->id == VIDCORE_SOFT)
      glRasterPos2i(0, outputheight);
    if(VIDCore->id == VIDCORE_OGL)
 	 glRasterPos2i(0, outputheight/2);
+   #endif
 
    VIDCore->GetGlSize(&curroutputwidth, &curroutputheight);
+   #ifdef USE_OPENGL
    glPixelZoom((float)curroutputwidth / (float)outputwidth, ((float)curroutputheight / (float)outputheight));
    glDrawPixels(outputwidth, outputheight, GL_RGBA, GL_UNSIGNED_BYTE, buf);
+   #endif
    YuiSwapBuffers();
 
    fseek(fp, movieposition, SEEK_SET);
-
-   if (headerversion > 1) MovieReadState(fp, filename);
+   MovieReadState(fp, filename);
+   }
+   
    fclose(fp);
 
    ScspUnMuteAudio();
