@@ -79,6 +79,7 @@ int yabwinw;
 int yabwinh;
 int screenwidth;
 int screenheight;
+int AlreadyStarted;
 
 HWND YabWin=NULL;
 HMENU YabMenu=NULL;
@@ -715,13 +716,14 @@ int ParseStringEmbeddedSpaces2(char *out, char *in)
 
 //////////////////////////////////////////////////////////////////////////////
 
+yabauseinit_struct yinit;
+
 int YuiInit(LPSTR lpCmdLine)
 {
    MSG                         msg;
    DWORD inifilenamesize=0;
    char *pinifilename;
    char tempstr[MAX_PATH];
-   yabauseinit_struct yinit;
    HACCEL hAccel;
    static char szAppName[128];
    WNDCLASS MyWndClass;
@@ -799,6 +801,8 @@ int YuiInit(LPSTR lpCmdLine)
 #endif
 
    LoadHotkeyConfig();
+
+   forcecdpath=false;
 
    if (GetPrivateProfileStringA("General", "CDROMDrive", "", cdrompath, MAX_PATH, inifilename) == 0)
    {
@@ -1142,6 +1146,10 @@ YabauseSetup:
    yinit.netlinksetting = netlinksetting;
    yinit.flags = VIDEOFORMATTYPE_NTSC;
 
+   if (GetPrivateProfileStringA("General", "CDROMDrive", "", cdrompath, MAX_PATH, inifilename) != 0) {
+
+	   
+
    if ((ret = YabauseInit(&yinit)) < 0)
    {
       if (ret == -2)
@@ -1171,6 +1179,15 @@ YabauseSetup:
       VIDCore->Resize(fullscreenwidth, fullscreenheight, 1);
    else if (usecustomwindowsize)
       VIDCore->Resize(windowwidth, windowheight, 0);
+   }
+   else {
+
+      SetMenu(YabWin, YabMenu);
+
+      ShowWindow(YabWin,SW_SHOW);
+      SetForegroundWindow(YabWin);
+      SetFocus(YabWin);
+   }
 
    PERDXLoadDevices(inifilename);
 
@@ -1201,6 +1218,10 @@ YabauseSetup:
 
    if (loadexec)
       MappedMemoryLoadExec(filename, addr);
+
+   if (GetPrivateProfileStringA("General", "CDROMDrive", "", cdrompath, MAX_PATH, inifilename) == 0) {
+   paused=true;
+   }
 
    while (!stop)
    {
@@ -1270,6 +1291,21 @@ YabauseSetup:
       LocalFree(argv);
 
    return 0;
+}
+
+extern "C" void StartGame(){
+
+	if(!AlreadyStarted) {
+
+	YabauseInit(&yinit);
+	paused=false;
+	VideoChangeCore(vidcoretype);
+
+	if (VIDCore && !VIDCore->IsFullscreen() && usecustomwindowsize)
+		VIDCore->Resize(windowwidth, windowheight, 0);
+	AlreadyStarted=1;
+	}
+	
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -1433,6 +1469,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 							strcpy(cdrompath, tempstr);
 					//		cdromchanged = TRUE;
 						}
+						StartGame();
 
 					WritePrivateProfileStringA("General", "CDROMDrive", cdrompath, inifilename);
 #ifndef USETHREADS
