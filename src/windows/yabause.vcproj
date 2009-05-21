@@ -746,6 +746,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\moviewin.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\perdx.c"
 					>
 					<FileConfiguration
@@ -763,6 +767,10 @@
 				</File>
 				<File
 					RelativePath=".\ramwatch.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\readwrite.cpp"
 					>
 				</File>
 				<File
@@ -1009,6 +1017,46 @@
 						</FileConfiguration>
 					</File>
 				</Filter>
+				<Filter
+					Name="utils"
+					>
+					<File
+						RelativePath=".\utils\ConvertUTF.c"
+						>
+					</File>
+					<File
+						RelativePath=".\utils\ConvertUTF.h"
+						>
+					</File>
+					<File
+						RelativePath=".\utils\guid.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\utils\guid.h"
+						>
+					</File>
+					<File
+						RelativePath=".\utils\md5.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\utils\md5.h"
+						>
+					</File>
+					<File
+						RelativePath=".\utils\valuearray.h"
+						>
+					</File>
+					<File
+						RelativePath=".\utils\xstring.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\utils\xstring.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="emulation core"
@@ -1169,6 +1217,10 @@
 				</File>
 				<File
 					RelativePath=".\hotkey.h"
+					>
+				</File>
+				<File
+					RelativePath=".\movie.hpp"
 					>
 				</File>
 				<File
