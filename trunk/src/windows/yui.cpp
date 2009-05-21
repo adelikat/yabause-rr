@@ -47,6 +47,7 @@ extern "C" {
 
 #include "resource.h"
 #include "ram_search.h"
+#include "movie.hpp"
 
 #ifdef NOC68K
 #include "../m68kc68k.h"
@@ -186,6 +187,8 @@ void YuiSetVideoAttribute(int type, int val)
       }
       default: break;
    }
+
+    NDS_setTouchFromMovie();
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -731,7 +734,7 @@ int YuiInit(LPSTR lpCmdLine)
    int ip[4];
    INITCOMMONCONTROLSEX iccs;
    char *argv=NULL;
-   int forcecdpath=1;
+   int forcecdpath=0;
    char filename[MAX_PATH];
    u32 addr=0;
    int loadexec=0;
@@ -801,8 +804,6 @@ int YuiInit(LPSTR lpCmdLine)
 #endif
 
    LoadHotkeyConfig();
-
-   forcecdpath=false;
 
    if (GetPrivateProfileStringA("General", "CDROMDrive", "", cdrompath, MAX_PATH, inifilename) == 0)
    {
@@ -2028,7 +2029,9 @@ void YuiPlayMovie(HWND hWnd)
 	if (GetOpenFileName(&ofn))
 	{
 		WideCharToMultiByte(CP_ACP, 0, ymvfilename, -1, text, sizeof(text), NULL, NULL);
-		PlayMovie(text);
+
+		//PlayMovie(text);
+		FCEUI_LoadMovie(text, 0, 0, 99999999);
 	}
 	YuiTempUnPause();
 }
@@ -2051,7 +2054,9 @@ void YuiRecordMovie(HWND hWnd)
 	if (GetSaveFileName(&ofn))
 	{
 		WideCharToMultiByte(CP_ACP, 0, ymvfilename, -1, text, sizeof(text), NULL, NULL);
-		SaveMovie(text);
+	//	SaveMovie(text);
+		std::wstring author = L"Hello World.\n";
+		FCEUI_SaveMovie(text, author);
 	}
 }
 
