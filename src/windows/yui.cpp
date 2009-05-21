@@ -1180,6 +1180,8 @@ YabauseSetup:
       VIDCore->Resize(fullscreenwidth, fullscreenheight, 1);
    else if (usecustomwindowsize)
       VIDCore->Resize(windowwidth, windowheight, 0);
+
+   AlreadyStarted=true;
    }
    else {
 
@@ -1840,6 +1842,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 		EnableMenuItem(YabMenu, IDM_FILE_RECORDAVI,    MF_BYCOMMAND | (AlreadyStarted)      ? MF_ENABLED : MF_GRAYED);
 		EnableMenuItem(YabMenu, ID_RAM_WATCH,    MF_BYCOMMAND | (AlreadyStarted)      ? MF_ENABLED : MF_GRAYED);
 		EnableMenuItem(YabMenu, ID_RAM_SEARCH,    MF_BYCOMMAND | (AlreadyStarted)      ? MF_ENABLED : MF_GRAYED);
+		EnableMenuItem(YabMenu, IDM_MEMTRANSFER,    MF_BYCOMMAND | (AlreadyStarted)      ? MF_ENABLED : MF_GRAYED);
 		
 		CheckMenuItem(YabMenu, IDM_PAUSE, FrameAdvanceVariable ? MF_CHECKED:MF_UNCHECKED);
 		
@@ -2068,7 +2071,7 @@ void YuiPlayMovie(HWND hWnd)
 		WideCharToMultiByte(CP_ACP, 0, ymvfilename, -1, text, sizeof(text), NULL, NULL);
 
 		//PlayMovie(text);
-		FCEUI_LoadMovie(text, 0, 0, 99999999);
+		FCEUI_LoadMovie(text, true, 0, 99999999);
 	}
 	YuiTempUnPause();
 }
