@@ -1,4 +1,23 @@
-.ymv file format specifications
+new / c++ .ymv format specifications
+
+An fm2 variant.  Example:
+
+{{{
+version 1
+emuVersion 9
+rerecordCount 1
+cdGameName SHINOBI LEGIONS                                                                                                 
+cdInfo CD-1/1
+cdItemNum T-2301H
+cdVersion V1.000
+cdDate 08/02/1995
+cdRegion U
+emulateBios 1
+isPal 0
+|0|LRDUSABCXYZWE|
+}}}
+
+old / pure c .ymv file format specifications
 {{{
 0x000 YMV indicator
 0x004 Emulator Version - 0.9.9
