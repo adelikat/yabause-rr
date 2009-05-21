@@ -138,7 +138,7 @@ void MovieRecord::clear()
 
 
 //const char MovieRecord::mnemonics[13] = {'R','L','D','U','T','S','B','A','Y','X','W','E','G'};
-const char MovieRecord::mnemonics[13] = {'R','L','D','U','S','A','B','C','X','Y','Z','W','E'};
+const char MovieRecord::mnemonics[13] = {'L','R','D','U','S','A','B','C','X','Y','Z','W','E'};
 void MovieRecord::dumpPad(std::ostream* os, u16 pad)
 {
 	//these are mnemonics for each joystick bit.
@@ -261,10 +261,20 @@ int MovieData::dump(std::ostream *os, bool binary)
 {
 	int start = os->tellp();
 	*os << "version " << version << endl;
-	//os->put(10);//isnewline = (c==10||c==13);
 	*os << "emuVersion " << emuVersion << endl;
 	*os << "rerecordCount " << rerecordCount << endl;
-	*os << "romFilename " << romFilename << endl;
+	*os << "cdGameName " << cdip->gamename << endl;
+	*os << "cdInfo " << cdip->cdinfo << endl;
+	*os << "cdItemNum " << cdip->itemnum << endl;
+	*os << "cdVersion " << cdip->version << endl;
+	*os << "cdDate " << cdip->date << endl;
+	*os << "cdRegion " << cdip->region << endl;
+	*os << "emulateBios " << yabsys.emulatebios << endl;
+	*os << "isPal " << yabsys.IsPal << endl;
+//	fwrite("YMV", sizeof("YMV"), 1, fp);
+//	fwrite(VERSION, sizeof(VERSION), 1, fp);
+
+	////
 //	*os << "romChecksum " << BytesToString(romChecksum.data,MD5DATA::size) << endl;
 //	*os << "guid " << guid.toString() << endl;
 
