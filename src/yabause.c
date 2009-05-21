@@ -71,6 +71,8 @@ extern long long gettime();
  #include "profile.h"
 #endif
 
+void FCEUMOV_AddInputState();
+
 //////////////////////////////////////////////////////////////////////////////
 
 yabsys_struct yabsys;
@@ -390,7 +392,8 @@ int YabauseEmulate(void) {
 
    int oneframeexec=0;
 
-   DoMovie();
+//   DoMovie();
+   FCEUMOV_AddInputState();
 
    while (!oneframeexec)
    {

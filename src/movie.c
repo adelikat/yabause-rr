@@ -24,6 +24,8 @@
 int RecordingFileOpened;
 int PlaybackFileOpened;
 
+int currFrameCounter;
+
 struct MovieStruct Movie;
 
 char MovieStatus[40];
@@ -78,7 +80,7 @@ void ClearInput(void) {
 }
 
 //////////////////////////////////////////////////////////////////////////////
-
+/*
 const char* Buttons[8] = {"B", "C", "A", "S", "U", "D", "R", "L"};
 const char* Spaces[8]  = {" ", " ", " ", " ", " ", " ", " ", " "};
 const char* Buttons2[8] = {"", "", "", "L", "Z", "Y", "X", "R"};
@@ -115,7 +117,7 @@ void SetInputDisplayCharacters(void) {
 
 	strcpy(InputDisplayString, str);
 }
-
+*/
 //////////////////////////////////////////////////////////////////////////////
 
 void IncrementLagAndFrameCounter(void)
@@ -136,7 +138,7 @@ void DoMovie(void) {
 
 	IncrementLagAndFrameCounter();
 	LagFrameFlag=1;
-	SetInputDisplayCharacters();
+//	SetInputDisplayCharacters();
 
 	//Read/Write Controller Data
 	if(Movie.Status == Recording) {
@@ -305,7 +307,6 @@ int SaveMovie(const char *filename) {
 	framecounter=0;
 	Movie.Status=Recording;
 	strcpy(MovieStatus, "Recording Started");
-	BupFormat(0);
 	Movie.Rerecords=0;
 	WriteHeader(Movie.fp);
 	YabauseReset();
@@ -333,7 +334,6 @@ int PlayMovie(const char *filename) {
 	Movie.Status=Playback;
 	Movie.Size = MovieGetSize(Movie.fp);
 	strcpy(MovieStatus, "Playback Started");
-	BupFormat(0);
 	ReadHeader(Movie.fp);
 	YabauseReset();
 	return 0;
