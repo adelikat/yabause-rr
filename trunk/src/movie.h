@@ -83,4 +83,12 @@ extern int lagframecounter;
 extern char MovieStatus[40];
 extern char InputDisplayString[40];
 extern int FrameAdvanceVariable;
+extern int currFrameCounter;/*
+#ifdef __cplusplus
+extern "C" {
+#endif
+extern int currFrameCounter;
+#ifdef __cplusplus
+}
+#endif*/
 #endif

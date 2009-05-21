@@ -1008,7 +1008,7 @@ int YabSaveState(const char *filename)
    ywrite(&check, (void *)&i, sizeof(i), 1, fp);
 
    //write frame number
-   ywrite(&check, (void *)&framecounter, 4, 1, fp);
+   ywrite(&check, (void *)&currFrameCounter, 4, 1, fp);
 
    //this will be updated with the movie position later
    ywrite(&check, (void *)&framecounter, 4, 1, fp);
@@ -1065,7 +1065,8 @@ int YabSaveState(const char *filename)
 
    movieposition=ftell(fp);
    //write the movie to the end of the savestate
-   SaveMovieInState(fp, check);
+  // SaveMovieInState(fp, check);
+   SaveStateMovie(filename);
 
    i += StateFinishHeader(fp, offset);
 
@@ -1124,7 +1125,7 @@ int YabLoadState(const char *filename)
          break;
       case 2:
          /* version 2 adds video recording */
-         yread(&check, (void *)&framecounter, 4, 1, fp);
+         yread(&check, (void *)&currFrameCounter, 4, 1, fp);
 		 movieposition=ftell(fp);
 		 yread(&check, (void *)&movieposition, 4, 1, fp);
          headersize = 0x14;
@@ -1297,7 +1298,8 @@ int YabLoadState(const char *filename)
    YuiSwapBuffers();
 
    fseek(fp, movieposition, SEEK_SET);
-   MovieReadState(fp, filename);
+   //MovieReadState(fp, filename);
+   LoadStateMovie(filename);
    }
    
    fclose(fp);
