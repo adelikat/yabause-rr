@@ -197,4 +197,5 @@ void NDS_setTouchFromMovie(void);
 void LoadFM2_binarychunk(MovieData& movieData, std::istream* fp, int size);
 extern bool movie_readonly;
 void FCEUI_MakeBackupMovie(bool dispMessage);
+void ToggleReadOnly();
 #endif

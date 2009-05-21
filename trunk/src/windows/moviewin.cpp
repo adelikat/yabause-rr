@@ -30,6 +30,7 @@ extern "C" {
 #include "../yabause.h"
 	#include "../movie.h"
 	#include "../cs2.h"
+#include "../vdp2.h"
 
 #include "../bios.h"
 }
@@ -105,7 +106,6 @@ void SetInputDisplayCharacters(void) {
 	strcpy(InputDisplayString, str);
 }
 
-
 void MovieData::clearRecordRange(int start, int len)
 {
 	for(int i=0;i<len;i++)
@@ -138,7 +138,7 @@ void MovieRecord::clear()
 
 
 //const char MovieRecord::mnemonics[13] = {'R','L','D','U','T','S','B','A','Y','X','W','E','G'};
-const char MovieRecord::mnemonics[13] = {'L','R','D','U','S','A','B','C','X','Y','Z','W','E'};
+const char MovieRecord::mnemonics[13] = {'L','R','U','D','S','A','B','C','X','Y','Z','W','E'};
 void MovieRecord::dumpPad(std::ostream* os, u16 pad)
 {
 	//these are mnemonics for each joystick bit.
@@ -415,6 +415,7 @@ static void closeRecordingMovie()
 /// Stop movie playback.
 static void StopPlayback()
 {
+	DisplayMessage("Movie playback stopped.");
 //	driver->USR_InfoMessage("Movie playback stopped.");
 	movieMode = MOVIEMODE_INACTIVE;
 }
@@ -423,6 +424,7 @@ static void StopPlayback()
 /// Stop movie recording
 static void StopRecording()
 {
+	DisplayMessage("Movie recording stopped.");
 //	driver->USR_InfoMessage("Movie recording stopped.");
 	movieMode = MOVIEMODE_INACTIVE;
 	
@@ -502,10 +504,12 @@ void FCEUI_LoadMovie(const char *fname, bool _read_only, bool tasedit, int _paus
 	freshMovie = true;
 //	ClearAutoHold();
 
-//	if(movie_readonly)
-//		driver->USR_InfoMessage("Replay started Read-Only.");
-//	else
-//		driver->USR_InfoMessage("Replay started Read+Write.");
+	if(movie_readonly)
+		DisplayMessage("Replay started Read-Only.");
+	//	driver->USR_InfoMessage("Replay started Read-Only.");
+	else
+		DisplayMessage("Replay started Read+Write.");
+	//	driver->USR_InfoMessage("Replay started Read+Write.");
 }
 
 static void openRecordingMovie(const char* fname)
@@ -562,6 +566,7 @@ static void openRecordingMovie(const char* fname)
 //	MovieSRAM();
 	BupFormat(0);
 
+	DisplayMessage("Movie recording started.");
 //	driver->USR_InfoMessage("Movie recording started.");
 }
 
@@ -1115,3 +1120,11 @@ void FCEUI_MakeBackupMovie(bool dispMessage)
 	}
 }
 
+void ToggleReadOnly() {
+
+	movie_readonly ^=1;
+
+	if(movie_readonly==1) DisplayMessage("Movie is now read only.");
+	else DisplayMessage("Movie is now read+write.");
+
+}

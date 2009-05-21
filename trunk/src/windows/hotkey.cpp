@@ -23,6 +23,7 @@
 #include "resource.h"
 #include "ramwatch.h"		//In order to call UpdateRamWatch (for loadstate functions)
 #include "ram_search.h"		//In order to call UpdateRamSearch (for loadstate functions)
+#include "movie.hpp"
 
 #include <commctrl.h>
 extern "C" {
@@ -30,7 +31,7 @@ extern "C" {
 #include "../vdp2.h"
 #include "../vdp1.h"
 #include "./settings/settings.h"
-
+char inifilename[MAX_PATH];
 }
 extern "C" HWND YabWin;
 extern "C" HINSTANCE y_hInstance;
@@ -1047,7 +1048,7 @@ static void set_hotkeyinfo(HWND hDlg)
 	// disable unused controls
 	for (; i < NUM_HOTKEY_CONTROLS; i++) {
 		SendDlgItemMessage(hDlg, IDC_HOTKEY_Table[i], WM_USER+44, 0, 0);
-		SetDlgItemText(hDlg, IDC_LABEL_HK_Table[i], (LPCWSTR)INPUTCONFIG_LABEL_UNUSED);
+		SetDlgItemText(hDlg, IDC_LABEL_HK_Table[i], (LPCWSTR)_16(INPUTCONFIG_LABEL_UNUSED));
 		ShowWindow(GetDlgItem(hDlg, IDC_HOTKEY_Table[i]), SW_HIDE);
 	}
 }
@@ -1358,7 +1359,8 @@ void HK_StopAVI(int) {YuiStopAvi();}
 //void HK_ToggleLag(int) {ShowLagFrameCounter ^= true;}
 void HK_ToggleReadOnly(int) 
 {
-	MovieToggleReadOnly();
+	//MovieToggleReadOnly();
+	ToggleReadOnly();
 }
 
 void HK_PlayMovie(int)   {YuiPlayMovie(YabWin); };
