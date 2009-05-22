@@ -429,7 +429,7 @@ static void closeRecordingMovie()
 static void StopPlayback()
 {
 	DisplayMessage("Movie playback stopped.");
-//	driver->USR_InfoMessage("Movie playback stopped.");
+	strcpy(MovieStatus, "");
 	movieMode = MOVIEMODE_INACTIVE;
 }
 
@@ -438,7 +438,7 @@ static void StopPlayback()
 static void StopRecording()
 {
 	DisplayMessage("Movie recording stopped.");
-//	driver->USR_InfoMessage("Movie recording stopped.");
+	strcpy(MovieStatus, "");
 	movieMode = MOVIEMODE_INACTIVE;
 	
 	closeRecordingMovie();
