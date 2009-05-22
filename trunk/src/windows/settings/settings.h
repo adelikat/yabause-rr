@@ -52,9 +52,16 @@ extern char logfilename[MAX_PATH];
 extern char mini18nlogfilename[MAX_PATH];
 
 extern char bioslang;
+#ifdef __cplusplus
+extern "C" {
+#endif
 extern char sh2coretype;
 extern char vidcoretype;
 extern char sndcoretype;
+extern int carttype;
+#ifdef __cplusplus
+}
+#endif
 extern int sndvolume;
 extern int enableautofskip;
 extern int usefullscreenonstartup;
@@ -66,7 +73,6 @@ extern int windowheight;
 extern char percoretype;
 extern u8 regionid;
 extern int disctype;
-extern int carttype;
 extern DWORD netlinklocalremoteip;
 extern int netlinkport;
 extern int uselog;
@@ -86,6 +92,12 @@ enum {
    EMUTYPE_MOUSE,
    EMUTYPE_KEYBOARD
 };
+
+#ifdef WORDS_BIGENDIAN
+# define LOCAL_BE
+#else
+# define LOCAL_LE
+#endif
 
 void CreateFilter(WCHAR * filter, size_t maxlen, ...);
 
