@@ -18,7 +18,8 @@ sh2CoreType 1
 sndCoreType 2
 vidCoreType 2
 cartType 0
-|0|LRUDSABCXYZWE|
+cdRomPath H:      //this will either have a drive letter if a physical or virtual cd rom drive is used, or the cd image filename
+|0|LRUDSABCXYZWE| //the actual controller data is text based mnemonics
 }}}
 
 SH2 Core
