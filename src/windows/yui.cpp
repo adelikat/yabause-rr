@@ -1677,7 +1677,8 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
                YuiPlayMovie(hWnd);
 			   break;
 			case MENU_STOP_MOVIE:
-				StopMovie();
+				FCEUI_StopMovie();
+				//StopMovie();
 				break;
 			case IDM_TOGGLEREADONLY:
 				MovieToggleReadOnly();
@@ -1802,9 +1803,9 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 
 		EnableMenuItem(YabMenu, IDM_FILE_RECORDAVI, MF_BYCOMMAND | (!DRV_AviIsRecording())? MF_ENABLED : MF_GRAYED);
 		EnableMenuItem(YabMenu, IDM_FILE_STOPAVI,   MF_BYCOMMAND | (DRV_AviIsRecording()) ? MF_ENABLED : MF_GRAYED);
-		EnableMenuItem(YabMenu, MENU_RECORD_MOVIE,  MF_BYCOMMAND | (!IsMovieLoaded())     ? MF_ENABLED : MF_GRAYED);
-		EnableMenuItem(YabMenu, MENU_PLAY_MOVIE,    MF_BYCOMMAND | (!IsMovieLoaded())     ? MF_ENABLED : MF_GRAYED);
-		EnableMenuItem(YabMenu, MENU_STOP_MOVIE,    MF_BYCOMMAND | (IsMovieLoaded())      ? MF_ENABLED : MF_GRAYED);
+		EnableMenuItem(YabMenu, MENU_RECORD_MOVIE,  MF_BYCOMMAND | (!MovieIsActive())     ? MF_ENABLED : MF_GRAYED);
+		EnableMenuItem(YabMenu, MENU_PLAY_MOVIE,    MF_BYCOMMAND | (!MovieIsActive())     ? MF_ENABLED : MF_GRAYED);
+		EnableMenuItem(YabMenu, MENU_STOP_MOVIE,    MF_BYCOMMAND | (MovieIsActive())      ? MF_ENABLED : MF_GRAYED);
 		EnableMenuItem(YabMenu, IDM_RESET,    MF_BYCOMMAND | (AlreadyStarted)      ? MF_ENABLED : MF_GRAYED);
 		EnableMenuItem(YabMenu, IDM_HARDRESET,    MF_BYCOMMAND | (AlreadyStarted)      ? MF_ENABLED : MF_GRAYED);
 		EnableMenuItem(YabMenu, IDM_MSH2DEBUG,    MF_BYCOMMAND | (AlreadyStarted)      ? MF_ENABLED : MF_GRAYED);
