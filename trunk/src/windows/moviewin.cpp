@@ -1146,3 +1146,12 @@ void ToggleReadOnly() {
 	else DisplayMessage("Movie is now read+write.");
 
 }
+
+bool MovieIsActive() {
+
+	if(movieMode == MOVIEMODE_INACTIVE)
+		return false;
+	
+	return true;
+
+}
