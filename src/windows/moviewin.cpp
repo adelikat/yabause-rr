@@ -275,6 +275,13 @@ int MovieData::dump(std::ostream *os, bool binary)
 	*os << "sndCoreType " << int(sndcoretype) << endl;
 	*os << "vidCoreType " << int(vidcoretype) << endl;
 	*os << "cartType " << carttype << endl;
+//	*os << "cdRomPath " << cdrompath << endl;
+/*
+	extern char biosfilename[MAX_PATH];
+extern char cdrompath[MAX_PATH];
+extern char backupramfilename[MAX_PATH];
+extern char mpegromfilename[MAX_PATH];
+extern char cartfilename[MAX_PATH];*/
 #endif
 
 //	fwrite("YMV", sizeof("YMV"), 1, fp);
@@ -662,6 +669,9 @@ extern "C" void FCEUMOV_AddInputState()
 		 }
 		 else
 		 {
+
+			 strcpy(MovieStatus, "Playback");
+
 			 MovieRecord* mr = &currMovieData.records[currFrameCounter];
 
 			 //reset if necessary
@@ -696,6 +706,8 @@ extern "C" void FCEUMOV_AddInputState()
 		 MovieRecord mr;
 
 		 mr.commands = 0;
+
+		 strcpy(MovieStatus, "Recording");
 
 		 ///////////////////////
 
