@@ -275,7 +275,18 @@ int MovieData::dump(std::ostream *os, bool binary)
 	*os << "sndCoreType " << int(sndcoretype) << endl;
 	*os << "vidCoreType " << int(vidcoretype) << endl;
 	*os << "cartType " << carttype << endl;
-//	*os << "cdRomPath " << cdrompath << endl;
+
+	char* temp=(char*)malloc(1024);
+	strcpy(temp, cdrompath);
+
+	if (strrchr(temp, '/'))
+        temp = 1 + strrchr(temp, '/');
+
+	if (strrchr(temp, '\\'))
+        temp = 1 + strrchr(temp, '\\');
+
+	*os << "cdRomPath " << temp << endl;
+
 /*
 	extern char biosfilename[MAX_PATH];
 extern char cdrompath[MAX_PATH];
