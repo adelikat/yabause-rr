@@ -28,10 +28,9 @@
 extern "C" {
 #include "../peripheral.h"
 #include "../yabause.h"
-	#include "../movie.h"
-	#include "../cs2.h"
+#include "../movie.h"
+#include "../cs2.h"
 #include "../vdp2.h"
-
 #include "../bios.h"
 }
 
@@ -271,6 +270,13 @@ int MovieData::dump(std::ostream *os, bool binary)
 	*os << "cdRegion " << cdip->region << endl;
 	*os << "emulateBios " << yabsys.emulatebios << endl;
 	*os << "isPal " << yabsys.IsPal << endl;
+#ifdef WIN32
+	*os << "sh2CoreType " << int(sh2coretype) << endl;
+	*os << "sndCoreType " << int(sndcoretype) << endl;
+	*os << "vidCoreType " << int(vidcoretype) << endl;
+	*os << "cartType " << carttype << endl;
+#endif
+
 //	fwrite("YMV", sizeof("YMV"), 1, fp);
 //	fwrite(VERSION, sizeof(VERSION), 1, fp);
 
@@ -794,8 +800,8 @@ bool mov_loadstate(std::istream* is, int size)//std::istream* is
 	if(read32le(&cookie,is) != 1) return false;
 //	if(cookie == kNOMO)
 //		return true;
-//	else if(cookie != kMOVI)
-//		return false;
+	else if(cookie != kMOVI)
+		return false;
 
 	size -= 4;
 
