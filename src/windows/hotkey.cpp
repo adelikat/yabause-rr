@@ -31,7 +31,7 @@ extern "C" {
 #include "../vdp2.h"
 #include "../vdp1.h"
 #include "./settings/settings.h"
-char inifilename[MAX_PATH];
+//char inifilename[MAX_PATH];
 }
 extern "C" HWND YabWin;
 extern "C" HINSTANCE y_hInstance;

@@ -42,7 +42,7 @@ extern BOOL IsPathCdrom(const char *path);
 int CreateHelpBalloons(helpballoon_struct *hb);
 void DestroyHelpBalloons(helpballoon_struct *hb);
 
-extern char inifilename[MAX_PATH];
+
 extern char logfilename[MAX_PATH];
 extern char mini18nlogfilename[MAX_PATH];
 
@@ -50,6 +50,7 @@ extern char bioslang;
 #ifdef __cplusplus
 extern "C" {
 #endif
+extern char inifilename[MAX_PATH];
 extern char sh2coretype;
 extern char vidcoretype;
 extern char sndcoretype;
