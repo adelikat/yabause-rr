@@ -819,11 +819,6 @@ bool mov_loadstate(std::istream* is, int size)//std::istream* is
 {
 	load_successful = false;
 
-	//crappy hack to prevent input from sticking when you resume a movie
-	//otherwise any held keys on the frame when you resume will be held when recording starts
-	PORTDATA1.data[2]=0xFF; 
-	PORTDATA1.data[3]=0xFF;
-
 	int cookie;
 	if(read32le(&cookie,is) != 1) return false;
 //	if(cookie == kNOMO)
