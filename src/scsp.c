@@ -3090,7 +3090,11 @@ void ScspReceiveCDDA(const u8 *sector) {
 //////////////////////////////////////////////////////////////////////////////
 
 void ScspExec() {
+#ifdef SCSP_FRAME_ACCURATE
+	s16 stereodata16[(44100 / 60) * 16];//11760
+#else
 	s16 stereodata16[(44100 / 50)*2];
+#endif
    u32 audiosize;
 
    ScspInternalVars->scsptiming2 += ((735<<16) + 263/2) / 263;
@@ -3141,8 +3145,8 @@ void ScspExec() {
                            &scspchannel[1].data32[outstart], audiosize);
       scspsoundoutleft -= audiosize;
 	  #ifdef WIN32
-//      ScspConvert32uto16s(&scspchannel[0].data32[outstart], &scspchannel[1].data32[outstart], (s16 *)stereodata16, audiosize);
-//	  DRV_AviSoundUpdate(stereodata16, audiosize);
+      ScspConvert32uto16s(&scspchannel[0].data32[outstart], &scspchannel[1].data32[outstart], (s16 *)stereodata16, audiosize);
+	  DRV_AviSoundUpdate(stereodata16, audiosize);
 	  #endif
    }
 #else // !SCSP_FRAME_ACCURATE
