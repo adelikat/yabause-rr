@@ -1497,6 +1497,11 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
             case IDM_SWEDISH:
                ChangeLanguage(LOWORD(wParam));
                break;
+            case IDM_TOGGLE_OSD:
+            {
+				SetOSDToggle(!GetOSDToggle());
+               break;
+            }
             case IDM_MSH2DEBUG:
             {
                YuiTempPause();
@@ -1846,6 +1851,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 		EnableMenuItem(YabMenu, IDM_MEMTRANSFER,    MF_BYCOMMAND | (AlreadyStarted)      ? MF_ENABLED : MF_GRAYED);
 		
 		CheckMenuItem(YabMenu, IDM_PAUSE, FrameAdvanceVariable ? MF_CHECKED:MF_UNCHECKED);
+		CheckMenuItem(YabMenu, IDM_TOGGLE_OSD, GetOSDToggle() ? MF_CHECKED:MF_UNCHECKED);
 		
 		return 0L;
       }
