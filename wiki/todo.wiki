@@ -4,17 +4,17 @@
        * Implement desmume hotkey checking system without freezing gui
        * Make background input optional - this is not actually a problem, just that frame advance hack for myself
 
-  * The main cvs crashes when open cue iso is used - what is the difference?
+  * The main cvs crashes when open cue iso is used - what is the difference?  This is maybe a problem with c68kexec or differences in compilation between mingw and VS.
   * Avi code causes buffer overflows with SCSP_FRAMEACCURATE defined, sound doesn't really work at all
   * Resuming can break, resulting in an "inverted" movie. Mnemonics are placed for non-pressed and . are placed for pressed.
   * Remove the leftover junk from the old movie format
   * The screenshot display when loading a state is broken for gtk pure software, opengl doesn't display correctly due to glzoompixels or whatever.  It needs to save the vidsoft framebuffer for software mode I guess.
-  * Hotkey ini saving broke?
   * When resuming, any pressed keys will get stuck and record into the movie.
   * The ram search window doesn't display properly the second time you open it in a session
   * Frame counter doesn't always reset when it should
   * Record AVI doesn't grey out when you start recording
   * If you close the emulator while dumping avi, you'll get a broken avi.  You must hit stop first.  It ought to automatically stop if you close the emu.
+  * Resolve the project file differences between the cvs and the svn - this is causing differences in the way it is compiled resulting in extern "C" needed more often in one codebase than the other
   
 ===Medium=== 
 
