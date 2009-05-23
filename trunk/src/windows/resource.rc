@@ -1080,6 +1080,7 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "&Settings",                   IDM_SETTINGS
 		MENUITEM "Hotkey Config",               IDM_HOTKEY_CONFIG
+		MENUITEM "Toggle OSD",               IDM_TOGGLE_OSD
         MENUITEM "&Backup Ram Manager",         IDM_BACKUPRAMMANAGER
         POPUP "Language", GRAYED
         BEGIN
