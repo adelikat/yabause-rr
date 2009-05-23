@@ -29,8 +29,6 @@
 
 #include "resource.h"
 
-//#include "common.h"
-//#include "NDSSystem.h"
 #include "ramwatch.h"
 #include "./settings/settings.h"
 #include "./cpudebug/yuidebug.h"
@@ -81,20 +79,10 @@ static BOOL s_itemIndicesInvalid = true; // if true, the link from listbox items
 static BOOL s_prevValuesNeedUpdate = true; // if true, the "prev" values should be updated using the "cur" values on the next frame update signaled
 static unsigned int s_maxItemIndex = 0; // max currently valid item index, the listbox sometimes tries to update things past the end of the list so we need to know this to ignore those attempts
 
-u8 *Ram1;
-//(unsigned char*)&
-static MemoryRegion s_prgRegion;//    = {  0x06000000,    0x10000, Ram1, false};//0x100000
+static MemoryRegion s_prgRegion;
 static MemoryRegion s_prgRegion2;
-//static const MemoryRegion s_prgRegion2    = {  0x02000000, 0x400000, (unsigned char*)HighWram,     false};
+//static const MemoryRegion s_prgRegion2
 
-/*
-static const MemoryRegion s_prgRegion    = {  0x020000, SEGACD_RAM_PRG_SIZE, (unsigned char*)Ram_Prg,     true};
-static const MemoryRegion s_word1MRegion = {  0x200000, SEGACD_1M_RAM_SIZE,  (unsigned char*)Ram_Word_1M, true};
-static const MemoryRegion s_word2MRegion = {  0x200000, SEGACD_2M_RAM_SIZE,  (unsigned char*)Ram_Word_2M, true};
-static const MemoryRegion s_z80Region    = {  0xA00000, Z80_RAM_SIZE,        (unsigned char*)Ram_Z80,     true};
-static const MemoryRegion s_68kRegion    = {  0xFF0000, _68K_RAM_SIZE,       (unsigned char*)Ram_68k,     true};
-static const MemoryRegion s_32xRegion    = {0x06000000, _32X_RAM_SIZE,       (unsigned char*)_32X_Ram,    false};
-*/
 // list of contiguous uneliminated memory regions
 typedef std::list<MemoryRegion> MemoryList;
 static MemoryList s_activeMemoryRegions;
@@ -112,7 +100,6 @@ void InitRamSearch()
 	{
 		buffers = new Buffers;
 		memset(buffers,0,sizeof(Buffers));
-		//Ram1=HighWram;
 		s_prgRegion.byteSwapped=false;
 		s_prgRegion.hardwareAddress=0x06000000;
 		s_prgRegion.size=0x100000;
@@ -122,8 +109,6 @@ void InitRamSearch()
 		s_prgRegion2.hardwareAddress=0x00200000;
 		s_prgRegion2.size=0x100000;
 		s_prgRegion2.softwareAddress=LowWram;*/
-
-	//		= {  0x06000000,    0x10000, HighWram, false};//0x100000
 	}
 }
 
@@ -135,21 +120,6 @@ void ResetMemoryRegions()
 		
 	s_activeMemoryRegions.push_back(s_prgRegion);
 //	s_activeMemoryRegions.push_back(s_prgRegion2);
-	
-	/*if(Genesis_Started || _32X_Started || SegaCD_Started)
-	{
-		s_activeMemoryRegions.push_back(s_68kRegion);
-		s_activeMemoryRegions.push_back(s_z80Region);
-		if(SegaCD_Started)
-		{
-			s_activeMemoryRegions.push_back(s_prgRegion);
-			s_activeMemoryRegions.push_back((Ram_Word_State & 0x2) ? s_word1MRegion : s_word2MRegion);
-		}
-		if(_32X_Started)
-		{
-			s_activeMemoryRegions.push_back(s_32xRegion);
-		}
-	}*/
 
 	int nextVirtualIndex = 0;
 	for(MemoryList::iterator iter = s_activeMemoryRegions.begin(); iter != s_activeMemoryRegions.end(); ++iter)
@@ -476,9 +446,6 @@ unsigned int HardwareAddressToItemIndex(unsigned int hardwareAddress)
 	return -1;
 }
 
-
-
-
 // workaround for a parser error in MSVC that sometimes deletes a comma preceeding a macro
 // this macro takes a type and a signed/unsigned modifier, and returns the same type with that modifier whether or not the compiler decides to delete the comma between them
 template<typename T, typename ignored=void>
@@ -668,9 +635,6 @@ void prune(char c,char o,char t,int v,int p)
 		SetRamSearchUndoType(RamSearchHWnd, 0); // nothing to undo
 	}
 }
-
-
-
 
 template<typename stepType, typename T>
 bool CompareRelativeAtItem (bool(*cmpFun)(T,T,T), int itemIndex, T ignored, T param)
@@ -980,8 +944,6 @@ bool IsHardwareAddressValid(unsigned int address)
 	return IsHardwareROMAddressValid(address) || IsHardwareRAMAddressValid(address);
 }
 
-
-
 int ResultCount=0;
 bool AutoSearch=false;
 bool AutoSearchAutoRetry=false;
@@ -1037,12 +999,6 @@ void signal_new_frame ()
 	CALL_WITH_T_SIZE_TYPES(UpdateRegionsT, rs_type_size,rs_t=='s',noMisalign);
 }
 
-
-
-
-
-
-
 void RefreshRamListSelectedCountControlStatus(HWND hDlg)
 {
 	static int prevSelCount=-1;
@@ -1058,9 +1014,6 @@ void RefreshRamListSelectedCountControlStatus(HWND hDlg)
 		prevSelCount = selCount;
 	}
 }
-
-
-
 
 struct AddrRange
 {
@@ -1089,7 +1042,6 @@ void signal_new_size ()
 	{
 		// store selection ranges
 		// unfortunately this can take a while if the user has a huge range of items selected
-//		Clear_Sound_Buffer();
 		int selCount = ListView_GetSelectedCount(lv);
 		int size = (rs_last_type_size=='b' || !rs_last_no_misalign) ? 1 : 2;
 		int watchIndex = -1;
@@ -1207,7 +1159,6 @@ extern "C" void Update_RAM_Search() //keeps RAM values up to date in the search 
 	{
 		if(!AutoSearchAutoRetry)
 		{
-//			Clear_Sound_Buffer();
 			int answer = MessageBox(RamSearchHWnd,(LPCWSTR)_16("Choosing Retry will reset the search once and continue autosearching.\nChoose Ignore will reset the search whenever necessary and continue autosearching.\nChoosing Abort will reset the search once and stop autosearching."),(LPCWSTR) _16("Autosearch - out of results."),MB_ABORTRETRYIGNORE|MB_DEFBUTTON2|MB_ICONINFORMATION);
 			if(answer == IDABORT)
 			{
@@ -1323,11 +1274,6 @@ LRESULT CALLBACK RamSearchProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 	{
 		case WM_INITDIALOG: {
 			RamSearchHWnd = hDlg;
-/*			if (Full_Screen)
-			{
-				while (ShowCursor(false) >= 0);
-				while (ShowCursor(true) < 0);
-			}*/
 
 			GetWindowRect(YabWin, &r);
 			dx1 = (r.right - r.left) / 2;
@@ -1708,7 +1654,6 @@ LRESULT CALLBACK RamSearchProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 				case IDC_C_UNDO:
 					if(s_undoType>0)
 					{
-//						Clear_Sound_Buffer();
 						if(s_activeMemoryRegions.size() < tooManyRegionsForUndo)
 						{
 							MemoryList tempMemoryList = s_activeMemoryRegions;
@@ -1733,7 +1678,6 @@ LRESULT CALLBACK RamSearchProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 					if (!AutoSearch) {rv = true; break;}
 				case IDC_C_SEARCH:
 				{
-//					Clear_Sound_Buffer();
 
 					if(!rs_val_valid && !(rs_val_valid = Set_RS_Val()))
 						goto invalid_field;
@@ -1849,12 +1793,6 @@ invalid_field:
 				}
 				//case IDOK:
 				case IDCANCEL:
-/*					if (Full_Screen)
-					{
-						while (ShowCursor(true) < 0);
-						while (ShowCursor(false) >= 0);
-					}*/
-//					DialogsOpen--;
 					RamSearchHWnd = NULL;
 					EndDialog(hDlg, true);
 					{rv = true; break;}
@@ -1903,12 +1841,6 @@ invalid_field:
 		}	break;
 
 		case WM_CLOSE:
-/*			if (Full_Screen)
-			{
-				while (ShowCursor(true) < 0);
-				while (ShowCursor(false) >= 0);
-			}
-			DialogsOpen--;*/
 			RamSearchHWnd = NULL;
 			EndDialog(hDlg, true);
 			return true;
