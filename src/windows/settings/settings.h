@@ -42,11 +42,6 @@ extern BOOL IsPathCdrom(const char *path);
 int CreateHelpBalloons(helpballoon_struct *hb);
 void DestroyHelpBalloons(helpballoon_struct *hb);
 
-extern char biosfilename[MAX_PATH];
-extern char cdrompath[MAX_PATH];
-extern char backupramfilename[MAX_PATH];
-extern char mpegromfilename[MAX_PATH];
-extern char cartfilename[MAX_PATH];
 extern char inifilename[MAX_PATH];
 extern char logfilename[MAX_PATH];
 extern char mini18nlogfilename[MAX_PATH];
@@ -59,6 +54,11 @@ extern char sh2coretype;
 extern char vidcoretype;
 extern char sndcoretype;
 extern int carttype;
+extern char biosfilename[MAX_PATH];
+extern char cdrompath[MAX_PATH];
+extern char backupramfilename[MAX_PATH];
+extern char mpegromfilename[MAX_PATH];
+extern char cartfilename[MAX_PATH];
 #ifdef __cplusplus
 }
 #endif
