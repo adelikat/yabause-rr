@@ -1892,6 +1892,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
       {
          if (AskSave())
 		 {
+			 YuiStopAvi();
 			 stop = 1;
 			 PostQuitMessage(0);
 			 WriteToINI();
@@ -1913,6 +1914,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
       case WM_DESTROY:
          if (AskSave())
 		 {
+			YuiStopAvi();
 			stop = 1;
 			PostQuitMessage(0);
 			WriteToINI();
