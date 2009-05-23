@@ -1424,9 +1424,9 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 
 			case IDM_HOTKEY_CONFIG:
 				{
-
+					YuiTempPause();
 					DialogBox(y_hInstance, MAKEINTRESOURCE(IDD_KEYCUSTOM), hWnd, DlgHotkeyConfig);
-
+					YuiTempUnPause();
 				}
 				break;
 			case IDM_BACKUPRAMMANAGER:
