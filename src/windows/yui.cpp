@@ -1806,7 +1806,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
             }
          }
 
-		EnableMenuItem(YabMenu, IDM_FILE_RECORDAVI, MF_BYCOMMAND | (!DRV_AviIsRecording())? MF_ENABLED : MF_GRAYED);
+		EnableMenuItem(YabMenu, IDM_FILE_RECORDAVI, MF_BYCOMMAND | (!DRV_AviIsRecording() && AlreadyStarted)? MF_ENABLED : MF_GRAYED);
 		EnableMenuItem(YabMenu, IDM_FILE_STOPAVI,   MF_BYCOMMAND | (DRV_AviIsRecording()) ? MF_ENABLED : MF_GRAYED);
 		EnableMenuItem(YabMenu, MENU_RECORD_MOVIE,  MF_BYCOMMAND | (!MovieIsActive())     ? MF_ENABLED : MF_GRAYED);
 		EnableMenuItem(YabMenu, MENU_PLAY_MOVIE,    MF_BYCOMMAND | (!MovieIsActive())     ? MF_ENABLED : MF_GRAYED);
@@ -1845,7 +1845,6 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 		EnableMenuItem(YabMenu, IDM_LOADSTATEAS,    MF_BYCOMMAND | (AlreadyStarted)      ? MF_ENABLED : MF_GRAYED);
 		EnableMenuItem(YabMenu, MENU_RECORD_MOVIE,    MF_BYCOMMAND | (AlreadyStarted)      ? MF_ENABLED : MF_GRAYED);
 		EnableMenuItem(YabMenu, MENU_PLAY_MOVIE,    MF_BYCOMMAND | (AlreadyStarted)      ? MF_ENABLED : MF_GRAYED);
-		EnableMenuItem(YabMenu, IDM_FILE_RECORDAVI,    MF_BYCOMMAND | (AlreadyStarted)      ? MF_ENABLED : MF_GRAYED);
 		EnableMenuItem(YabMenu, ID_RAM_WATCH,    MF_BYCOMMAND | (AlreadyStarted)      ? MF_ENABLED : MF_GRAYED);
 		EnableMenuItem(YabMenu, ID_RAM_SEARCH,    MF_BYCOMMAND | (AlreadyStarted)      ? MF_ENABLED : MF_GRAYED);
 		EnableMenuItem(YabMenu, IDM_MEMTRANSFER,    MF_BYCOMMAND | (AlreadyStarted)      ? MF_ENABLED : MF_GRAYED);
