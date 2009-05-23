@@ -12,8 +12,6 @@
   * When resuming, any pressed keys will get stuck and record into the movie.
   * The ram search window doesn't display properly the second time you open it in a session
   * Frame counter doesn't always reset when it should
-  * Record AVI doesn't grey out when you start recording
-  * If you close the emulator while dumping avi, you'll get a broken avi.  You must hit stop first.  It ought to automatically stop if you close the emu.
   * Resolve the project file differences between the cvs and the svn - this is causing differences in the way it is compiled resulting in extern "C" needed more often in one codebase than the other
   
 ===Medium=== 
