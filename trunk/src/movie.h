@@ -27,10 +27,11 @@ void PauseOrUnpause(void);
 void MakeMovieStateName(const char *filename);
 
 extern int FrameAdvanceVariable;
-extern char MovieStatus[40];
-extern int lagframecounter;
-extern char InputDisplayString[40];
+extern int LagFrameCounter;
 extern int LagFrameFlag;
+
+extern char MovieStatus[40];
+extern char InputDisplayString[40];
 extern char MovieStatus[40];
 
 #ifdef __cplusplus

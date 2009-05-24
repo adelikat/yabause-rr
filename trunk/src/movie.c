@@ -5,7 +5,7 @@ int LagFrameFlag;
 int FrameAdvanceVariable=0;
 int currFrameCounter;
 char MovieStatus[40];
-int lagframecounter;
+int LagFrameCounter;
 
 //////////////////////////////////////////////////////////////////////////////
 
