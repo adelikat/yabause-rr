@@ -19,7 +19,6 @@
 ===Medium=== 
 
   * SCSP_FRAMEACCURATE ought to be a runtime option if possible
-  * The Open Cue / ISO menu item can become checked, I don't know why
   * Allow dumping avi's at any resolution
   * Ram-watch - values don't update
   * Ram-Search - values don't update while holding frame advance
