@@ -76,6 +76,21 @@ const char* Spaces2[8]  = {"", "", "", " ", " ", " ", " ", " "};
 char str[40];
 char InputDisplayString[40];
 
+//adelikat: Adding this specifically for the crappy yabause OSD, to return a string of /xxxx to add to a movie if in playback mode
+char* GetMovieLengthStr()
+{
+	char str[10] = "";
+	int length;
+
+	if (MovieIsActive() && movie_readonly)
+	{
+		length = (int)currMovieData.records.size();
+		sprintf(str, "/%d", length);
+	}
+
+	return str;
+}
+
 void SetInputDisplayCharacters(void) {
 
 	int x;

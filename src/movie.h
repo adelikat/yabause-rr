@@ -25,6 +25,7 @@
 
 void PauseOrUnpause(void);
 void MakeMovieStateName(const char *filename);
+char* GetMovieLengthStr();
 
 extern int FrameAdvanceVariable;
 extern int LagFrameCounter;
