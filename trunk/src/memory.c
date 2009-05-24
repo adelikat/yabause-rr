@@ -1011,7 +1011,7 @@ int YabSaveState(const char *filename)
    ywrite(&check, (void *)&currFrameCounter, 4, 1, fp);
 
    //this will be updated with the movie position later
-   ywrite(&check, (void *)&framecounter, 4, 1, fp);
+   ywrite(&check, (void *)&currFrameCounter, 4, 1, fp);
 
    // Go through each area and write each state
    i += CartSaveState(fp);
@@ -1066,7 +1066,7 @@ int YabSaveState(const char *filename)
    movieposition=ftell(fp);
    //write the movie to the end of the savestate
   // SaveMovieInState(fp, check);
-   SaveStateMovie(filename);
+//   SaveStateMovie(filename);
 
    i += StateFinishHeader(fp, offset);
 
@@ -1299,7 +1299,7 @@ int YabLoadState(const char *filename)
 
    fseek(fp, movieposition, SEEK_SET);
    //MovieReadState(fp, filename);
-   LoadStateMovie(filename);
+//   LoadStateMovie(filename);
    }
    
    fclose(fp);

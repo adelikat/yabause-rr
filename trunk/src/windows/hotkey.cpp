@@ -1365,7 +1365,7 @@ void HK_ToggleReadOnly(int)
 
 void HK_PlayMovie(int)   {YuiPlayMovie(YabWin); };
 void HK_RecordMovie(int) {YuiRecordMovie(YabWin); };
-void HK_StopMovie(int)   {StopMovie(); };
+void HK_StopMovie(int)   {FCEUI_StopMovie(); };
 
 void HK_ToggleNBG0(int) {ToggleNBG0();}
 void HK_ToggleNBG1(int) {ToggleNBG1();}

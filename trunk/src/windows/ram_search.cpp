@@ -1110,9 +1110,6 @@ void signal_new_size ()
 	}
 }
 
-
-
-
 LRESULT CustomDraw (LPARAM lParam)
 {
 	LPNMLVCUSTOMDRAW lplvcd = (LPNMLVCUSTOMDRAW)lParam;

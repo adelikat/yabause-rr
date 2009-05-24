@@ -235,12 +235,12 @@ void SmpcINTBACKStatus(void) {
    SmpcRegs->OREG[6] = ((times.tm_min / 10) << 4) | (times.tm_min % 10);
    SmpcRegs->OREG[7] = ((times.tm_sec / 10) << 4) | (times.tm_sec % 10);
 
-   if(Movie.Status == Recording || Movie.Status == Playback) {
+   if(!MovieIsActive()) {
 	   movietime.tm_year=0x62;
 	   movietime.tm_wday=0x04;
 	   movietime.tm_mday=0x01;
 	   movietime.tm_mon=0;
-	   totalseconds = ((framecounter / 60) + noon);
+	   totalseconds = ((currFrameCounter / 60) + noon);
 
 	   movietime.tm_sec=totalseconds % 60;
 	   movietime.tm_min=totalseconds/60;
