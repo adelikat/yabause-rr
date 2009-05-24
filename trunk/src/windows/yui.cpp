@@ -2070,7 +2070,7 @@ void YuiPlayMovie(HWND hWnd)
 
 	YuiTempPause();
 	CreateFilter(filter, 1024,
-		"Yabause Movie files", "*.YMV",
+		"Yabause Movie files", "*.ymv",
 		"All files (*.*)", "*.*", NULL);
 	SetupOFN(&ofn, OFN_DEFAULTLOAD, hWnd, filter,
 	ymvfilename, sizeof(ymvfilename)/sizeof(TCHAR));
@@ -2093,12 +2093,12 @@ void YuiRecordMovie(HWND hWnd)
 
 	YuiTempPause();
 	CreateFilter(filter, 1024,
-		"Yabause Movie file", "*.YMV",
+		"Yabause Movie file", "*.ymv",
 		"All files (*.*)", "*.*", NULL);
 
 	SetupOFN(&ofn, OFN_DEFAULTSAVE, hWnd, filter,
 	ymvfilename, sizeof(ymvfilename)/sizeof(TCHAR));
-	ofn.lpstrDefExt = (LPCWSTR)_16("YMV");
+	ofn.lpstrDefExt = (LPCWSTR)_16("ymv");
 
 	if (GetSaveFileName(&ofn))
 	{
