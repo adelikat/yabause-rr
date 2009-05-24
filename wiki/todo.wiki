@@ -6,18 +6,20 @@
 
   * The main cvs crashes when open cue iso is used - what is the difference?  This is maybe a problem with c68kexec or differences in compilation between mingw and VS. This may not actually be a problem.
   * Resuming can break, resulting in an "inverted" movie. Mnemonics are placed for non-pressed and . are placed for pressed.
-  * Remove the leftover junk from the old movie format
   * The screenshot display when loading a state is broken for gtk pure software, opengl doesn't display correctly due to glzoompixels or whatever.  It needs to save the vidsoft framebuffer for software mode I guess.
   * When resuming, any pressed keys will get stuck and record into the movie.
   * The ram search window doesn't display properly the second time you open it in a session
   * Frame counter doesn't always reset when it should
   * Resolve the project file differences between the cvs and the svn - this is causing differences in the way it is compiled resulting in extern "C" needed more often in one codebase than the other
-  * SCSP_FRAMEACCURATE ought to be a runtime option if possible
-  * The Open Cue / ISO menu item can become checked, I don't know why
-  * Allow dumping avi's at any resolution
+  * Compilation is broken on other platforms
+  * Clean up the savestates / anything else now that the old movie system is gone
+  * Lag frame counter hasn't been moved to new movie system, make advancing lag frames an option.  Right now it's mandatory.
   
 ===Medium=== 
 
+  * SCSP_FRAMEACCURATE ought to be a runtime option if possible
+  * The Open Cue / ISO menu item can become checked, I don't know why
+  * Allow dumping avi's at any resolution
   * Ram-watch - values don't update
   * Ram-Search - values don't update while holding frame advance
 ===Low===
