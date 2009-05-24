@@ -1158,7 +1158,7 @@ void ToggleReadOnly() {
 
 }
 
-bool MovieIsActive() {
+extern "C" int MovieIsActive() {
 
 	if(movieMode == MOVIEMODE_INACTIVE)
 		return false;

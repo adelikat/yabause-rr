@@ -1686,7 +1686,8 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 				//StopMovie();
 				break;
 			case IDM_TOGGLEREADONLY:
-				MovieToggleReadOnly();
+				//MovieToggleReadOnly();
+				ToggleReadOnly();
 				break;
 			case IDM_FRAMEADVANCEPAUSE:
 				PauseOrUnpause();
