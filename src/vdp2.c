@@ -309,7 +309,7 @@ void FPSDisplay(void)
    {
       if (!OSDMessageTimer)
 		OSDMessage[0] = 0;
-	  VIDCore->OnScreenDebugMessage("%02d/%02d FPS %d %d %s %s %s", fps, yabsys.IsPal ? 50 : 60, currFrameCounter, lagframecounter, MovieStatus, InputDisplayString, OSDMessage);
+	  VIDCore->OnScreenDebugMessage("%02d/%02d FPS %d %d %s %s %s", fps, yabsys.IsPal ? 50 : 60, currFrameCounter, LagFrameCounter, MovieStatus, InputDisplayString, OSDMessage);
 	  if (OSDMessageTimer > 0)
 		  OSDMessageTimer--;
       fpsframecount++;
