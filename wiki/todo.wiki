@@ -14,6 +14,7 @@
   * Compilation is broken on other platforms
   * Clean up the savestates / anything else now that the old movie system is gone
   * Lag frame counter hasn't been moved to new movie system, make advancing lag frames an option.  Right now it's mandatory.
+  * Separate movie savestates from normal savestates
   
 ===Medium=== 
 
