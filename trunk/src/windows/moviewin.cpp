@@ -149,7 +149,7 @@ void MovieRecord::dumpPad(std::ostream* os, u16 pad)
 		int bitmask = (1<<(12-bit));
 		char mnemonic = mnemonics[bit];
 		//if the bit is set write the mnemonic
-		if(!(pad & bitmask))
+		if(pad & bitmask)
 			os->put(mnemonic);
 		else //otherwise write an unset bit
 			os->put('.');
@@ -723,19 +723,19 @@ extern "C" void FCEUMOV_AddInputState()
 		 ///////////////////////
 
 		 #define FIX(b) (b?1:0)
-	int r = FIX(PORTDATA1.data[2] & (1 << 6));//const char* Buttons[8] = {"B", "C", "A", "S", "U", "D", "R", "L"};
-	int l = FIX(PORTDATA1.data[2] & (1 << 7));//const char* Buttons2[8] = {"", "", "", "L", "Z", "Y", "X", "R"};
-	int d = FIX(PORTDATA1.data[2] & (1 << 5));
-	int u = FIX(PORTDATA1.data[2] & (1 << 4));
-	int s = FIX(PORTDATA1.data[2] & (1 << 3));
-	int a = FIX(PORTDATA1.data[2] & (1 << 2));
-	int b = FIX(PORTDATA1.data[2] & (1 << 0));
-	int c = FIX(PORTDATA1.data[2] & (1 << 1));
-	int x = FIX(PORTDATA1.data[3] & (1 << 6));
-	int y = FIX(PORTDATA1.data[3] & (1 << 5));
-	int z = FIX(PORTDATA1.data[3] & (1 << 4));
-	int w = FIX(PORTDATA1.data[3] & (1 << 3));
-	int e = FIX(PORTDATA1.data[3] & (1 << 7));
+	int r = FIX(~PORTDATA1.data[2] & (1 << 6));//const char* Buttons[8] = {"B", "C", "A", "S", "U", "D", "R", "L"};
+	int l = FIX(~PORTDATA1.data[2] & (1 << 7));//const char* Buttons2[8] = {"", "", "", "L", "Z", "Y", "X", "R"};
+	int d = FIX(~PORTDATA1.data[2] & (1 << 5));
+	int u = FIX(~PORTDATA1.data[2] & (1 << 4));
+	int s = FIX(~PORTDATA1.data[2] & (1 << 3));
+	int a = FIX(~PORTDATA1.data[2] & (1 << 2));
+	int b = FIX(~PORTDATA1.data[2] & (1 << 0));
+	int c = FIX(~PORTDATA1.data[2] & (1 << 1));
+	int x = FIX(~PORTDATA1.data[3] & (1 << 6));
+	int y = FIX(~PORTDATA1.data[3] & (1 << 5));
+	int z = FIX(~PORTDATA1.data[3] & (1 << 4));
+	int w = FIX(~PORTDATA1.data[3] & (1 << 3));
+	int e = FIX(~PORTDATA1.data[3] & (1 << 7));
 
 
 	pad =
