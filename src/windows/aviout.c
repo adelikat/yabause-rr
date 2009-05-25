@@ -26,6 +26,9 @@
 #include "settings/settings.h"
 #include "aviout.h"
 
+extern int screenwidth;
+extern int screenheight;
+
 void EMU_PrintError(const char* msg) {
 //	LOG(msg);
 }
@@ -69,7 +72,7 @@ static struct AVIFile
 	int					video_frames;
 	int					sound_samples;
 
-	u8					convert_buffer[320*224*3];
+	u8					convert_buffer[1024*768*3];//320*224
 	int					start_scanline;
 	int					end_scanline;
 	
@@ -289,9 +292,9 @@ static void do_video_conversion(const u8* buffer)
 	int y;
 	int x;
 
-	for(y=0;y<224;y++)
+	for(y=0;y<screenheight;y++)
 	{
-		for(x=0;x<320;x++)
+		for(x=0;x<screenwidth;x++)
 		{
 			u16 a,b,c;
 
@@ -338,9 +341,9 @@ int DRV_AviBegin(const char* fname, HWND HWnd)
 	bi.biSize = 0x28;    
 	bi.biPlanes = 1;
 	bi.biBitCount = 24;
-	bi.biWidth = 320;
-	bi.biHeight = 224;
-	bi.biSizeImage = 3 * 320 * 224;
+	bi.biWidth = screenwidth;
+	bi.biHeight = screenheight;
+	bi.biSizeImage = 3 * screenwidth * screenheight;
 
 	
 	wf.cbSize = sizeof(WAVEFORMATEX);

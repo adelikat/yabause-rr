@@ -78,8 +78,10 @@ int stopped=1;
 int paused=0;
 int yabwinw;
 int yabwinh;
+extern "C" {
 int screenwidth;
 int screenheight;
+}
 int AlreadyStarted;
 
 HWND YabWin=NULL;
