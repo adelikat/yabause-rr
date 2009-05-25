@@ -159,7 +159,7 @@ void SmpcCKCHG352() {
    SmpcInternalVars->dotsel = 1;
 
    // Send NMI
-   SH2NMI(MSH2);
+   SH2NMI(&MSH2);
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -182,7 +182,7 @@ void SmpcCKCHG320() {
    SmpcInternalVars->dotsel = 0;
 
    // Send NMI
-   SH2NMI(MSH2);
+   SH2NMI(&MSH2);
 }
 
 struct movietime {
@@ -459,7 +459,7 @@ void SmpcSETSMEM() {
 //////////////////////////////////////////////////////////////////////////////
 
 void SmpcNMIREQ() {
-   SH2SendInterrupt(MSH2, 0xB, 16);
+   SH2SendInterrupt(&MSH2, 0xB, 16);
    SmpcRegs->OREG[31] = 0x18;
 }
 
@@ -470,7 +470,7 @@ void SmpcResetButton() {
    if (SmpcInternalVars->resd)
       return;
 
-   SH2SendInterrupt(MSH2, 0xB, 16);
+   SH2SendInterrupt(&MSH2, 0xB, 16);
 }
 
 //////////////////////////////////////////////////////////////////////////////

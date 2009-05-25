@@ -145,7 +145,7 @@ void YuiErrorMsg(const char *string)
       {
          if (DialogBoxParam(y_hInstance, MAKEINTRESOURCE(IDD_ERRORDEBUG), NULL, (DLGPROC)ErrorDebugDlgProc, (LPARAM)string) == TRUE)
          {
-            debugsh = MSH2;
+            debugsh = &MSH2;
             DialogBox(y_hInstance, MAKEINTRESOURCE(IDD_SH2DEBUG), NULL, (DLGPROC)SH2DebugDlgProc);
          }
       }
@@ -156,7 +156,7 @@ void YuiErrorMsg(const char *string)
       {
          if (DialogBoxParam(y_hInstance, MAKEINTRESOURCE(IDD_ERRORDEBUG), NULL, (DLGPROC)ErrorDebugDlgProc, (LPARAM)string) == TRUE)
          {
-            debugsh = SSH2;
+            debugsh = &SSH2;
             DialogBox(y_hInstance, MAKEINTRESOURCE(IDD_SH2DEBUG), NULL, (DLGPROC)SH2DebugDlgProc);
          }
       }

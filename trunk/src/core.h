@@ -35,6 +35,7 @@
 #define FASTCALL __attribute__((regparm(3)))
 #else
 #define FASTCALL
+//note: declaring this in msvc actually seems to slow down the emu
 #endif
 #endif
 

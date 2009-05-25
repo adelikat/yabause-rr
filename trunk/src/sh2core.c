@@ -25,8 +25,8 @@
 #include "memory.h"
 #include "yabause.h"
 
-SH2_struct *MSH2=NULL;
-SH2_struct *SSH2=NULL;
+SH2_struct MSH2;
+SH2_struct SSH2;
 static SH2_struct *CurrentSH2;
 SH2Interface_struct *SH2Core=NULL;
 extern SH2Interface_struct *SH2CoreList[];
@@ -44,18 +44,20 @@ int SH2Init(int coreid)
    int i;
 
    // MSH2
-   if ((MSH2 = (SH2_struct *)calloc(1, sizeof(SH2_struct))) == NULL)
-      return -1;
+   /*if ((MSH2 = (SH2_struct *)calloc(1, sizeof(SH2_struct))) == NULL)
+      return -1;*/
+   memset(&MSH2,0,sizeof(SH2_struct));
 
-   MSH2->onchip.BCR1 = 0x0000;
-   MSH2->isslave = 0;
+   MSH2.onchip.BCR1 = 0x0000;
+   MSH2.isslave = 0;
 
    // SSH2
-   if ((SSH2 = (SH2_struct *)calloc(1, sizeof(SH2_struct))) == NULL)
-      return -1;
+   //if ((SSH2 = (SH2_struct *)calloc(1, sizeof(SH2_struct))) == NULL)
+   //   return -1;
+   memset(&SSH2,0,sizeof(SH2_struct));
 
-   SSH2->onchip.BCR1 = 0x8000;
-   SSH2->isslave = 1;
+   SSH2.onchip.BCR1 = 0x8000;
+   SSH2.isslave = 1;
 
    // So which core do we want?
    if (coreid == SH2CORE_DEFAULT)
@@ -86,13 +88,13 @@ void SH2DeInit()
       SH2Core->DeInit();
    SH2Core = NULL;
 
-   if (MSH2)
-      free(MSH2);
-   MSH2 = NULL;
+   //if (MSH2)
+   //   free(MSH2);
+   //MSH2 = NULL;
 
-   if (SSH2)
-      free(SSH2);
-   SSH2 = NULL;
+   //if (SSH2)
+   //   free(SSH2);
+   //SSH2 = NULL;
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -380,15 +382,15 @@ u8 FASTCALL SH2MemoryBreakpointReadByte(u32 addr) {
    }
 
    // Use the closest match if address doesn't match
-   for (i = 0; i < MSH2->bp.nummemorybreakpoints; i++)
+   for (i = 0; i < MSH2.bp.nummemorybreakpoints; i++)
    {
-      if (((MSH2->bp.memorybreakpoint[i].addr >> 16) & 0xFFF) == ((addr >> 16) & 0xFFF))
-         return MSH2->bp.memorybreakpoint[i].oldreadbyte(addr);
+      if (((MSH2.bp.memorybreakpoint[i].addr >> 16) & 0xFFF) == ((addr >> 16) & 0xFFF))
+         return MSH2.bp.memorybreakpoint[i].oldreadbyte(addr);
    }
-   for (i = 0; i < SSH2->bp.nummemorybreakpoints; i++)
+   for (i = 0; i < SSH2.bp.nummemorybreakpoints; i++)
    {
-      if (((SSH2->bp.memorybreakpoint[i].addr >> 16) & 0xFFF) == ((addr >> 16) & 0xFFF))
-         return SSH2->bp.memorybreakpoint[i].oldreadbyte(addr);
+      if (((SSH2.bp.memorybreakpoint[i].addr >> 16) & 0xFFF) == ((addr >> 16) & 0xFFF))
+         return SSH2.bp.memorybreakpoint[i].oldreadbyte(addr);
    }
 
    return 0;
@@ -415,15 +417,15 @@ u16 FASTCALL SH2MemoryBreakpointReadWord(u32 addr) {
    }
 
    // Use the closest match if address doesn't match
-   for (i = 0; i < MSH2->bp.nummemorybreakpoints; i++)
+   for (i = 0; i < MSH2.bp.nummemorybreakpoints; i++)
    {
-      if (((MSH2->bp.memorybreakpoint[i].addr >> 16) & 0xFFF) == ((addr >> 16) & 0xFFF))
-         return MSH2->bp.memorybreakpoint[i].oldreadword(addr);
+      if (((MSH2.bp.memorybreakpoint[i].addr >> 16) & 0xFFF) == ((addr >> 16) & 0xFFF))
+         return MSH2.bp.memorybreakpoint[i].oldreadword(addr);
    }
-   for (i = 0; i < SSH2->bp.nummemorybreakpoints; i++)
+   for (i = 0; i < SSH2.bp.nummemorybreakpoints; i++)
    {
-      if (((SSH2->bp.memorybreakpoint[i].addr >> 16) & 0xFFF) == ((addr >> 16) & 0xFFF))
-         return SSH2->bp.memorybreakpoint[i].oldreadword(addr);
+      if (((SSH2.bp.memorybreakpoint[i].addr >> 16) & 0xFFF) == ((addr >> 16) & 0xFFF))
+         return SSH2.bp.memorybreakpoint[i].oldreadword(addr);
    }
 
    return 0;
@@ -450,15 +452,15 @@ u32 FASTCALL SH2MemoryBreakpointReadLong(u32 addr) {
    }
 
    // Use the closest match if address doesn't match
-   for (i = 0; i < MSH2->bp.nummemorybreakpoints; i++)
+   for (i = 0; i < MSH2.bp.nummemorybreakpoints; i++)
    {
-      if (((MSH2->bp.memorybreakpoint[i].addr >> 16) & 0xFFF) == ((addr >> 16) & 0xFFF))
-         return MSH2->bp.memorybreakpoint[i].oldreadlong(addr);
+      if (((MSH2.bp.memorybreakpoint[i].addr >> 16) & 0xFFF) == ((addr >> 16) & 0xFFF))
+         return MSH2.bp.memorybreakpoint[i].oldreadlong(addr);
    }
-   for (i = 0; i < SSH2->bp.nummemorybreakpoints; i++)
+   for (i = 0; i < SSH2.bp.nummemorybreakpoints; i++)
    {
-      if (((SSH2->bp.memorybreakpoint[i].addr >> 16) & 0xFFF) == ((addr >> 16) & 0xFFF))
-         return SSH2->bp.memorybreakpoint[i].oldreadlong(addr);
+      if (((SSH2.bp.memorybreakpoint[i].addr >> 16) & 0xFFF) == ((addr >> 16) & 0xFFF))
+         return SSH2.bp.memorybreakpoint[i].oldreadlong(addr);
    }
 
    return 0;
@@ -486,19 +488,19 @@ void FASTCALL SH2MemoryBreakpointWriteByte(u32 addr, u8 val) {
    }
 
    // Use the closest match if address doesn't match
-   for (i = 0; i < MSH2->bp.nummemorybreakpoints; i++)
+   for (i = 0; i < MSH2.bp.nummemorybreakpoints; i++)
    {
-      if (((MSH2->bp.memorybreakpoint[i].addr >> 16) & 0xFFF) == ((addr >> 16) & 0xFFF))
+      if (((MSH2.bp.memorybreakpoint[i].addr >> 16) & 0xFFF) == ((addr >> 16) & 0xFFF))
       {
-         MSH2->bp.memorybreakpoint[i].oldwritebyte(addr, val);
+         MSH2.bp.memorybreakpoint[i].oldwritebyte(addr, val);
          return;
       }
    }
-   for (i = 0; i < SSH2->bp.nummemorybreakpoints; i++)
+   for (i = 0; i < SSH2.bp.nummemorybreakpoints; i++)
    {
-      if (((SSH2->bp.memorybreakpoint[i].addr >> 16) & 0xFFF) == ((addr >> 16) & 0xFFF))
+      if (((SSH2.bp.memorybreakpoint[i].addr >> 16) & 0xFFF) == ((addr >> 16) & 0xFFF))
       {
-         SSH2->bp.memorybreakpoint[i].oldwritebyte(addr, val);
+         SSH2.bp.memorybreakpoint[i].oldwritebyte(addr, val);
          return;
       }
    }
@@ -526,19 +528,19 @@ void FASTCALL SH2MemoryBreakpointWriteWord(u32 addr, u16 val) {
    }
 
    // Use the closest match if address doesn't match
-   for (i = 0; i < MSH2->bp.nummemorybreakpoints; i++)
+   for (i = 0; i < MSH2.bp.nummemorybreakpoints; i++)
    {
-      if (((MSH2->bp.memorybreakpoint[i].addr >> 16) & 0xFFF) == ((addr >> 16) & 0xFFF))
+      if (((MSH2.bp.memorybreakpoint[i].addr >> 16) & 0xFFF) == ((addr >> 16) & 0xFFF))
       {
-         MSH2->bp.memorybreakpoint[i].oldwriteword(addr, val);
+         MSH2.bp.memorybreakpoint[i].oldwriteword(addr, val);
          return;
       }
    }
-   for (i = 0; i < SSH2->bp.nummemorybreakpoints; i++)
+   for (i = 0; i < SSH2.bp.nummemorybreakpoints; i++)
    {
-      if (((SSH2->bp.memorybreakpoint[i].addr >> 16) & 0xFFF) == ((addr >> 16) & 0xFFF))
+      if (((SSH2.bp.memorybreakpoint[i].addr >> 16) & 0xFFF) == ((addr >> 16) & 0xFFF))
       {
-         SSH2->bp.memorybreakpoint[i].oldwriteword(addr, val);
+         SSH2.bp.memorybreakpoint[i].oldwriteword(addr, val);
          return;
       }
    }
@@ -566,19 +568,19 @@ void FASTCALL SH2MemoryBreakpointWriteLong(u32 addr, u32 val) {
    }
 
    // Use the closest match if address doesn't match
-   for (i = 0; i < MSH2->bp.nummemorybreakpoints; i++)
+   for (i = 0; i < MSH2.bp.nummemorybreakpoints; i++)
    {
-      if (((MSH2->bp.memorybreakpoint[i].addr >> 16) & 0xFFF) == ((addr >> 16) & 0xFFF))
+      if (((MSH2.bp.memorybreakpoint[i].addr >> 16) & 0xFFF) == ((addr >> 16) & 0xFFF))
       {
-         MSH2->bp.memorybreakpoint[i].oldwritelong(addr, val);
+         MSH2.bp.memorybreakpoint[i].oldwritelong(addr, val);
          return;
       }
    }
-   for (i = 0; i < SSH2->bp.nummemorybreakpoints; i++)
+   for (i = 0; i < SSH2.bp.nummemorybreakpoints; i++)
    {
-      if (((SSH2->bp.memorybreakpoint[i].addr >> 16) & 0xFFF) == ((addr >> 16) & 0xFFF))
+      if (((SSH2.bp.memorybreakpoint[i].addr >> 16) & 0xFFF) == ((addr >> 16) & 0xFFF))
       {
-         SSH2->bp.memorybreakpoint[i].oldwritelong(addr, val);
+         SSH2.bp.memorybreakpoint[i].oldwritelong(addr, val);
          return;
       }
    }
@@ -1261,7 +1263,7 @@ void FASTCALL OnchipWriteLong(u32 addr, u32 val)  {
             CurrentSH2->onchip.DVCR |= 1;
 
             if (CurrentSH2->onchip.DVCR & 0x2)
-               SH2SendInterrupt(CurrentSH2, CurrentSH2->onchip.VCRDIV & 0x7F, (MSH2->onchip.IPRA >> 12) & 0xF);
+               SH2SendInterrupt(CurrentSH2, CurrentSH2->onchip.VCRDIV & 0x7F, (MSH2.onchip.IPRA >> 12) & 0xF);
          }
          else
          {
@@ -1311,7 +1313,7 @@ void FASTCALL OnchipWriteLong(u32 addr, u32 val)  {
             CurrentSH2->onchip.DVCR |= 1;
 
             if (CurrentSH2->onchip.DVCR & 0x2)
-               SH2SendInterrupt(CurrentSH2, CurrentSH2->onchip.VCRDIV & 0x7F, (MSH2->onchip.IPRA >> 12) & 0xF);
+               SH2SendInterrupt(CurrentSH2, CurrentSH2->onchip.VCRDIV & 0x7F, (MSH2.onchip.IPRA >> 12) & 0xF);
          }
          else
          {
@@ -1325,7 +1327,7 @@ void FASTCALL OnchipWriteLong(u32 addr, u32 val)  {
                CurrentSH2->onchip.DVDNTH = 0xFFFFFFFE; // fix me
 
                if (CurrentSH2->onchip.DVCR & 0x2)
-                  SH2SendInterrupt(CurrentSH2, CurrentSH2->onchip.VCRDIV & 0x7F, (MSH2->onchip.IPRA >> 12) & 0xF);
+                  SH2SendInterrupt(CurrentSH2, CurrentSH2->onchip.VCRDIV & 0x7F, (MSH2.onchip.IPRA >> 12) & 0xF);
             }
             else if ((s32)(quotient >> 32) < -1)
             {
@@ -1334,7 +1336,7 @@ void FASTCALL OnchipWriteLong(u32 addr, u32 val)  {
                CurrentSH2->onchip.DVDNTH = 0xFFFFFFFE; // fix me
 
                if (CurrentSH2->onchip.DVCR & 0x2)
-                  SH2SendInterrupt(CurrentSH2, CurrentSH2->onchip.VCRDIV & 0x7F, (MSH2->onchip.IPRA >> 12) & 0xF);
+                  SH2SendInterrupt(CurrentSH2, CurrentSH2->onchip.VCRDIV & 0x7F, (MSH2.onchip.IPRA >> 12) & 0xF);
             }
             else
             {
@@ -1721,14 +1723,14 @@ void DMATransfer(u32 *CHCR, u32 *SAR, u32 *DAR, u32 *TCR, u32 *VCRDMA)
 void FASTCALL MSH2InputCaptureWriteWord(UNUSED u32 addr, UNUSED u16 data)
 {
    // Set Input Capture Flag
-   MSH2->onchip.FTCSR |= 0x80;
+   MSH2.onchip.FTCSR |= 0x80;
 
    // Copy FRC register to FICR
-   MSH2->onchip.FICR = MSH2->onchip.FRC.all;
+   MSH2.onchip.FICR = MSH2.onchip.FRC.all;
 
    // Time for an Interrupt?
-   if (MSH2->onchip.TIER & 0x80)
-      SH2SendInterrupt(MSH2, (MSH2->onchip.VCRC >> 8) & 0x7F, (MSH2->onchip.IPRB >> 8) & 0xF);
+   if (MSH2.onchip.TIER & 0x80)
+      SH2SendInterrupt(&MSH2, (MSH2.onchip.VCRC >> 8) & 0x7F, (MSH2.onchip.IPRB >> 8) & 0xF);
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -1736,14 +1738,14 @@ void FASTCALL MSH2InputCaptureWriteWord(UNUSED u32 addr, UNUSED u16 data)
 void FASTCALL SSH2InputCaptureWriteWord(UNUSED u32 addr, UNUSED u16 data)
 {
    // Set Input Capture Flag
-   SSH2->onchip.FTCSR |= 0x80;
+   SSH2.onchip.FTCSR |= 0x80;
 
    // Copy FRC register to FICR
-   SSH2->onchip.FICR = SSH2->onchip.FRC.all;
+   SSH2.onchip.FICR = SSH2.onchip.FRC.all;
 
    // Time for an Interrupt?
-   if (SSH2->onchip.TIER & 0x80)
-      SH2SendInterrupt(SSH2, (SSH2->onchip.VCRC >> 8) & 0x7F, (SSH2->onchip.IPRB >> 8) & 0xF);
+   if (SSH2.onchip.TIER & 0x80)
+      SH2SendInterrupt(&SSH2, (SSH2.onchip.VCRC >> 8) & 0x7F, (SSH2.onchip.IPRB >> 8) & 0xF);
 }
 
 //////////////////////////////////////////////////////////////////////////////
