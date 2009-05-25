@@ -51,7 +51,7 @@
 
 #ifndef INLINE
 #ifdef _MSC_VER
-#define INLINE _inline
+#define INLINE __forceinline
 #else
 #define INLINE inline
 #endif 
