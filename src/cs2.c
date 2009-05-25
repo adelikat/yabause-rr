@@ -564,6 +564,8 @@ void Cs2Reset(void) {
      default: break;
   }
 
+  Cs2Area->calcsize = 0; //i'm not sure what this should be set to
+  Cs2Area->datanumsecttrans = 0; //same
   Cs2Area->infotranstype = -1;
   Cs2Area->datatranstype = -1;
   Cs2Area->transfercount = 0;
