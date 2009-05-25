@@ -332,6 +332,8 @@ void YabauseResetNoLoad(void) {
 void YabauseReset(void) {
    YabauseResetNoLoad();
 
+   currFrameCounter=0;
+
    if (yabsys.usequickload || yabsys.emulatebios)
    {
       if (YabauseQuickLoadGame() != 0)

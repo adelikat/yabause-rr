@@ -869,6 +869,7 @@ void OnchipReset(SH2_struct *context) {
    context->onchip.RTCSR = 0x0000;
    context->onchip.RTCNT = 0x0000;
    context->onchip.RTCOR = 0x0000;
+   context->onchip.SAR1 = 0x00000000;//not sure what value to give
 }
 
 //////////////////////////////////////////////////////////////////////////////
