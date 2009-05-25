@@ -2679,7 +2679,7 @@ static INLINE void SH2UBCInterrupt(SH2_struct *context, u32 flag)
 
 //////////////////////////////////////////////////////////////////////////////
 
-FASTCALL void SH2DebugInterpreterExec(SH2_struct *context, u32 cycles)
+void FASTCALL SH2DebugInterpreterExec(SH2_struct *context, u32 cycles)
 {
    
    while(context->cycles < cycles)
@@ -2752,7 +2752,7 @@ FASTCALL void SH2DebugInterpreterExec(SH2_struct *context, u32 cycles)
 
 //////////////////////////////////////////////////////////////////////////////
 
-FASTCALL void SH2InterpreterExec(SH2_struct *context, u32 cycles)
+void FASTCALL SH2InterpreterExec(SH2_struct *context, u32 cycles)
 {
    if (context->isIdle)
       SH2idleParse(context, cycles);

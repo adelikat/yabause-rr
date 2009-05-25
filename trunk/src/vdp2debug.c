@@ -1723,7 +1723,7 @@ u32 *Vdp2DebugTexture(u32 screen, int tilenum, u32 transparentcolor, int *w, int
                ReadPatternData(&info, Vdp2Regs->PNCN0, Vdp2Regs->CHCTLA & 0x1);
             }
 
-            info.PlaneAddr = (void FASTCALL (*)(void *, int))&Vdp2ParameterBPlaneAddr;
+            info.PlaneAddr = (FAST_FUNC_PTR(void,)(void *, int))&Vdp2ParameterBPlaneAddr;
          }
          else if (Vdp2Regs->BGON & 0x1)
          {
@@ -1750,7 +1750,7 @@ u32 *Vdp2DebugTexture(u32 screen, int tilenum, u32 transparentcolor, int *w, int
                ReadPatternData(&info, Vdp2Regs->PNCN0, Vdp2Regs->CHCTLA & 0x1);
             }
 
-            info.PlaneAddr = (void FASTCALL (*)(void *, int))&Vdp2NBG0PlaneAddr;
+            info.PlaneAddr = (FAST_FUNC_PTR(void,)(void *, int))&Vdp2NBG0PlaneAddr;
          }
          else
             return NULL;
@@ -1790,7 +1790,7 @@ u32 *Vdp2DebugTexture(u32 screen, int tilenum, u32 transparentcolor, int *w, int
 
          info.coloroffset = (Vdp2Regs->CRAOFA & 0x70) << 4;
 
-         info.PlaneAddr = (void FASTCALL (*)(void *, int))&Vdp2NBG1PlaneAddr;
+         info.PlaneAddr = (FAST_FUNC_PTR(void,)(void *, int))&Vdp2NBG1PlaneAddr;
          break;
       }
       case 2: //NBG2
@@ -1807,7 +1807,7 @@ u32 *Vdp2DebugTexture(u32 screen, int tilenum, u32 transparentcolor, int *w, int
 
          info.coloroffset = Vdp2Regs->CRAOFA & 0x700;
 
-         info.PlaneAddr = (void FASTCALL (*)(void *, int))&Vdp2NBG2PlaneAddr;
+         info.PlaneAddr = (FAST_FUNC_PTR(void,)(void *, int))&Vdp2NBG2PlaneAddr;
          break;
       case 3: //NBG3
          info.enable = Vdp2Regs->BGON & 0x8;
@@ -1823,7 +1823,7 @@ u32 *Vdp2DebugTexture(u32 screen, int tilenum, u32 transparentcolor, int *w, int
          ReadPatternData(&info, Vdp2Regs->PNCN3, Vdp2Regs->CHCTLB & 0x10);
 
          info.coloroffset = (Vdp2Regs->CRAOFA & 0x7000) >> 4;
-         info.PlaneAddr = (void FASTCALL (*)(void *, int))&Vdp2NBG3PlaneAddr;
+         info.PlaneAddr = (FAST_FUNC_PTR(void,)(void *, int))&Vdp2NBG3PlaneAddr;
          break;
       case 4: //RBG0
          info.enable = Vdp2Regs->BGON & 0x10;
@@ -1839,13 +1839,13 @@ u32 *Vdp2DebugTexture(u32 screen, int tilenum, u32 transparentcolor, int *w, int
                // Parameter A
                info.rotatenum = 0;
                info.rotatemode = 0;
-               info.PlaneAddr = (void FASTCALL (*)(void *, int))&Vdp2ParameterAPlaneAddr;
+               info.PlaneAddr = (FAST_FUNC_PTR(void,)(void *, int))&Vdp2ParameterAPlaneAddr;
                break;
             case 1:
                // Parameter B
                info.rotatenum = 1;
                info.rotatemode = 0;
-               info.PlaneAddr = (void FASTCALL (*)(void *, int))&Vdp2ParameterBPlaneAddr;
+               info.PlaneAddr = (FAST_FUNC_PTR(void,)(void *, int))&Vdp2ParameterBPlaneAddr;
                break;
             case 2:
                // Parameter A+B switched via coefficients
