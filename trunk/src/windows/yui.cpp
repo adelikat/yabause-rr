@@ -1709,7 +1709,6 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 			   break;
 			case MENU_STOP_MOVIE:
 				FCEUI_StopMovie();
-				//StopMovie();
 				break;
 			case IDM_TOGGLEREADONLY:
 				//MovieToggleReadOnly();
@@ -1920,6 +1919,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
          if (AskSave())
 		 {
 			 YuiStopAvi();
+			 FCEUI_StopMovie();
 			 stop = 1;
 			 PostQuitMessage(0);
 			 WriteToINI();
@@ -1941,6 +1941,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
       case WM_DESTROY:
          if (AskSave())
 		 {
+			FCEUI_StopMovie();
 			YuiStopAvi();
 			stop = 1;
 			PostQuitMessage(0);
