@@ -2985,7 +2985,20 @@ void VIDSoftVdp2DrawEnd(void)
 
 #if HAVE_LIBGLUT
    if (msglength > 0) {
-      glColor3f(1.0f, 0.0f, 0.0f);
+	   int LeftX=9;
+	   int Width=500;
+	   int TxtY=11;
+	   int Height=13;
+
+	 glBegin(GL_POLYGON);
+        glColor3f(0, 0, 0);
+        glVertex2i(LeftX, TxtY);
+        glVertex2i(LeftX + Width, TxtY);
+        glVertex2i(LeftX + Width, TxtY + Height);
+        glVertex2i(LeftX, TxtY + Height);
+    glEnd();
+
+      glColor3f(1.0f, 1.0f, 1.0f);
       glRasterPos2i(10, 22);
       for (i = 0; i < msglength; i++) {
          glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, message[i]);
