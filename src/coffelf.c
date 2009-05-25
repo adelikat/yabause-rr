@@ -206,7 +206,7 @@ int MappedMemoryLoadCoff(const char *filename)
    free(section_headers);
    fclose(fp);
 
-   MSH2->regs.PC = aout_header.entrypoint;
+   MSH2.regs.PC = aout_header.entrypoint;
    return 0;
 }
 
@@ -375,7 +375,7 @@ int MappedMemoryLoadElf(const char *filename)
    fclose(fp);
 
    /* Set up our entry point. */
-   MSH2->regs.PC = elf_hdr.entry;
+   MSH2.regs.PC = elf_hdr.entry;
 
    return 0;
 }

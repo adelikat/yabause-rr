@@ -44,7 +44,9 @@ extern SH2Interface_struct SH2DebugInterpreter;
 typedef u32 (FASTCALL *fetchfunc)(u32);
 extern fetchfunc fetchlist[0x100];
 
-typedef void (FASTCALL *opcodefunc)(SH2_struct *);
-extern opcodefunc opcodes[0x10000];
+typedef void (FASTCALL *opcodefunc)();
+extern opcodefunc opcodes[2][0x10000];
+
+#define DECIDE_WHICH_SH2(x) ((x)==&MSH2?0:1)
 
 #endif

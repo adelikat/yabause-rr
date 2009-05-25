@@ -926,7 +926,7 @@ void MappedMemoryLoadExec(const char *filename, u32 pc)
    YabauseSpeedySetup();
 
    MappedMemoryLoad(filename, pc);
-   MSH2->regs.PC = pc;
+   MSH2.regs.PC = pc;
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -1016,8 +1016,8 @@ int YabSaveState(const char *filename)
    // Go through each area and write each state
    i += CartSaveState(fp);
    i += Cs2SaveState(fp);
-   i += SH2SaveState(MSH2, fp);
-   i += SH2SaveState(SSH2, fp);
+   i += SH2SaveState(&MSH2, fp);
+   i += SH2SaveState(&SSH2, fp);
    i += SoundSaveState(fp);
    i += ScuSaveState(fp);
    i += SmpcSaveState(fp);
@@ -1189,7 +1189,7 @@ int YabLoadState(const char *filename)
       ScspUnMuteAudio();
       return -3;
    }
-   SH2LoadState(MSH2, fp, version, chunksize);
+   SH2LoadState(&MSH2, fp, version, chunksize);
 
    if (StateCheckRetrieveHeader(fp, "SSH2", &version, &chunksize) != 0)
    {
@@ -1198,7 +1198,7 @@ int YabLoadState(const char *filename)
       ScspUnMuteAudio();
       return -3;
    }
-   SH2LoadState(SSH2, fp, version, chunksize);
+   SH2LoadState(&SSH2, fp, version, chunksize);
 
    if (StateCheckRetrieveHeader(fp, "SCSP", &version, &chunksize) != 0)
    {

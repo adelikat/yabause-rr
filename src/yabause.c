@@ -309,7 +309,7 @@ void YabauseDeInit(void) {
 //////////////////////////////////////////////////////////////////////////////
 
 void YabauseResetNoLoad(void) {
-   SH2Reset(MSH2);
+   SH2Reset(&MSH2);
    YabauseStopSlave();
    memset(HighWram, 0, 0x100000);
    memset(LowWram, 0, 0x100000);
@@ -324,7 +324,7 @@ void YabauseResetNoLoad(void) {
    Vdp2Reset();
    SmpcReset();
 
-   SH2PowerOn(MSH2);
+   SH2PowerOn(&MSH2);
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -430,12 +430,12 @@ int YabauseEmulate(void) {
 #else // !NO_DECILINE
 
       PROFILE_START("MSH2");
-      SH2Exec(MSH2, sh2cycles);
+      SH2Exec(&MSH2, sh2cycles);
       PROFILE_STOP("MSH2");
 
       PROFILE_START("SSH2");
       if (yabsys.IsSSH2Running)
-         SH2Exec(SSH2, sh2cycles);
+         SH2Exec(&SSH2, sh2cycles);
       PROFILE_STOP("SSH2");
 
 #endif
@@ -488,7 +488,7 @@ int YabauseEmulate(void) {
 #ifdef PSP_TIMING_TWEAKS
       yabsys.CycleCountII += sh2cycles;
 #else
-      yabsys.CycleCountII += sh2cycles + MSH2->cycles;
+      yabsys.CycleCountII += sh2cycles + MSH2.cycles;
 #endif
 
       {
@@ -558,12 +558,12 @@ int YabauseEmulate(void) {
 void YabauseStartSlave(void) {
    if (yabsys.emulatebios)
    {
-      SSH2->regs.R[15] = 0x06001000;
-      SSH2->regs.VBR = 0x06000400;
-      SSH2->regs.PC = MappedMemoryReadLong(0x06000250);
+      SSH2.regs.R[15] = 0x06001000;
+      SSH2.regs.VBR = 0x06000400;
+      SSH2.regs.PC = MappedMemoryReadLong(0x06000250);
    }
    else
-      SH2PowerOn(SSH2);
+      SH2PowerOn(&SSH2);
 
    yabsys.IsSSH2Running = 1;
 }
@@ -571,7 +571,7 @@ void YabauseStartSlave(void) {
 //////////////////////////////////////////////////////////////////////////////
 
 void YabauseStopSlave(void) {
-   SH2Reset(SSH2);
+   SH2Reset(&SSH2);
    yabsys.IsSSH2Running = 0;
 }
 
@@ -691,14 +691,14 @@ void YabauseSpeedySetup(void)
 
    // Set Master SH2 registers accordingly
    for (i = 0; i < 15; i++)
-      MSH2->regs.R[i] = 0x00000000;
-   MSH2->regs.R[15] = 0x06002000;
-   MSH2->regs.SR.all = 0x00000000;
-   MSH2->regs.GBR = 0x00000000;
-   MSH2->regs.VBR = 0x06000000;
-   MSH2->regs.MACH = 0x00000000;
-   MSH2->regs.MACL = 0x00000000;
-   MSH2->regs.PR = 0x00000000;
+      MSH2.regs.R[i] = 0x00000000;
+   MSH2.regs.R[15] = 0x06002000;
+   MSH2.regs.SR.all = 0x00000000;
+   MSH2.regs.GBR = 0x00000000;
+   MSH2.regs.VBR = 0x06000000;
+   MSH2.regs.MACH = 0x00000000;
+   MSH2.regs.MACL = 0x00000000;
+   MSH2.regs.PR = 0x00000000;
 
    // Set SCU registers to sane states
    ScuRegs->D1AD = ScuRegs->D2AD = 0;
@@ -902,7 +902,7 @@ int YabauseQuickLoadGame(void)
       }
 
       // Now setup SH2 registers to start executing at ip code
-      MSH2->regs.PC = 0x06002E00;
+      MSH2.regs.PC = 0x06002E00;
    }
    else
    {

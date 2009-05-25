@@ -2015,7 +2015,7 @@ void ScuTestInterruptMask()
    {
       if (!(ScuRegs->IMS & ScuRegs->interrupts[ScuRegs->NumberOfInterrupts-1-i].mask))
       {
-         SH2SendInterrupt(MSH2, ScuRegs->interrupts[ScuRegs->NumberOfInterrupts-1-i].vector, ScuRegs->interrupts[ScuRegs->NumberOfInterrupts-1-i].level);
+         SH2SendInterrupt(&MSH2, ScuRegs->interrupts[ScuRegs->NumberOfInterrupts-1-i].vector, ScuRegs->interrupts[ScuRegs->NumberOfInterrupts-1-i].level);
          ScuRegs->IST &= ~ScuRegs->interrupts[ScuRegs->NumberOfInterrupts-1-i].statusbit;
 
          // Shorten list
@@ -2068,7 +2068,7 @@ void ScuQueueInterrupt(u8 vector, u8 level, u16 mask, u32 statusbit)
 static INLINE void SendInterrupt(u8 vector, u8 level, u16 mask, u32 statusbit) {
 
    if (!(ScuRegs->IMS & mask))
-      SH2SendInterrupt(MSH2, vector, level);
+      SH2SendInterrupt(&MSH2, vector, level);
    else
    {
       ScuQueueInterrupt(vector, level, mask, statusbit);

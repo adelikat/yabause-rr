@@ -283,7 +283,7 @@ void Vdp2VBlankIN(void) {
    ScuSendVBlankIN();
 
    if (yabsys.IsSSH2Running)
-      SH2SendInterrupt(SSH2, 0x43, 0x6);
+      SH2SendInterrupt(&SSH2, 0x43, 0x6);
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -293,7 +293,7 @@ void Vdp2HBlankIN(void) {
    ScuSendHBlankIN();
 
    if (yabsys.IsSSH2Running)
-      SH2SendInterrupt(SSH2, 0x41, 0x2);
+      SH2SendInterrupt(&SSH2, 0x41, 0x2);
 }
 
 //////////////////////////////////////////////////////////////////////////////

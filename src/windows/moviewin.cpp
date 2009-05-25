@@ -985,15 +985,18 @@ extern "C" void SaveStateMovie(char* filename) {
 
 extern "C" void LoadStateMovie(char* filename) {
 
-	strcat (filename, "ymvmovie");
+	std::string fname = (std::string)filename + "ymvmovie";
 
-    FILE * fp = fopen( filename, "r" );
-    fseek( fp, 0, SEEK_END );
-    int size = ftell(fp);
-    fclose(fp);
+    FILE * fp = fopen( fname.c_str(), "r" );
+	if(!fp)
+		return;
+	
+	fseek( fp, 0, SEEK_END );
+	int size = ftell(fp);
+	fclose(fp);
 
 	filebuf fb;
-	fb.open (filename, ios::in | ios::binary);//ios::in
+	fb.open (fname.c_str(), ios::in | ios::binary);//ios::in
 	istream is(&fb);
 	mov_loadstate(&is, size);
 	fb.close();

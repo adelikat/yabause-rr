@@ -1506,7 +1506,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
             case IDM_MSH2DEBUG:
             {
                YuiTempPause();
-               debugsh = MSH2;
+               debugsh = &MSH2;
                DialogBox(y_hInstance, MAKEINTRESOURCE(IDD_SH2DEBUG), hWnd, (DLGPROC)SH2DebugDlgProc);
                YuiTempUnPause();
                break;
@@ -1514,7 +1514,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
             case IDM_SSH2DEBUG:
             {
                YuiTempPause();
-               debugsh = SSH2;
+               debugsh = &SSH2;
                DialogBox(y_hInstance, MAKEINTRESOURCE(IDD_SH2DEBUG), hWnd, (DLGPROC)SH2DebugDlgProc);
                YuiTempUnPause();
                break;
@@ -1967,10 +1967,32 @@ LRESULT CALLBACK AboutDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
 }
 
 //////////////////////////////////////////////////////////////////////////////
+#include <stdio.h>
+#include <fcntl.h>
+#include <io.h>
+HANDLE hConsole;
+void OpenConsole() 
+{
+	COORD csize;
+	CONSOLE_SCREEN_BUFFER_INFO csbiInfo; 
+	SMALL_RECT srect;
+	char buf[256];
+
+	if (hConsole) return;
+	AllocConsole();
+
+	//redirect stdio
+	long lStdHandle = (long)GetStdHandle(STD_OUTPUT_HANDLE);
+	int hConHandle = _open_osfhandle(lStdHandle, _O_TEXT);
+	FILE *fp = _fdopen( hConHandle, "w" );
+	*stdout = *fp;
+}
 
 int PASCAL WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
                    LPSTR lpCmdLine, int nCmdShow)
 {
+	OpenConsole();
+
 #ifdef HAVE_LIBMINI18N
    mini18n_set_domain("trans");
 #endif
