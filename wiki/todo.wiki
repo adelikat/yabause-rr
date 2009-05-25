@@ -15,8 +15,7 @@
 ===Medium=== 
 
   * SCSP_FRAMEACCURATE ought to be a runtime option if possible
-  * Ram-watch - values don't update
-  * Ram-Search - values don't update while holding frame advance
+  * Ram Watch - off by one, 060143EA in ram search ends up being 060143EB in Ram Watch
 ===Low===
 
   * Fix png dumper
