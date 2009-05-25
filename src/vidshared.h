@@ -55,8 +55,8 @@ typedef struct
    s32 cob;
 
    float coordincx, coordincy;
-   void FASTCALL (* PlaneAddr)(void *, int);
-   u32 FASTCALL (* PostPixelFetchCalc)(void *, u32);
+   FAST_FUNC_PTR(void,PlaneAddr)(void *, int);
+   FAST_FUNC_PTR(u32,PostPixelFetchCalc)(void *, u32);
    int patternpixelwh;
    int draww;
    int drawh;

@@ -41,26 +41,26 @@ typedef struct
    int cartid;
    const char *filename;
 
-   u8 FASTCALL (*Cs0ReadByte)(u32 addr);
-   u16 FASTCALL (*Cs0ReadWord)(u32 addr);
-   u32 FASTCALL (*Cs0ReadLong)(u32 addr);
-   void FASTCALL (*Cs0WriteByte)(u32 addr, u8 val);
-   void FASTCALL (*Cs0WriteWord)(u32 addr, u16 val);
-   void FASTCALL (*Cs0WriteLong)(u32 addr, u32 val);
+   FAST_FUNC_PTR(u8,Cs0ReadByte)(u32 addr);
+   FAST_FUNC_PTR(u16,Cs0ReadWord)(u32 addr);
+   FAST_FUNC_PTR(u32,Cs0ReadLong)(u32 addr);
+   FAST_FUNC_PTR(void,Cs0WriteByte)(u32 addr, u8 val);
+   FAST_FUNC_PTR(void,Cs0WriteWord)(u32 addr, u16 val);
+   FAST_FUNC_PTR(void,Cs0WriteLong)(u32 addr, u32 val);
 
-   u8 FASTCALL (*Cs1ReadByte)(u32 addr);
-   u16 FASTCALL (*Cs1ReadWord)(u32 addr);
-   u32 FASTCALL (*Cs1ReadLong)(u32 addr);
-   void FASTCALL (*Cs1WriteByte)(u32 addr, u8 val);
-   void FASTCALL (*Cs1WriteWord)(u32 addr, u16 val);
-   void FASTCALL (*Cs1WriteLong)(u32 addr, u32 val);
+   FAST_FUNC_PTR(u8,Cs1ReadByte)(u32 addr);
+   FAST_FUNC_PTR(u16,Cs1ReadWord)(u32 addr);
+   FAST_FUNC_PTR(u32,Cs1ReadLong)(u32 addr);
+   FAST_FUNC_PTR(void,Cs1WriteByte)(u32 addr, u8 val);
+   FAST_FUNC_PTR(void,Cs1WriteWord)(u32 addr, u16 val);
+   FAST_FUNC_PTR(void,Cs1WriteLong)(u32 addr, u32 val);
 
-   u8 FASTCALL (*Cs2ReadByte)(u32 addr);
-   u16 FASTCALL (*Cs2ReadWord)(u32 addr);
-   u32 FASTCALL (*Cs2ReadLong)(u32 addr);
-   void FASTCALL (*Cs2WriteByte)(u32 addr, u8 val);
-   void FASTCALL (*Cs2WriteWord)(u32 addr, u16 val);
-   void FASTCALL (*Cs2WriteLong)(u32 addr, u32 val);
+   FAST_FUNC_PTR(u8,Cs2ReadByte)(u32 addr);
+   FAST_FUNC_PTR(u16,Cs2ReadWord)(u32 addr);
+   FAST_FUNC_PTR(u32,Cs2ReadLong)(u32 addr);
+   FAST_FUNC_PTR(void,Cs2WriteByte)(u32 addr, u8 val);
+   FAST_FUNC_PTR(void,Cs2WriteWord)(u32 addr, u16 val);
+   FAST_FUNC_PTR(void,Cs2WriteLong)(u32 addr, u32 val);
 
    void *rom;
    void *bupram;

@@ -117,7 +117,7 @@ void DestroyHelpBalloons(helpballoon_struct *hb)
 
 //////////////////////////////////////////////////////////////////////////////
 
-void CreateFilter(WCHAR * filter, size_t maxlen, ...)
+void STDCALL CreateFilter(WCHAR * filter, size_t maxlen, ...)
 {
    va_list list;
    const char * str;

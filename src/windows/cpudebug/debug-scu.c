@@ -185,9 +185,9 @@ LRESULT CALLBACK SCUDSPDebugDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
                TCHAR tempstr2[MAX_PATH]=TEXT("");
                char tempstr[MAX_PATH];
 
-               CreateFilter(filter, 1024,
-                  "Binary Files", "*.BIN",
-                  "All files (*.*)", "*.*", NULL);
+               //CreateFilter(filter, 1024,
+               //   "Binary Files", "*.BIN",
+               //   "All files (*.*)", "*.*", NULL);
 
                // setup ofn structure
                SetupOFN(&ofn, OFN_DEFAULTSAVE, hDlg, filter, tempstr2, sizeof(tempstr2)/sizeof(TCHAR));
@@ -210,9 +210,9 @@ LRESULT CALLBACK SCUDSPDebugDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
                TCHAR tempstr2[MAX_PATH]=TEXT("");
                char tempstr[MAX_PATH];
 
-               CreateFilter(filter, 1024,
-                  "Binary Files", "*.BIN",
-                  "All files (*.*)", "*.*", NULL);
+               //CreateFilter(filter, 1024,
+               //   "Binary Files", "*.BIN",
+               //   "All files (*.*)", "*.*", NULL);
 
                // setup ofn structure
                SetupOFN(&ofn, OFN_DEFAULTSAVE, hDlg, filter, tempstr2, sizeof(tempstr2)/sizeof(TCHAR));
