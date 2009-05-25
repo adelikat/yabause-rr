@@ -22,7 +22,6 @@
 #define VDP1_H
 
 #include "memory.h"
-#include "core.h"
 
 #define VIDCORE_DEFAULT         -1
 #define VIDCORE_DUMMY           0
@@ -54,11 +53,11 @@ typedef struct
    void (*Vdp2DrawEnd)(void);
    void (*Vdp2DrawScreens)(void);
    void (*Vdp2SetResolution)(u16);
-   FAST_FUNC_PTR(void,Vdp2SetPriorityNBG0)(int);
-   FAST_FUNC_PTR(void,Vdp2SetPriorityNBG1)(int);
-   FAST_FUNC_PTR(void,Vdp2SetPriorityNBG2)(int);
-   FAST_FUNC_PTR(void,Vdp2SetPriorityNBG3)(int);
-   FAST_FUNC_PTR(void,Vdp2SetPriorityRBG0)(int);
+   void FASTCALL (*Vdp2SetPriorityNBG0)(int);
+   void FASTCALL (*Vdp2SetPriorityNBG1)(int);
+   void FASTCALL (*Vdp2SetPriorityNBG2)(int);
+   void FASTCALL (*Vdp2SetPriorityNBG3)(int);
+   void FASTCALL (*Vdp2SetPriorityRBG0)(int);
    void (*OnScreenDebugMessage)(char *string, ...);
    void (*GetGlSize)(int *width, int *height);
 } VideoInterface_struct;

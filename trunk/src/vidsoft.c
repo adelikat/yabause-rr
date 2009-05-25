@@ -794,12 +794,12 @@ void SetupRotationInfo(vdp2draw_struct *info, vdp2rotationparameterfp_struct *p)
    if (info->rotatenum == 0)
    {
       Vdp2ReadRotationTableFP(0, p);
-      info->PlaneAddr = (FAST_FUNC_PTR(void,)(void *, int))&Vdp2ParameterAPlaneAddr;
+      info->PlaneAddr = (void FASTCALL (*)(void *, int))&Vdp2ParameterAPlaneAddr;
    }
    else
    {
       Vdp2ReadRotationTableFP(1, &p[1]);
-      info->PlaneAddr = (FAST_FUNC_PTR(void,)(void *, int))&Vdp2ParameterBPlaneAddr;
+      info->PlaneAddr = (void FASTCALL (*)(void *, int))&Vdp2ParameterBPlaneAddr;
    }
 }
 
@@ -1043,7 +1043,7 @@ static void Vdp2DrawNBG0(void)
 
       info.rotatenum = 1;
       info.rotatemode = 0;
-      info.PlaneAddr = (FAST_FUNC_PTR(void,)(void *, int))&Vdp2ParameterBPlaneAddr;
+      info.PlaneAddr = (void FASTCALL (*)(void *, int))&Vdp2ParameterBPlaneAddr;
    }
    else if (Vdp2Regs->BGON & 0x1)
    {
@@ -1077,7 +1077,7 @@ static void Vdp2DrawNBG0(void)
 
       info.coordincx = (Vdp2Regs->ZMXN0.all & 0x7FF00) / (float) 65536;
       info.coordincy = (Vdp2Regs->ZMYN0.all & 0x7FF00) / (float) 65536;
-      info.PlaneAddr = (FAST_FUNC_PTR(void,)(void *, int))&Vdp2NBG0PlaneAddr;
+      info.PlaneAddr = (void FASTCALL (*)(void *, int))&Vdp2NBG0PlaneAddr;
    }
    else
       // Not enabled
@@ -1170,7 +1170,7 @@ static void Vdp2DrawNBG1(void)
    info.coordincy = (Vdp2Regs->ZMXN1.all & 0x7FF00) / (float) 65536;
 
    info.priority = nbg1priority;
-   info.PlaneAddr = (FAST_FUNC_PTR(void,)(void *, int))&Vdp2NBG1PlaneAddr;
+   info.PlaneAddr = (void FASTCALL (*)(void *, int))&Vdp2NBG1PlaneAddr;
 
    if (!(info.enable & Vdp2External.disptoggle))
       return;
@@ -1224,7 +1224,7 @@ static void Vdp2DrawNBG2(void)
    info.coordincx = info.coordincy = 1;
 
    info.priority = nbg2priority;
-   info.PlaneAddr = (FAST_FUNC_PTR(void,)(void *, int))&Vdp2NBG2PlaneAddr;
+   info.PlaneAddr = (void FASTCALL (*)(void *, int))&Vdp2NBG2PlaneAddr;
 
    if (!(info.enable & Vdp2External.disptoggle))
       return;
@@ -1265,7 +1265,7 @@ static void Vdp2DrawNBG3(void)
    info.coordincx = info.coordincy = 1;
 
    info.priority = nbg3priority;
-   info.PlaneAddr = (FAST_FUNC_PTR(void,)(void *, int))&Vdp2NBG3PlaneAddr;
+   info.PlaneAddr = (void FASTCALL (*)(void *, int))&Vdp2NBG3PlaneAddr;
 
    if (!(info.enable & Vdp2External.disptoggle))
       return;
@@ -1302,13 +1302,13 @@ static void Vdp2DrawRBG0(void)
          // Parameter A
          info.rotatenum = 0;
          info.rotatemode = 0;
-         info.PlaneAddr = (FAST_FUNC_PTR(void,)(void *, int))&Vdp2ParameterAPlaneAddr;
+         info.PlaneAddr = (void FASTCALL (*)(void *, int))&Vdp2ParameterAPlaneAddr;
          break;
       case 1:
          // Parameter B
          info.rotatenum = 1;
          info.rotatemode = 0;
-         info.PlaneAddr = (FAST_FUNC_PTR(void,)(void *, int))&Vdp2ParameterBPlaneAddr;
+         info.PlaneAddr = (void FASTCALL (*)(void *, int))&Vdp2ParameterBPlaneAddr;
          break;
       case 2:
          // Parameter A+B switched via coefficients
@@ -1317,7 +1317,7 @@ static void Vdp2DrawRBG0(void)
       default:
          info.rotatenum = 0;
          info.rotatemode = 1 + (Vdp2Regs->RPMD & 0x1);
-         info.PlaneAddr = (FAST_FUNC_PTR(void,)(void *, int))&Vdp2ParameterAPlaneAddr;
+         info.PlaneAddr = (void FASTCALL (*)(void *, int))&Vdp2ParameterAPlaneAddr;
          break;
    }
 
@@ -2293,14 +2293,7 @@ void VIDSoftVdp1ScaledSpriteDraw(void)
 
 //////////////////////////////////////////////////////////////////////////////
 
-#ifdef _MSC_VER
-#undef CDECL
-#define CDECL __cdecl
-#else
-#define CDECL
-#endif
-
-int CDECL fcmpy_vdp1vertex( const void* v1, const void* v2 ) {
+int fcmpy_vdp1vertex( const void* v1, const void* v2 ) {
 
   return ( ((vdp1vertex*)v1)->y <= ((vdp1vertex*)v2)->y )? -1 : 1;
 }

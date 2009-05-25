@@ -38,7 +38,7 @@ typedef struct {
 	void (*DeInit)(void);
 	void (*Reset)(void);
 
-	FAST_FUNC_PTR(s32,Exec)(s32 cycle);
+	s32  FASTCALL (*Exec)(s32 cycle);
 
 	u32 (*GetDReg)(u32 num);
 	u32 (*GetAReg)(u32 num);
@@ -55,8 +55,8 @@ typedef struct {
 	void (*SetMSP)(u32 val);
 
 	void (*SetFetch)(u32 low_adr, u32 high_adr, pointer fetch_adr);
-	FAST_FUNC_PTR(void,SetIRQ)(s32 level);
-	FAST_FUNC_PTR(void,TouchMem)(u32 address);
+	void FASTCALL (*SetIRQ)(s32 level);
+	void FASTCALL (*TouchMem)(u32 address);
 
 	void (*SetReadB)(M68K_READ *Func);
 	void (*SetReadW)(M68K_READ *Func);
