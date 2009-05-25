@@ -195,6 +195,27 @@ void YuiSetVideoAttribute(int type, int val)
 
 //////////////////////////////////////////////////////////////////////////////
 
+//----------
+//http://www.devmaster.net/forums/showthread.php?t=443
+typedef BOOL (APIENTRY *PFNWGLSWAPINTERVALFARPROC)( int );
+PFNWGLSWAPINTERVALFARPROC wglSwapIntervalEXT = 0;
+void setVSync(int interval=1)
+{
+  const char *extensions = (const char*)glGetString( GL_EXTENSIONS );
+
+  //well, on my computer, the extension wasnt reported even though the procaddress was returned
+  //if( strstr( extensions, "WGL_EXT_swap_control" ) == 0 )
+  //  return; // Error: WGL_EXT_swap_control extension not supported on your computer.\n");
+  //else
+  {
+    wglSwapIntervalEXT = (PFNWGLSWAPINTERVALFARPROC)wglGetProcAddress( "wglSwapIntervalEXT" );
+
+    if( wglSwapIntervalEXT )
+      wglSwapIntervalEXT(interval);
+  }
+}
+//----------
+
 int YuiSetVideoMode(int width, int height, int bpp, int fullscreen)
 {
    PIXELFORMATDESCRIPTOR pfd;
@@ -312,6 +333,8 @@ int YuiSetVideoMode(int width, int height, int bpp, int fullscreen)
          YuiReleaseVideo();
          return -1;
       }
+
+		setVSync(0);
    }
 
    ShowWindow(YabWin,SW_SHOW);
