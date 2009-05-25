@@ -1078,21 +1078,7 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "&Memory Transfer",            IDM_MEMTRANSFER
         MENUITEM SEPARATOR
-        MENUITEM "&Settings",                   IDM_SETTINGS
-		MENUITEM "Hotkey Config",               IDM_HOTKEY_CONFIG
-		MENUITEM "Toggle OSD",               IDM_TOGGLE_OSD
         MENUITEM "&Backup Ram Manager",         IDM_BACKUPRAMMANAGER
-        POPUP "Language", GRAYED
-        BEGIN
-            MENUITEM "Deutsch ",                    IDM_GERMAN
-            MENUITEM "English",                     IDM_ENGLISH
-            MENUITEM "Espanol",                     IDM_SPANISH
-            MENUITEM "Francais",                    IDM_FRENCH
-            MENUITEM "Italiano",                    IDM_ITALIAN
-            MENUITEM "Portugues",                   IDM_PORTUGUESE
-            MENUITEM "Portugues Brasileiro",        IDM_PORTUGUESEBRAZIL
-            MENUITEM "Svenska",                     IDM_SWEDISH
-        END
         MENUITEM SEPARATOR
         POPUP "Save State"
         BEGIN
@@ -1139,6 +1125,24 @@ BEGIN
         MENUITEM "Reset",                       IDM_RESET
         MENUITEM "Hard Reset",                  IDM_HARDRESET
     END
+	POPUP "&Config"
+    BEGIN
+        MENUITEM "&Settings",                   IDM_SETTINGS
+		MENUITEM "Hotkey Config",               IDM_HOTKEY_CONFIG
+		MENUITEM "Toggle OSD",				 IDM_TOGGLE_OSD
+		MENUITEM "Auto Lag Advance",	 IDM_AUTOLAG
+        POPUP "Language", GRAYED
+        BEGIN
+            MENUITEM "Deutsch ",                    IDM_GERMAN
+            MENUITEM "English",                     IDM_ENGLISH
+            MENUITEM "Espanol",                     IDM_SPANISH
+            MENUITEM "Francais",                    IDM_FRENCH
+            MENUITEM "Italiano",                    IDM_ITALIAN
+            MENUITEM "Portugues",                   IDM_PORTUGUESE
+            MENUITEM "Portugues Brasileiro",        IDM_PORTUGUESEBRAZIL
+            MENUITEM "Svenska",                     IDM_SWEDISH
+        END
+	END
     POPUP "&Tools"
     BEGIN
 	    MENUITEM "RAM Watch...",                ID_RAM_WATCH

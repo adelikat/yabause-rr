@@ -6,6 +6,7 @@ int FrameAdvanceVariable=0;
 int currFrameCounter;
 char MovieStatus[40];
 int LagFrameCounter;
+int AutoAdvanceLag;
 
 //////////////////////////////////////////////////////////////////////////////
 

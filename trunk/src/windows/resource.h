@@ -47,6 +47,7 @@
 #define MENU_PLAY_MOVIE                 142
 #define MENU_STOP_MOVIE                 143
 #define IDM_TOGGLE_OSD                  144
+#define IDM_AUTOLAG                  145
 #define IDC_WATCHLIST                   900
 #define IDC_1_BYTE                      902
 #define IDC_2_BYTES                     903
