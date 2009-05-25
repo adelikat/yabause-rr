@@ -647,11 +647,11 @@ int PERDXHandleEvents(void)
 {
    PollKeys();
 
-   	if (Check_Skip_Key())
-	{
-		FrameAdvanceVariable = NeedAdvance;
-		tgtime = timeGetTime();
-	}
+//   	if (Check_Skip_Key())
+//	{
+//		FrameAdvanceVariable = NeedAdvance;
+//		tgtime = timeGetTime();
+//	}
 
    if (YabauseExec() != 0)
       return -1;
