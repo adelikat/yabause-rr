@@ -686,6 +686,10 @@ extern "C" void FCEUMOV_AddInputState()
 	 //(input recording is just like standard read+write movie recording with input taken from gamepad)
 	 //otherwise, it will come from the tasedit data.
 
+	 if(LagFrameFlag == 1)
+		 LagFrameCounter++;
+	 LagFrameFlag=1;
+
 	 if(movieMode == MOVIEMODE_PLAY)
 	 {
 		 //stop when we run out of frames
