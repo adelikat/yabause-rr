@@ -30,6 +30,7 @@ char* GetMovieLengthStr();
 extern int FrameAdvanceVariable;
 extern int LagFrameCounter;
 extern int LagFrameFlag;
+extern int AutoAdvanceLag;
 
 extern char MovieStatus[40];
 extern char InputDisplayString[40];

@@ -358,8 +358,8 @@ void YabauseResetButton(void) {
 
 int YabauseExec(void) {
 
-	//automatically advance lag frames, this should be optional later
-	if (FrameAdvanceVariable > 0 && LagFrameFlag == 1){ 
+	//automatically advance lag frames if desired
+	if (FrameAdvanceVariable > 0 && LagFrameFlag == 1 && AutoAdvanceLag){ 
 		FrameAdvanceVariable = NeedAdvance; //advance a frame
 		YabauseEmulate();
 		FrameAdvanceVariable = Paused; //pause next time

@@ -1707,6 +1707,9 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 			case MENU_PLAY_MOVIE:
                YuiPlayMovie(hWnd);
 			   break;
+			case IDM_AUTOLAG:
+               AutoAdvanceLag ^= 1;
+			   break;	   
 			case MENU_STOP_MOVIE:
 				FCEUI_StopMovie();
 				break;
@@ -1877,6 +1880,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 		
 		CheckMenuItem(YabMenu, IDM_PAUSE, FrameAdvanceVariable ? MF_CHECKED:MF_UNCHECKED);
 		CheckMenuItem(YabMenu, IDM_TOGGLE_OSD, GetOSDToggle() ? MF_CHECKED:MF_UNCHECKED);
+		CheckMenuItem(YabMenu, IDM_AUTOLAG, AutoAdvanceLag ? MF_CHECKED:MF_UNCHECKED);
 		
 		return 0L;
       }
