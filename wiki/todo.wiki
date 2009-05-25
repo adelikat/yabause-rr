@@ -11,7 +11,6 @@
   * Compilation is broken on other platforms
   * Clean up the savestates / anything else now that the old movie system is gone
   * Make advancing lag frames an option.  Right now it's mandatory.
-  * Crash if you exit after playing a movie
   
 ===Medium=== 
 
