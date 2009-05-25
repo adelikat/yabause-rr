@@ -166,12 +166,12 @@ typedef struct { s16 x; s16 y; } vdp1vertex;
 
 typedef struct
 {
-   int pagepixelwh;
-   int planepixelwidth;
-   int planepixelheight;
+   int pagepixelwh, pagepixelwh_bits, pagepixelwh_mask;
+   int planepixelwidth, planepixelwidth_bits, planepixelwidth_mask;
+   int planepixelheight, planepixelheight_bits, planepixelheight_mask;
    int screenwidth;
    int screenheight;
-   int oldcellx, oldcelly;
+   int oldcellx, oldcelly, oldcellcheck;
    int xmask, ymask;
    u32 planetbl[16];
 } screeninfo_struct;
@@ -535,32 +535,34 @@ void GeneratePlaneAddrTable(vdp2draw_struct *info, u32 *planetbl)
 
 //////////////////////////////////////////////////////////////////////////////
 
-static INLINE void Vdp2MapCalcXY(vdp2draw_struct *info, int *x, int *y,
+static INLINE void FASTCALL Vdp2MapCalcXY(vdp2draw_struct *info, int *x, int *y,
                                  screeninfo_struct *sinfo)
 {
    int planenum;
-   int pagesize=info->pagewh*info->pagewh;
-   int cellwh=(2 + info->patternwh);
+   const int pagesize_bits=info->pagewh_bits+1;
+   const int cellwh=(2 + info->patternwh);
 
-   if ((x[0] >> cellwh) != sinfo->oldcellx ||
-       (y[0] >> cellwh) != sinfo->oldcelly)
+   const int check = ((y[0] >> cellwh) << 16) | (x[0] >> cellwh);
+   //if ((x[0] >> cellwh) != sinfo->oldcellx || (y[0] >> cellwh) != sinfo->oldcelly)
+   if(check != sinfo->oldcellcheck)
    {
       sinfo->oldcellx = x[0] >> cellwh;
       sinfo->oldcelly = y[0] >> cellwh;
+	  sinfo->oldcellcheck = (sinfo->oldcelly << 16) | sinfo->oldcellx;
 
       // Calculate which plane we're dealing with
-      planenum = (y[0] / sinfo->planepixelheight * info->mapwh) + (x[0] / sinfo->planepixelwidth);
-      x[0] = (x[0] % sinfo->planepixelwidth);
-      y[0] = (y[0] % sinfo->planepixelheight);
+      planenum = ((y[0] >> sinfo->planepixelheight_bits) * info->mapwh) + (x[0] >> sinfo->planepixelwidth_bits);
+      x[0] = (x[0] & sinfo->planepixelwidth_mask);
+      y[0] = (y[0] & sinfo->planepixelheight_mask);
 
       // Fetch and decode pattern name data
       info->addr = sinfo->planetbl[planenum];
 
       // Figure out which page it's on(if plane size is not 1x1)
-      info->addr += ((y[0] / sinfo->pagepixelwh * pagesize * info->planew) +
-                     (x[0] / sinfo->pagepixelwh * pagesize) +
-                     (((y[0] % sinfo->pagepixelwh) >> cellwh) * info->pagewh) +
-                     ((x[0] % sinfo->pagepixelwh) >> cellwh)) * info->patterndatasize * 2;
+      info->addr += ((  ((y[0] >> sinfo->pagepixelwh_bits) << pagesize_bits) << info->planew_bits) +
+                     (   (x[0] >> sinfo->pagepixelwh_bits) << pagesize_bits) +
+                     (((y[0] & sinfo->pagepixelwh_mask) >> cellwh) << info->pagewh_bits) +
+                     ((x[0] & sinfo->pagepixelwh_mask) >> cellwh)) << (info->patterndatasize_bits+1);
 
       Vdp2PatternAddr(info); // Heh, this could be optimized
    }
@@ -571,13 +573,21 @@ static INLINE void Vdp2MapCalcXY(vdp2draw_struct *info, int *x, int *y,
       x[0] &= 8-1;
       y[0] &= 8-1;
 
-      // vertical flip
-      if (info->flipfunction & 0x2)
+	  switch(info->flipfunction & 0x3)
+	  {
+	  case 0: //none
+		  break;
+	  case 1: //horizontal flip
+		  x[0] = 8 - 1 - x[0];
+		  break;
+	  case 2: // vertical flip
          y[0] = 8 - 1 - y[0];
-
-      // horizontal flip
-      if (info->flipfunction & 0x1)
+		 break;
+	  case 3: //flip both
          x[0] = 8 - 1 - x[0];
+		 y[0] = 8 - 1 - y[0];
+		 break;
+	  }
    }
    else
    {
@@ -630,8 +640,17 @@ static INLINE void SetupScreenVars(vdp2draw_struct *info, screeninfo_struct *sin
    if (!info->isbitmap)
    {
       sinfo->pagepixelwh=64*8;
+	  sinfo->pagepixelwh_bits = 9;
+	  sinfo->pagepixelwh_mask = 511;
+
       sinfo->planepixelwidth=info->planew*sinfo->pagepixelwh;
+	  sinfo->planepixelwidth_bits = 8+info->planew;
+	  sinfo->planepixelwidth_mask = (1<<(sinfo->planepixelwidth_bits))-1;
+
       sinfo->planepixelheight=info->planeh*sinfo->pagepixelwh;
+	  sinfo->planepixelheight_bits = 8+info->planeh;
+	  sinfo->planepixelheight_mask = (1<<(sinfo->planepixelheight_bits))-1;
+
       sinfo->screenwidth=info->mapwh*sinfo->planepixelwidth;
       sinfo->screenheight=info->mapwh*sinfo->planepixelheight;
       sinfo->oldcellx=-1;
@@ -643,8 +662,14 @@ static INLINE void SetupScreenVars(vdp2draw_struct *info, screeninfo_struct *sin
    else
    {
       sinfo->pagepixelwh = 0;
+	  sinfo->pagepixelwh_bits = 0;
+	  sinfo->pagepixelwh_mask = 0;
       sinfo->planepixelwidth=0;
+	  sinfo->planepixelwidth_bits=0;
+	  sinfo->planepixelwidth_mask=0;
       sinfo->planepixelheight=0;
+	  sinfo->planepixelheight_bits=0;
+	  sinfo->planepixelheight_mask=0;
       sinfo->screenwidth=0;
       sinfo->screenheight=0;
       sinfo->oldcellx=0;
