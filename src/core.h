@@ -33,29 +33,10 @@
 #define FASTCALL __attribute__((fastcall))
 #elif defined (__i386__)
 #define FASTCALL __attribute__((regparm(3)))
-#elif defined (_MSC_VER)
-#define FASTCALL __fastcall
 #else
 #define FASTCALL
 #endif
 #endif
-
-#ifdef _MSC_VER
-#define FP_FASTCALL_PRE
-#define FP_FASTCALL_POST __fastcall
-#undef CDECL
-#define CDECL __cdecl
-#undef STDCALL
-#define STDCALL __stdcall
-#else
-#define FP_FASTCALL_PRE FASTCALL
-#define FP_FASTCALL_POST
-#define CDECL
-#define STDCALL
-#endif
-
-#define FAST_FUNC_PTR(T,N) T FP_FASTCALL_PRE (FP_FASTCALL_POST *N)
-
 
 /* When building multiple arches on OS X you must use the compiler-
    provided endian flags instead of the one provided by autoconf */

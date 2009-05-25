@@ -407,7 +407,7 @@ typedef struct
    int (*Init)();
    void (*DeInit)();
    int (*Reset)();
-   FAST_FUNC_PTR(void,Exec)(SH2_struct *context, u32 cycles);
+   void FASTCALL (*Exec)(SH2_struct *context, u32 cycles);
    void (*WriteNotify)(u32 start, u32 length);
 } SH2Interface_struct;
 

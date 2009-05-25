@@ -2705,7 +2705,7 @@ static int scsp_alloc_bufs() {
    return 0;
 }
 
-static FAST_FUNC_PTR(s32,m68kexecptr)(s32 cycles);  // M68K->Exec or M68KExecBP
+static s32 FASTCALL (*m68kexecptr)(s32 cycles);  // M68K->Exec or M68KExecBP
 static s32 savedcycles;  // Cycles left over from the last M68KExec() call
 
 //////////////////////////////////////////////////////////////////////////////

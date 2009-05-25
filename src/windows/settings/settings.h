@@ -100,7 +100,7 @@ enum {
 # define LOCAL_LE
 #endif
 
-void STDCALL CreateFilter(WCHAR * filter, size_t maxlen, ...);
+void CreateFilter(WCHAR * filter, size_t maxlen, ...);
 
 typedef struct
 {

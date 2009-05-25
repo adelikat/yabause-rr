@@ -26,13 +26,6 @@ extern "C" {
 
 /** @file */
 
-#ifdef _MSC_VER
-#undef CDECL
-#define CDECL __cdecl
-#else
-#define CDECL
-#endif
-
 #define MINI18N_UTF16 1
 
 #ifndef _
@@ -49,22 +42,22 @@ extern "C" {
  * @param folder the folder to search for translations.
  * @returns 0 on success, -1 otherwise
  */
-int CDECL mini18n_set_domain(const char * folder);
+int mini18n_set_domain(const char * folder);
 /**
  * @brief Load a translation from a file.
  *
  * @param filename of the translation to load.
  * @returns 0 on success, -1 otherwise
  */
-int CDECL mini18n_set_locale(const char * locale);
-int CDECL mini18n_set_log(const char * filename);
+int mini18n_set_locale(const char * locale);
+int mini18n_set_log(const char * filename);
 /**
  * @brief Translates a string.
  *
  * @param source string to translate
  * @returns The translated string on success, the source string otherwise. The returned value should not be freed or modified in any way.
  */
-const char * CDECL mini18n(const char * source);
+const char * mini18n(const char * source);
 /**
  * @brief Translates and convert a string.
  *
@@ -74,8 +67,8 @@ const char * CDECL mini18n(const char * source);
  * @param source String to translate.
  * @param format The format to convert the string to.
  */
-const void * CDECL mini18n_with_conversion(const char * source, unsigned int format);
-void CDECL mini18n_close(void);
+const void * mini18n_with_conversion(const char * source, unsigned int format);
+void mini18n_close(void);
 
 /**
  *
