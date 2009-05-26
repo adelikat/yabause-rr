@@ -2238,19 +2238,31 @@ void VIDSoftVdp1ScaledSpriteDraw(void)
    stepPix = vdp1width - x1;
 
 #define SCALED_SPRITE_ENDCODE_BREAK( code ) \
-  	 if (endCode && last_iw != iw && (dot == code)) {\
-           if (endCode == 1) { \
-             endCode = 2;\
-             iPix++;\
-             w += stepW;\
-             continue;\
-           } \
-	   else {\
-             iPix += x;\
-             w += x*stepW; \
-	     break;\
-	   last_iw = iw; }}
-  
+			if(endCode) {\
+			if(last_iw != iw) {\
+				last_iw = iw; \
+				if(dot == code) {\
+					if (endCode == 1) { \
+						endCode = 2;\
+						iPix++;\
+						w += stepW;\
+						continue;\
+					} \
+					else {\
+						iPix += x;\
+						w += x*stepW; \
+						break;\
+						last_iw = iw; \
+					}\
+				}\
+			}\
+			else if( dot == code) {\
+				iPix++;\
+				w += stepW;\
+				continue;\
+			}\
+			}
+			
    for ( ; y1 ; y1-- ) {
      
      float w = w0;
