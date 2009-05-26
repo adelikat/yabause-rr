@@ -564,6 +564,9 @@ void Cs2Reset(void) {
      default: break;
   }
 
+  Cs2Area->datasectstotrans = 0; //
+  Cs2Area->datatranssectpos= 0; //
+  Cs2Area->datatransoffset = 0; //
   Cs2Area->calcsize = 0; //i'm not sure what this should be set to
   Cs2Area->datanumsecttrans = 0; //same
   Cs2Area->infotranstype = -1;
@@ -3340,17 +3343,18 @@ u8 Cs2GetRegionID(void)
 int Cs2SaveState(FILE * fp) {
    int offset, i;
    IOCheck_struct check;
+   int meh;
 
    // This is mostly kludge, but it will have to do until I have time to rewrite it all
-
+meh=ftell(fp);
    offset = StateWriteHeader(fp, "CS2 ", 1);
-
+meh=ftell(fp);
    // Write cart type
    ywrite(&check, (void *) &Cs2Area->carttype, 4, 1, fp);
-
+meh=ftell(fp);
    // Write cd block registers
    ywrite(&check, (void *) &Cs2Area->reg, sizeof(blockregs_struct), 1, fp);
-
+meh=ftell(fp);
    // Write current Status variables(needs a rewrite)
    ywrite(&check, (void *) &Cs2Area->FAD, 4, 1, fp);
    ywrite(&check, (void *) &Cs2Area->status, 1, 1, fp);
@@ -3359,7 +3363,7 @@ int Cs2SaveState(FILE * fp) {
    ywrite(&check, (void *) &Cs2Area->ctrladdr, 1, 1, fp);
    ywrite(&check, (void *) &Cs2Area->track, 1, 1, fp);
    ywrite(&check, (void *) &Cs2Area->index, 1, 1, fp);
-
+meh=ftell(fp);
    // Write other cd block internal variables
    ywrite(&check, (void *) &Cs2Area->satauth, 2, 1, fp);
    ywrite(&check, (void *) &Cs2Area->mpgauth, 2, 1, fp);
