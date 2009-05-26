@@ -6,11 +6,10 @@
   * When resuming, any pressed keys will get stuck and record into the movie.
   * The ram search window doesn't display properly the second time you open it in a session
           adelikat: Are you sure this is still valid?  It doesn't happen for me.
-  * Frame counter doesn't always reset when it should
   * Resolve the project file differences between the cvs and the svn - this is causing differences in the way it is compiled resulting in extern "C" needed more often in one codebase than the other
   * Compilation is broken on other platforms
   * Clean up the savestates / anything else now that the old movie system is gone
-  * Make advancing lag frames an option.  Right now it's mandatory.
+  * Resolve the desync problems
   
 ===Medium=== 
 
