@@ -199,4 +199,5 @@ extern bool movie_readonly;
 void FCEUI_MakeBackupMovie(bool dispMessage);
 void ToggleReadOnly();
 extern "C" int MovieIsActive();
+extern "C" void HardResetGame();
 #endif

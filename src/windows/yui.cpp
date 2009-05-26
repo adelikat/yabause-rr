@@ -2090,9 +2090,14 @@ void ResetGame()
     YuiTempUnPause();
 }
 
-void HardResetGame()
+extern "C" void HardResetGame()
 {
 	YuiTempPause();
+	YabauseInit(&yinit);
+		VideoChangeCore(vidcoretype);
+
+	if (VIDCore && !VIDCore->IsFullscreen() && usecustomwindowsize)
+		VIDCore->Resize(windowwidth, windowheight, 0);
     YabauseReset();
     YuiTempUnPause();
 }
