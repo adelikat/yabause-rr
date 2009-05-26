@@ -38,15 +38,15 @@
 #include <stdarg.h>
 
 #if defined WORDS_BIGENDIAN
-#define COLSAT2YAB16(priority,temp)            (priority | (temp & 0x7C00) << 1 | (temp & 0x3E0) << 14 | (temp & 0x1F) << 27)
-#define COLSAT2YAB32(priority,temp)            (((temp & 0xFF) << 24) | ((temp & 0xFF00) << 8) | ((temp & 0xFF0000) >> 8) | priority)
-#define COLSAT2YAB32_2(priority,temp1,temp2)   (((temp2 & 0xFF) << 24) | ((temp2 & 0xFF00) << 8) | ((temp1 & 0xFF) << 8) | priority)
-#define COLSATSTRIPPRIORITY(pixel)              (pixel | 0xFF)
+INLINE u32 COLSAT2YAB16(int priority,u32 temp)            { return (priority | (temp & 0x7C00) << 1 | (temp & 0x3E0) << 14 | (temp & 0x1F) << 27); }
+INLINE u32 COLSAT2YAB32(int priority,u32 temp)            { return (((temp & 0xFF) << 24) | ((temp & 0xFF00) << 8) | ((temp & 0xFF0000) >> 8) | priority); }
+INLINE u32 COLSAT2YAB32_2(int priority,u32 temp1,u32 temp2)   { return (((temp2 & 0xFF) << 24) | ((temp2 & 0xFF00) << 8) | ((temp1 & 0xFF) << 8) | priority); }
+INLINE u32 COLSATSTRIPPRIORITY(u32 pixel)              { return (pixel | 0xFF); }
 #else
-#define COLSAT2YAB16(priority,temp)            (priority << 24 | (temp & 0x1F) << 3 | (temp & 0x3E0) << 6 | (temp & 0x7C00) << 9)
-#define COLSAT2YAB32(priority,temp)            (priority << 24 | (temp & 0xFF0000) | (temp & 0xFF00) | (temp & 0xFF))
-#define COLSAT2YAB32_2(priority,temp1,temp2)   (priority << 24 | ((temp1 & 0xFF) << 16) | (temp2 & 0xFF00) | (temp2 & 0xFF))
-#define COLSATSTRIPPRIORITY(pixel)             (0xFF000000 | pixel)
+INLINE u32 COLSAT2YAB16(int priority,u32 temp) { return (priority << 24 | (temp & 0x1F) << 3 | (temp & 0x3E0) << 6 | (temp & 0x7C00) << 9); }
+INLINE u32 COLSAT2YAB32(int priority, u32 temp) { return (priority << 24 | (temp & 0xFF0000) | (temp & 0xFF00) | (temp & 0xFF)); }
+INLINE u32 COLSAT2YAB32_2(int priority,u32 temp1,u32 temp2)   { return (priority << 24 | ((temp1 & 0xFF) << 16) | (temp2 & 0xFF00) | (temp2 & 0xFF)); }
+INLINE u32 COLSATSTRIPPRIORITY(u32 pixel) { return (0xFF000000 | pixel); }
 #endif
 
 #define COLOR_ADDt(b)		(b>0xFF?0xFF:(b<0?0:b))
@@ -208,7 +208,7 @@ static INLINE void puthline16(s32 x, s32 y, s32 width, u16 color, int priority)
 
 //////////////////////////////////////////////////////////////////////////////
 
-static u32 FASTCALL Vdp2ColorRamGetColor(u32 addr)
+static INLINE u32 FASTCALL Vdp2ColorRamGetColor(u32 addr)
 {
    switch(Vdp2Internal.ColorMode)
    {
@@ -239,7 +239,7 @@ static u32 FASTCALL Vdp2ColorRamGetColor(u32 addr)
 
 //////////////////////////////////////////////////////////////////////////////
 
-static void Vdp2PatternAddr(vdp2draw_struct *info)
+static INLINE void Vdp2PatternAddr(vdp2draw_struct *info)
 {
    switch(info->patterndatasize)
    {
@@ -315,14 +315,14 @@ static void Vdp2PatternAddr(vdp2draw_struct *info)
 
 //////////////////////////////////////////////////////////////////////////////
 
-static u32 FASTCALL DoNothing(UNUSED void *info, u32 pixel)
+static INLINE u32 FASTCALL DoNothing(UNUSED void *info, u32 pixel)
 {
    return pixel;
 }
 
 //////////////////////////////////////////////////////////////////////////////
 
-u32 FASTCALL DoColorOffset(void *info, u32 pixel)
+INLINE u32 FASTCALL DoColorOffset(void *info, u32 pixel)
 {
     return COLOR_ADD(pixel, ((vdp2draw_struct *)info)->cor,
                      ((vdp2draw_struct *)info)->cog,
@@ -331,7 +331,7 @@ u32 FASTCALL DoColorOffset(void *info, u32 pixel)
 
 //////////////////////////////////////////////////////////////////////////////
 
-static u32 FASTCALL DoColorCalc(void *info, u32 pixel)
+static INLINE u32 FASTCALL DoColorCalc(void *info, u32 pixel)
 {
 #if 0
    u8 oldr, oldg, oldb;
@@ -370,7 +370,7 @@ static u32 FASTCALL DoColorCalc(void *info, u32 pixel)
 
 //////////////////////////////////////////////////////////////////////////////
 
-static u32 FASTCALL DoColorCalcWithColorOffset(void *info, u32 pixel)
+static INLINE u32 FASTCALL DoColorCalcWithColorOffset(void *info, u32 pixel)
 {
    pixel = DoColorCalc(info, pixel);
 
@@ -522,7 +522,7 @@ static INLINE int TestWindow(int wctl, int enablemask, int inoutmask, clipping_s
 
 //////////////////////////////////////////////////////////////////////////////
 
-void GeneratePlaneAddrTable(vdp2draw_struct *info, u32 *planetbl)
+INLINE void GeneratePlaneAddrTable(vdp2draw_struct *info, u32 *planetbl)
 {
    int i;
 
@@ -689,6 +689,8 @@ void FASTCALL Vdp2DrawScroll(vdp2draw_struct *info, u32 *textdata, int width, in
    u32 linewnd0addr, linewnd1addr;
    screeninfo_struct sinfo;
    int scrollx, scrolly;
+   int *mosaic_y, *mosaic_x;
+   int mosaic_x_multiplied_and_scrolled[1024];
 
    info->coordincx *= (float)resxratio;
    info->coordincy *= (float)resyratio;
@@ -703,6 +705,25 @@ void FASTCALL Vdp2DrawScroll(vdp2draw_struct *info, u32 *textdata, int width, in
    ReadWindowData(info->wctl, clip);
    linewnd0addr = linewnd1addr = 0;
    ReadLineWindowData(&info->islinewindow, info->wctl, &linewnd0addr, &linewnd1addr);
+
+   {
+	   static int tables_initialized = 0;
+	   static int mosaic_table[16][1024];
+	   if(!tables_initialized)
+	   {
+		   tables_initialized = 1;
+			for(i=0;i<16;i++)
+			{
+				int m = i+1;
+				for(j=0;j<1024;j++)
+					mosaic_table[i][j] = j/m*m;
+			}
+	   }
+	   mosaic_x = &mosaic_table[info->mosaicxmask-1];
+	   mosaic_y = &mosaic_table[info->mosaicymask-1];
+	   for(i=0;i<width;i++)
+		   mosaic_x_multiplied_and_scrolled[i] = info->x + mosaic_x[i]*info->coordincx;
+   }
 
    for (j = 0; j < height; j++)
    {
@@ -724,7 +745,8 @@ void FASTCALL Vdp2DrawScroll(vdp2draw_struct *info, u32 *textdata, int width, in
             y = info->y;
          }
          else
-            y = info->y+((int)(info->coordincy *(float)(info->mosaicymask > 1 ? (j / info->mosaicymask * info->mosaicymask) : j)));
+            //y = info->y+((int)(info->coordincy *(float)(info->mosaicymask > 1 ? (j / info->mosaicymask * info->mosaicymask) : j)));
+			y = info->y + info->coordincy*mosaic_y[j];
          if (info->islinescroll & 0x4)
          {
             info->coordincx = (T1ReadLong(Vdp2Ram, info->linescrolltbl) & 0x7FF00) / (float)65536.0;
@@ -732,7 +754,8 @@ void FASTCALL Vdp2DrawScroll(vdp2draw_struct *info, u32 *textdata, int width, in
          }
       }
       else
-         y = info->y+((int)(info->coordincy *(float)(info->mosaicymask > 1 ? (j / info->mosaicymask * info->mosaicymask) : j)));
+         //y = info->y+((int)(info->coordincy *(float)(info->mosaicymask > 1 ? (j / info->mosaicymask * info->mosaicymask) : j)));
+		 y = info->y + info->coordincy*mosaic_y[j];
 
       // if line window is enabled, adjust clipping values
       ReadLineWindowClip(info->islinewindow, clip, &linewnd0addr, &linewnd1addr);
@@ -769,13 +792,15 @@ void FASTCALL Vdp2DrawScroll(vdp2draw_struct *info, u32 *textdata, int width, in
             continue;
          }
 
-         x = info->x+((int)(info->coordincx*(float)((info->mosaicxmask > 1) ? (i / info->mosaicxmask * info->mosaicxmask) : i)));
+         //x = info->x+((int)(info->coordincx*(float)((info->mosaicxmask > 1) ? (i / info->mosaicxmask * info->mosaicxmask) : i)));
+		 x = mosaic_x_multiplied_and_scrolled[i];
          x &= sinfo.xmask;
-         if (linescrollx)
-         {
+		 
+		 //This is sucha  trivial amount of work, it is better not to have to do the control logic
+         //if (linescrollx) {
             x += linescrollx;
             x &= 0x3FF;
-         }
+         //}
 
          // Fetch Pixel, if it isn't transparent, continue
          if (!info->isbitmap)
