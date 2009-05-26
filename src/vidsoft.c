@@ -2085,12 +2085,14 @@ void VIDSoftVdp1ScaledSpriteDraw(void)
    u16* iPix;
    int stepPix;
    u32 colorlut;
+   int mesh;
 
    Vdp1ReadCommand(&cmd, Vdp1Regs->addr);
    if (cmd.CMDPMOD & 0x0400) PushUserClipping((cmd.CMDPMOD >> 9) & 0x1);
 
    flip = (cmd.CMDCTRL & 0x30) >> 4;
    endCode = (( cmd.CMDPMOD & 0x80) == 0 )?1:0;
+   mesh = cmd.CMDPMOD & 0x0100;
 
    x0 = cmd.CMDXA + Vdp1Regs->localX;
    y0 = cmd.CMDYA + Vdp1Regs->localY;
@@ -2262,7 +2264,12 @@ void VIDSoftVdp1ScaledSpriteDraw(void)
 				continue;\
 			}\
 			}
-			
+
+#define MESH \
+	 if(mesh) { \
+	 if((x+y1) % 2 != 0) \
+	 dot=0; } 			
+
    for ( ; y1 ; y1-- ) {
      
      float w = w0;
@@ -2285,6 +2292,7 @@ void VIDSoftVdp1ScaledSpriteDraw(void)
 	 int iw = w;
 	 u16 dot = Vdp1ReadPattern16( iAddr, iw );
 	 SCALED_SPRITE_ENDCODE_BREAK(0xF);
+	 MESH;
 	 if (!(dot == 0 && !SPD)) *(iPix) = colorbank | dot;
 
 	 iPix++;      
@@ -2300,6 +2308,7 @@ void VIDSoftVdp1ScaledSpriteDraw(void)
 	 int iw = w;
 	 u16 dot = Vdp1ReadPattern16( iAddr, iw );
 	 SCALED_SPRITE_ENDCODE_BREAK(0xF);
+	 MESH;
 	 if (!(dot == 0 && !SPD)) *(iPix) = T1ReadWord(Vdp1Ram, (dot * 2 + colorlut) & 0x7FFFF);
 
 	 iPix++;      
@@ -2315,6 +2324,7 @@ void VIDSoftVdp1ScaledSpriteDraw(void)
 		   int iw = w;
 	 u16 dot = Vdp1ReadPattern64( iAddr, iw );
 	 SCALED_SPRITE_ENDCODE_BREAK(0xFF);
+	 MESH;
 	 if (!((dot == 0) && !SPD)) *(iPix) = colorbank | dot;
 	
 	 iPix++;      
@@ -2330,6 +2340,7 @@ void VIDSoftVdp1ScaledSpriteDraw(void)
 		   int iw = w;
 	 u16 dot = Vdp1ReadPattern128( iAddr, iw );
 	 SCALED_SPRITE_ENDCODE_BREAK(0xFF);
+	 MESH;
 	 if (!((dot == 0) && !SPD)) *(iPix) = colorbank | dot;
 	
 	 iPix++;      
@@ -2345,6 +2356,7 @@ void VIDSoftVdp1ScaledSpriteDraw(void)
 		   int iw = w;
 	 u16 dot = Vdp1ReadPattern256( iAddr, iw );
 	 SCALED_SPRITE_ENDCODE_BREAK(0xFF);
+	 MESH;
 	 if (!((dot == 0) && !SPD)) *(iPix) = colorbank | dot;
 	
 	 iPix++;      
@@ -2360,13 +2372,14 @@ void VIDSoftVdp1ScaledSpriteDraw(void)
 		   int iw = w;
 	 u16 dot = Vdp1ReadPattern64k( iAddr, iw );
 	 SCALED_SPRITE_ENDCODE_BREAK(0x7FFF);
+	 MESH;
 	 if (!((dot == 0) && !SPD)) *(iPix) = dot;
 	
 	 iPix++;      
 	 w += stepW;
        }
        break;
-     }
+	 }
     
      iPix += stepPix;
      h0 += stepH;
