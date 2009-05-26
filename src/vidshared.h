@@ -166,7 +166,20 @@ typedef struct
 #define toint(v) ((v) >> FP_SIZE)
 #define touint(v) ((u16)((v) >> FP_SIZE))
 #define tofloat(v) ((float)(v) / (float)(1 << FP_SIZE))
+#ifdef _MSC_VER
+//sometimes A LOT of time gets spent in _allmul. this is pointless. here is a way faster way to do it
+//this doesnt work as well as it could due to the emitting of code which stuffs
+//values into temps and then right back into eax and edx. but it is still way faster
+INLINE fixed32 __fastcall mulfixed(const fixed32 a, const fixed32 b)
+{
+	__asm mov eax, a;
+	__asm mov edx, b;
+	__asm imul edx;
+	__asm shrd eax, edx, 16;
+}
+#else
 #define mulfixed(a,b) ((fixed32)((s64)(a) * (s64)(b) >> FP_SIZE))
+#endif
 #define divfixed(a,b) (((s64)(a) << FP_SIZE) / (b))
 
 void FASTCALL Vdp2NBG0PlaneAddr(vdp2draw_struct *info, int i);
