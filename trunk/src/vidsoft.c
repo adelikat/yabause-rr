@@ -1816,7 +1816,7 @@ void VIDSoftVdp1DistortedSpriteDraw() {
       DISTORTED_SPRITE_LOOP_BEGIN
 
         u16 dot = Vdp1ReadPattern256( iHaddr, (int)W );
-        DISTORTED_SPRITE_ENDCODE_BREAK(0xFF);
+  //      DISTORTED_SPRITE_ENDCODE_BREAK(0xFF);
 	DISTORTED_SPRITE_PUT( colorbank | dot );
 
       DISTORTED_SPRITE_LOOP_END
@@ -2270,7 +2270,7 @@ void VIDSoftVdp1ScaledSpriteDraw(void)
 
 	 int iw = w;
 	 u16 dot = Vdp1ReadPattern16( iAddr, iw );
-	 SCALED_SPRITE_ENDCODE_BREAK(0xF);
+//	 SCALED_SPRITE_ENDCODE_BREAK(0xF);
 	 if (!(dot == 0 && !SPD)) *(iPix) = T1ReadWord(Vdp1Ram, (dot * 2 + colorlut) & 0x7FFFF);
 
 	 iPix++;      
