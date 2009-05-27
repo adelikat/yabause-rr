@@ -38,7 +38,7 @@ extern "C" HINSTANCE y_hInstance;
 
 extern void TogglePause();	//adelikat: TODO: maybe there should be a driver.h or a main.h to put this and the handles in
 extern void ResetGame();
-extern void HardResetGame();
+extern "C" void HardResetGame();
 extern void SaveState(int num);
 extern void LoadState(int num);
 extern void YuiPlayMovie(HWND hWnd);
