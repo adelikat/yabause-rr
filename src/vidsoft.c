@@ -1654,6 +1654,10 @@ void VIDSoftVdp1DistortedSpriteDraw() {
 
   float stepW, stepH;
 
+  int mesh;
+
+  mesh = cmd.CMDPMOD & 0x0100;
+
   Vdp1ReadCommand(&cmd, Vdp1Regs->addr);
 
   if (cmd.CMDPMOD & 0x0400) PushUserClipping((cmd.CMDPMOD >> 9) & 0x1);
@@ -1779,8 +1783,14 @@ void VIDSoftVdp1DistortedSpriteDraw() {
 	int iW = W;
         u16 dot = Vdp1ReadPattern16( iHaddr, iW );
 	DISTORTED_SPRITE_ENDCODE_BREAK(0xF);
-	DISTORTED_SPRITE_PUT( colorbank | dot );
-      
+
+		if(mesh) {
+			if(((int)xM^(int)yM)&1) {
+				DISTORTED_SPRITE_PUT( colorbank | dot );}
+		}
+		else
+			DISTORTED_SPRITE_PUT( colorbank | dot );
+
       DISTORTED_SPRITE_LOOP_END
       break;
     case 0x11:
@@ -1792,7 +1802,15 @@ void VIDSoftVdp1DistortedSpriteDraw() {
         int iW = W;
         u16 dot = Vdp1ReadPattern16( iHaddr, iW );
         DISTORTED_SPRITE_ENDCODE_BREAK(0xF);
-	DISTORTED_SPRITE_PUT( T1ReadWord(Vdp1Ram, (dot * 2 + colorlut) & 0x7FFFF ) );
+
+		if(mesh) {
+			if(((int)xM^(int)yM)&1) {
+				DISTORTED_SPRITE_PUT( T1ReadWord(Vdp1Ram, (dot * 2 + colorlut) & 0x7FFFF ) );
+		}
+		}
+		else
+			DISTORTED_SPRITE_PUT( T1ReadWord(Vdp1Ram, (dot * 2 + colorlut) & 0x7FFFF ) );
+	
     
       DISTORTED_SPRITE_LOOP_END
       break;
@@ -1805,7 +1823,14 @@ void VIDSoftVdp1DistortedSpriteDraw() {
 		  int iW = W;
         u16 dot = Vdp1ReadPattern64( iHaddr, iW );
         DISTORTED_SPRITE_ENDCODE_BREAK(0xFF);
-	DISTORTED_SPRITE_PUT( colorbank | dot );
+
+		if(mesh) {
+			if(((int)xM^(int)yM)&1) {
+				DISTORTED_SPRITE_PUT( colorbank | dot );
+			}
+		}
+		else
+			DISTORTED_SPRITE_PUT( colorbank | dot );
       
       DISTORTED_SPRITE_LOOP_END
       break;
@@ -1818,7 +1843,14 @@ void VIDSoftVdp1DistortedSpriteDraw() {
 		  int iW = W;
 	u16 dot = Vdp1ReadPattern128( iHaddr, iW );
         DISTORTED_SPRITE_ENDCODE_BREAK(0xFF);
-	DISTORTED_SPRITE_PUT( colorbank | dot );
+
+		if(mesh) {
+			if(((int)xM^(int)yM)&1) {
+				DISTORTED_SPRITE_PUT( colorbank | dot );
+			}
+		}
+		else
+			DISTORTED_SPRITE_PUT( colorbank | dot );
       
       DISTORTED_SPRITE_LOOP_END
       break;
@@ -1831,7 +1863,14 @@ void VIDSoftVdp1DistortedSpriteDraw() {
 		  int iW = W;
         u16 dot = Vdp1ReadPattern256( iHaddr, iW );
         DISTORTED_SPRITE_ENDCODE_BREAK(0xFF);
-	DISTORTED_SPRITE_PUT( colorbank | dot );
+
+		if(mesh) {
+			if(((int)xM^(int)yM)&1) {
+				DISTORTED_SPRITE_PUT( colorbank | dot );
+			}
+		}
+		else
+			DISTORTED_SPRITE_PUT( colorbank | dot );
 
       DISTORTED_SPRITE_LOOP_END
       break;
@@ -1844,8 +1883,14 @@ void VIDSoftVdp1DistortedSpriteDraw() {
 		  int iW = W;
         u16 dot = Vdp1ReadPattern64k( iHaddr, iW );
         DISTORTED_SPRITE_ENDCODE_BREAK(0x7FFF);
-	DISTORTED_SPRITE_PUT( dot );
-
+		if(mesh) {
+			if(((int)xM^(int)yM)&1) {
+				DISTORTED_SPRITE_PUT( dot );
+			}
+		}
+		else
+			DISTORTED_SPRITE_PUT( dot );
+		
       DISTORTED_SPRITE_LOOP_END
       break;      
     }
