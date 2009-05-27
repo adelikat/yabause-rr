@@ -253,6 +253,7 @@ void UpdateVDP2Debug(HWND hDlg) {
          else
             // disabled
             SendMessage(GetDlgItem(hDlg, IDC_DISPENABCB), BM_SETCHECK, BST_UNCHECKED, 0);
+		 UpdateWindow(hDlg);
 }
 //////////////////////////////////////////////////////////////////////////////
 
