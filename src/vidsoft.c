@@ -2451,6 +2451,9 @@ void VIDSoftVdp1PolygonDraw(void) {
   u16 *fb;
   u16 color = T1ReadWord(Vdp1Ram, Vdp1Regs->addr + 0x6);
   u16 cmdpmod = T1ReadWord(Vdp1Ram, Vdp1Regs->addr + 0x4);
+  int mesh;
+
+  mesh = cmdpmod & 0x0100;
 
   if (cmdpmod & 0x0400) PushUserClipping((cmdpmod >> 9) & 0x1);
 
@@ -2532,15 +2535,23 @@ void VIDSoftVdp1PolygonDraw(void) {
       xleft += stepLeft;\
       \
       fb = (u16 *)vdp1backframebuffer + y*vdp1width + (int)xleft;\
-      for ( x = (int)xwidth ; x>=0 ; x-- ) *(fb++) = color; \
+	  for ( x = (int)xwidth ; x>=0 ; x-- ) \
+	  if(mesh) { \
+	      if((x^y)&1) { \
+		     *(fb++) = 1; \
+		  } \
+          else  { \
+             *(fb++) = color; \
+          } \
+	  } else {*(fb++) = color;} \
       y++; \
-    }
+	}
 
   if (( v[0].y < vdp1clipystart )||( v[3].y > vdp1clipyend )
       ||( v[0].x < vdp1clipxstart )||( v[0].x > vdp1clipxend )
       ||( v[1].x < vdp1clipxstart )||( v[1].x > vdp1clipxend )
       ||( v[2].x < vdp1clipxstart )||( v[2].x > vdp1clipxend )
-      ||( v[3].x < vdp1clipxstart )||( v[3].x > vdp1clipxend )) {
+	  ||( v[3].x < vdp1clipxstart )||( v[3].x > vdp1clipxend )) {
     
     if ( (stepE < stepB) || zEminus || zBplus ) {
       if ( (stepE < stepA) || zEminus || zAplus ) {
