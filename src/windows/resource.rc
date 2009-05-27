@@ -7,8 +7,7 @@
 //
 // Generated from the TEXTINCLUDE 2 resource.
 //
-#include <windows.h>
-
+#include <windows.h>
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
 
@@ -304,33 +303,34 @@ BEGIN
     EDITTEXT        IDC_VDP1TEXTET,306,14,80,80,WS_DISABLED
     DEFPUSHBUTTON   "&Close",IDOK,4,182,40,14
     PUSHBUTTON      "&Save as bitmap",IDC_VDP1SAVEBMPBT,50,182,67,14
+    PUSHBUTTON      "&Refresh",IDC_VDP1REFRESH,121,182,52,14
 END
 
-IDD_VDP2DEBUG DIALOGEX 0, 0, 453, 311
+IDD_VDP2DEBUG DIALOGEX 0, 0, 455, 407
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
 CAPTION "VDP2 Debug"
 FONT 8, "Courier New", 0, 0, 0x0
 BEGIN
-    DEFPUSHBUTTON   "&Close",IDOK,4,293,40,14
-    PUSHBUTTON      "&Viewer",IDC_VDP2VIEWER,54,293,40,14
+    DEFPUSHBUTTON   "&Close",IDOK,4,389,40,14
+    PUSHBUTTON      "&Viewer",IDC_VDP2VIEWER,54,389,40,14
     LTEXT           "NBG0/RBG1 Info",-1,4,4,70,10
     CHECKBOX        "Screen Enabled",IDC_NBG0ENABCB,4,14,70,10
-    EDITTEXT        IDC_NBG0ET,4,24,145,118,ES_MULTILINE | ES_READONLY | WS_VSCROLL | WS_HSCROLL
+    EDITTEXT        IDC_NBG0ET,4,24,145,161,ES_MULTILINE | ES_READONLY | WS_VSCROLL | WS_HSCROLL
     LTEXT           "NBG1 Info",-1,153,4,70,10
     CHECKBOX        "Screen Enabled",IDC_NBG1ENABCB,153,14,70,10
-    EDITTEXT        IDC_NBG1ET,153,24,145,118,ES_MULTILINE | ES_READONLY | WS_VSCROLL | WS_HSCROLL
+    EDITTEXT        IDC_NBG1ET,153,24,145,161,ES_MULTILINE | ES_READONLY | WS_VSCROLL | WS_HSCROLL
     LTEXT           "NBG2 Info",-1,303,4,86,10
     CHECKBOX        "Screen Enabled",IDC_NBG2ENABCB,303,14,86,10
-    EDITTEXT        IDC_NBG2ET,303,24,146,118,ES_MULTILINE | ES_READONLY | WS_VSCROLL | WS_HSCROLL
-    LTEXT           "NBG3 Info",-1,4,148,70,10
-    CHECKBOX        "Screen Enabled",IDC_NBG3ENABCB,4,159,70,10
-    EDITTEXT        IDC_NBG3ET,4,168,145,118,ES_MULTILINE | ES_READONLY | WS_VSCROLL | WS_HSCROLL
-    LTEXT           "RBG0 Info",-1,153,148,70,10
-    CHECKBOX        "Screen Enabled",IDC_RBG0ENABCB,153,159,70,10
-    EDITTEXT        IDC_RBG0ET,153,168,145,118,ES_MULTILINE | ES_READONLY | WS_VSCROLL | WS_HSCROLL
-    LTEXT           "General Info",-1,303,148,86,10
-    EDITTEXT        IDC_VDP2GENET,303,168,146,118,ES_MULTILINE | ES_READONLY | WS_VSCROLL | WS_HSCROLL
-    CHECKBOX        "Display Enabled",IDC_DISPENABCB,303,160,146,8
+    EDITTEXT        IDC_NBG2ET,305,24,146,161,ES_MULTILINE | ES_READONLY | WS_VSCROLL | WS_HSCROLL
+    LTEXT           "NBG3 Info",-1,4,186,70,10
+    CHECKBOX        "Screen Enabled",IDC_NBG3ENABCB,4,197,70,10
+    EDITTEXT        IDC_NBG3ET,4,206,145,178,ES_MULTILINE | ES_READONLY | WS_VSCROLL | WS_HSCROLL
+    LTEXT           "RBG0 Info",-1,153,186,70,10
+    CHECKBOX        "Screen Enabled",IDC_RBG0ENABCB,153,197,70,10
+    EDITTEXT        IDC_RBG0ET,153,206,145,179,ES_MULTILINE | ES_READONLY | WS_VSCROLL | WS_HSCROLL
+    LTEXT           "General Info",-1,303,186,86,10
+    EDITTEXT        IDC_VDP2GENET,305,206,146,180,ES_MULTILINE | ES_READONLY | WS_VSCROLL | WS_HSCROLL
+    CHECKBOX        "Display Enabled",IDC_DISPENABCB,305,198,146,8
 END
 
 IDD_M68KDEBUG DIALOGEX 0, 0, 387, 229
@@ -859,9 +859,9 @@ BEGIN
     IDD_VDP2DEBUG, DIALOG
     BEGIN
         LEFTMARGIN, 4
-        RIGHTMARGIN, 449
+        RIGHTMARGIN, 451
         TOPMARGIN, 4
-        BOTTOMMARGIN, 307
+        BOTTOMMARGIN, 403
     END
 
     IDD_M68KDEBUG, DIALOG
@@ -1125,12 +1125,12 @@ BEGIN
         MENUITEM "Reset",                       IDM_RESET
         MENUITEM "Hard Reset",                  IDM_HARDRESET
     END
-	POPUP "&Config"
+    POPUP "&Config"
     BEGIN
         MENUITEM "&Settings",                   IDM_SETTINGS
-		MENUITEM "Hotkey Config",               IDM_HOTKEY_CONFIG
-		MENUITEM "Toggle OSD",				 IDM_TOGGLE_OSD
-		MENUITEM "Auto Lag Advance",	 IDM_AUTOLAG
+        MENUITEM "Hotkey Config",               IDM_HOTKEY_CONFIG
+        MENUITEM "Toggle OSD",                  IDM_TOGGLE_OSD
+        MENUITEM "Auto Lag Advance",            IDM_AUTOLAG
         POPUP "Language", GRAYED
         BEGIN
             MENUITEM "Deutsch ",                    IDM_GERMAN
@@ -1142,10 +1142,10 @@ BEGIN
             MENUITEM "Portugues Brasileiro",        IDM_PORTUGUESEBRAZIL
             MENUITEM "Svenska",                     IDM_SWEDISH
         END
-	END
+    END
     POPUP "&Tools"
     BEGIN
-	    MENUITEM "RAM Watch...",                ID_RAM_WATCH
+        MENUITEM "RAM Watch...",                ID_RAM_WATCH
         MENUITEM "RAM Search...",               ID_RAM_SEARCH
         MENUITEM "&Cheat List...",              IDM_CHEATLIST
         MENUITEM "Cheat &Search...",            IDM_CHEATSEARCH
@@ -1251,8 +1251,7 @@ END
 //
 // Generated from the TEXTINCLUDE 3 resource.
 //
-
-
+
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
 

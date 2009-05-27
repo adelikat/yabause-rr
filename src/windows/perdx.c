@@ -27,6 +27,7 @@
 #include "settings/settings.h"
 #include "resource.h"
 #include "../movie.h"
+#include "yuiwin.h"
 
 int PERDXInit(void);
 void PERDXDeInit(void);
@@ -658,6 +659,8 @@ int PERDXHandleEvents(void)
 
    Update_RAM_Search();
    Update_RAM_Watch();
+   UpdateVDP2Debug(VDP2DebugHWnd);
+   UpdateVDP1Debug(VDP1DebugHWnd);
    YuiCaptureVideo();
 
    return 0;

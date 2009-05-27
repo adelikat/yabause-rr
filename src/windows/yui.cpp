@@ -94,6 +94,9 @@ int yabwiny = 0;
 psp_struct settingspsp;
 extern HWND RamSearchHWnd;
 
+HWND VDP1DebugHWnd;
+HWND VDP2DebugHWnd;
+
 int oldbpp = 0;
 static int redsize = 0;
 static int greensize = 0;
@@ -1547,14 +1550,16 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
             case IDM_VDP1DEBUG:
             {
                YuiTempPause();
-               DialogBox(y_hInstance, MAKEINTRESOURCE(IDD_VDP1DEBUG), hWnd, (DLGPROC)VDP1DebugDlgProc);
+               VDP1DebugHWnd=CreateDialog(y_hInstance, MAKEINTRESOURCE(IDD_VDP1DEBUG), hWnd, (DLGPROC)VDP1DebugDlgProc);
                YuiTempUnPause();
                break;
             }
             case IDM_VDP2DEBUG:
             {
+
                YuiTempPause();
-               DialogBox(y_hInstance, MAKEINTRESOURCE(IDD_VDP2DEBUG), hWnd, (DLGPROC)VDP2DebugDlgProc);
+               //DialogBox(y_hInstance, MAKEINTRESOURCE(IDD_VDP2DEBUG), hWnd, (DLGPROC)VDP2DebugDlgProc);
+			   VDP2DebugHWnd = CreateDialog(y_hInstance, MAKEINTRESOURCE(IDD_VDP2DEBUG), hWnd, (DLGPROC) VDP2DebugDlgProc);
                YuiTempUnPause();
                break;
             }

@@ -25,28 +25,26 @@
 #include "../../vdp1.h"
 #include "../../yabause.h"
 #include "yuidebug.h"
+#include "yuiwin.h"
+#include "../movie.h"
 
 u32 *vdp1texture=NULL;
 int vdp1texturew, vdp1textureh;
 
-//////////////////////////////////////////////////////////////////////////////
+void UpdateVDP1Debug(HWND hDlg){
 
-LRESULT CALLBACK VDP1DebugDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
-                                 LPARAM lParam)
-{
-   char tempstr[1024];
-   TCHAR filename[MAX_PATH] = TEXT("\0");
-
-   switch (uMsg)
-   {
-      case WM_INITDIALOG:
-      {
          char *string;
          u32 i=0;
 
+		// if(!VDP1DebugHWnd)
+			 return;
+
+		 if(!FrameAdvanceVariable==Paused) {
+		 if(currFrameCounter% 60 == 0) {
+
          // execute yabause until vblank-out
-         if (YabauseExec() != 0)
-            return FALSE;
+  //       if (YabauseExec() != 0)
+   //         return FALSE;
 
          // Build command list
          SendMessage(GetDlgItem(hDlg, IDC_VDP1CMDLB), LB_RESETCONTENT, 0, 0);
@@ -63,6 +61,68 @@ LRESULT CALLBACK VDP1DebugDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
 
          vdp1texturew = vdp1textureh = 1;
          EnableWindow(GetDlgItem(hDlg, IDC_VDP1SAVEBMPBT), vdp1texture ? TRUE : FALSE);
+		 }
+		 }
+
+}
+
+//////////////////////////////////////////////////////////////////////////////
+
+LRESULT CALLBACK VDP1DebugDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
+                                 LPARAM lParam)
+{
+   char tempstr[1024];
+   TCHAR filename[MAX_PATH] = TEXT("\0");
+
+   switch (uMsg)
+   {
+      case WM_INITDIALOG:
+      {
+	  RECT r;
+		  	RECT r2;
+	int dx1, dy1, dx2, dy2;
+		int width;
+	int height;
+	int width2 ;
+		GetWindowRect(YabWin, &r);  //Ramwatch window
+		dx1 = (r.right - r.left) / 2;
+		dy1 = (r.bottom - r.top) / 2;
+
+		GetWindowRect(hDlg, &r2); // Gens window
+		dx2 = (r2.right - r2.left) / 2;
+		dy2 = (r2.bottom - r2.top) / 2;
+
+
+		// push it away from the main window if we can
+		width = (r.right-r.left);
+		height = (r.bottom - r.top);
+		width2 = (r2.right-r2.left); 
+		if(r.left+width2 + width < GetSystemMetrics(SM_CXSCREEN))
+		{
+			r.right += width;
+			r.left += width;
+		}
+		else if((int)r.left - (int)width2 > 0)
+		{
+			r.right -= width2;
+			r.left -= width2;
+		}
+/*
+		//-----------------------------------------------------------------------------------
+		//If user has Save Window Pos selected, override default positioning
+		if (RWSaveWindowPos)	
+		{
+			//If ramwindow is for some reason completely off screen, use default instead 
+			if (ramw_x > (-width*2) || ramw_x < (width*2 + GetSystemMetrics(SM_CYSCREEN))   ) 
+				r.left = ramw_x;	  //This also ignores cases of windows -32000 error codes
+			//If ramwindow is for some reason completely off screen, use default instead 
+			if (ramw_y > (0-height*2) ||ramw_y < (height*2 + GetSystemMetrics(SM_CYSCREEN))	)
+				r.top = ramw_y;		  //This also ignores cases of windows -32000 error codes
+		}
+		//-------------------------------------------------------------------------------------*/
+		SetWindowPos(hDlg, NULL, r.left, r.top, NULL, NULL, SWP_NOSIZE | SWP_NOZORDER | SWP_SHOWWINDOW);
+
+		  UpdateVDP1Debug(hDlg);
 
          return TRUE;
       }
@@ -114,6 +174,33 @@ LRESULT CALLBACK VDP1DebugDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
                   WideCharToMultiByte(CP_ACP, 0, filename, -1, tempstr, sizeof(tempstr), NULL, NULL);
                   SaveBitmap(tempstr, vdp1texturew, vdp1textureh, vdp1texture);
                }
+
+               return TRUE;
+            }
+            case IDC_VDP1REFRESH:
+            {
+         char *string;
+         u32 i=0;
+
+         // execute yabause until vblank-out
+         if (YabauseExec() != 0)
+           return FALSE;
+
+         // Build command list
+         SendMessage(GetDlgItem(hDlg, IDC_VDP1CMDLB), LB_RESETCONTENT, 0, 0);
+
+         for (;;)
+         {
+            if ((string = Vdp1DebugGetCommandNumberName(i)) == NULL)
+               break;
+
+            SendMessage(GetDlgItem(hDlg, IDC_VDP1CMDLB), LB_ADDSTRING, 0, (LPARAM) _16(string));
+
+            i++;
+         }
+
+         vdp1texturew = vdp1textureh = 1;
+         EnableWindow(GetDlgItem(hDlg, IDC_VDP1SAVEBMPBT), vdp1texture ? TRUE : FALSE);
 
                return TRUE;
             }
@@ -181,6 +268,7 @@ LRESULT CALLBACK VDP1DebugDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
       case WM_CLOSE:
       {
          EndDialog(hDlg, TRUE);
+		 VDP1DebugHWnd=NULL;
 
          return TRUE;
       }

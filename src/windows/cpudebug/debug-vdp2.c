@@ -175,16 +175,8 @@ LRESULT CALLBACK VDP2ViewerDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
    return FALSE;
 }
 
-//////////////////////////////////////////////////////////////////////////////
-
-LRESULT CALLBACK VDP2DebugDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
-                                 LPARAM lParam)
-{
-   switch (uMsg)
-   {
-      case WM_INITDIALOG:
-      {
-         char tempstr[VDP2_DEBUG_STRING_SIZE];
+void UpdateVDP2Debug(HWND hDlg) {
+	         char tempstr[VDP2_DEBUG_STRING_SIZE];
          int isscrenabled;
 
          // is NBG0/RBG1 enabled?
@@ -261,7 +253,61 @@ LRESULT CALLBACK VDP2DebugDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
          else
             // disabled
             SendMessage(GetDlgItem(hDlg, IDC_DISPENABCB), BM_SETCHECK, BST_UNCHECKED, 0);
+}
+//////////////////////////////////////////////////////////////////////////////
 
+LRESULT CALLBACK VDP2DebugDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
+                                 LPARAM lParam)
+{
+   switch (uMsg)
+   {
+      case WM_INITDIALOG:
+      {
+		  RECT r;
+		  	RECT r2;
+	int dx1, dy1, dx2, dy2;
+		int width;
+	int height;
+	int width2 ;
+		GetWindowRect(YabWin, &r);  //Ramwatch window
+		dx1 = (r.right - r.left) / 2;
+		dy1 = (r.bottom - r.top) / 2;
+
+		GetWindowRect(hDlg, &r2); // Gens window
+		dx2 = (r2.right - r2.left) / 2;
+		dy2 = (r2.bottom - r2.top) / 2;
+
+
+		// push it away from the main window if we can
+		width = (r.right-r.left);
+		height = (r.bottom - r.top);
+		width2 = (r2.right-r2.left); 
+		if(r.left+width2 + width < GetSystemMetrics(SM_CXSCREEN))
+		{
+			r.right += width;
+			r.left += width;
+		}
+		else if((int)r.left - (int)width2 > 0)
+		{
+			r.right -= width2;
+			r.left -= width2;
+		}
+/*
+		//-----------------------------------------------------------------------------------
+		//If user has Save Window Pos selected, override default positioning
+		if (RWSaveWindowPos)	
+		{
+			//If ramwindow is for some reason completely off screen, use default instead 
+			if (ramw_x > (-width*2) || ramw_x < (width*2 + GetSystemMetrics(SM_CYSCREEN))   ) 
+				r.left = ramw_x;	  //This also ignores cases of windows -32000 error codes
+			//If ramwindow is for some reason completely off screen, use default instead 
+			if (ramw_y > (0-height*2) ||ramw_y < (height*2 + GetSystemMetrics(SM_CYSCREEN))	)
+				r.top = ramw_y;		  //This also ignores cases of windows -32000 error codes
+		}
+		//-------------------------------------------------------------------------------------*/
+		SetWindowPos(hDlg, NULL, r.left, r.top, NULL, NULL, SWP_NOSIZE | SWP_NOZORDER | SWP_SHOWWINDOW);
+
+		  UpdateVDP2Debug(hDlg);
 
          return TRUE;
       }
