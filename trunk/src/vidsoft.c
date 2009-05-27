@@ -1656,9 +1656,9 @@ void VIDSoftVdp1DistortedSpriteDraw() {
 
   int mesh;
 
-  mesh = cmd.CMDPMOD & 0x0100;
-
   Vdp1ReadCommand(&cmd, Vdp1Regs->addr);
+
+  mesh = cmd.CMDPMOD & 0x0100;
 
   if (cmd.CMDPMOD & 0x0400) PushUserClipping((cmd.CMDPMOD >> 9) & 0x1);
 
@@ -2452,6 +2452,7 @@ void VIDSoftVdp1PolygonDraw(void) {
   u16 color = T1ReadWord(Vdp1Ram, Vdp1Regs->addr + 0x6);
   u16 cmdpmod = T1ReadWord(Vdp1Ram, Vdp1Regs->addr + 0x4);
   int mesh;
+  int fbx;
 
   mesh = cmdpmod & 0x0100;
 
@@ -2490,6 +2491,16 @@ void VIDSoftVdp1PolygonDraw(void) {
   xwidth = 1;
   y = v[0].y;
 
+#define SET_PIXEL { \
+  	  if(mesh) { \
+	      if((fbx^y)&1) { \
+		     fb++; fbx++; \
+		  } \
+          else  { \
+             *(fb++) = color; fbx++;\
+          } \
+	  } else {*(fb++) = color; fbx++;}}
+
 #define POLYGON_PAINT_PART( pBegin, pEnd, stepLeft, stepRight, zLeft, zRight ) \
     if ( y == v[pEnd].y ) { \
       if ( zLeft ) { xleft += stepLeft; xwidth -= stepLeft; stepLeft = 0; } \
@@ -2499,7 +2510,7 @@ void VIDSoftVdp1PolygonDraw(void) {
         int x2 = x1 + (int)xwidth;			   \
         if ( x1 < vdp1clipxstart ) x1 = vdp1clipxstart; \
         if ( x2 > vdp1clipxend ) x2 = vdp1clipxend;\
-        fb = (u16 *)vdp1backframebuffer + y*vdp1width + x1;\
+        fb = (u16 *)vdp1backframebuffer + y*vdp1width + x1; fbx = x1; \
         for ( ; x1<=x2 ; x1++ ) *(fb++) = color; \
       }} \
     if ( v[pBegin].y <= vdp1clipystart ) { \
@@ -2516,34 +2527,26 @@ void VIDSoftVdp1PolygonDraw(void) {
         int x2 = x1 + (int)xwidth;			   \
         if ( x1 < vdp1clipxstart ) x1 = vdp1clipxstart; \
         if ( x2 > vdp1clipxend ) x2 = vdp1clipxend;\
-        fb = (u16 *)vdp1backframebuffer + y*vdp1width + x1;\
-        for ( ; x1<=x2 ; x1++ ) *(fb++) = color; \
+        fb = (u16 *)vdp1backframebuffer + y*vdp1width + x1; fbx = x1; \
+        for ( ; x1<=x2 ; x1++ ) SET_PIXEL; \
       } \
-      y++; \
+      y++;  \
     }
 
 #define POLYGON_PAINT_PART_NOCLIP( pBegin, pEnd, stepLeft, stepRight, zLeft, zRight ) \
     if ( y == v[pEnd].y ) { \
       if ( zLeft ) { xleft += stepLeft; xwidth -= stepLeft; stepLeft = 0; } \
       if ( zRight ) { xwidth += stepRight; stepRight = 0; }\
-    fb = (u16 *)vdp1backframebuffer + y*vdp1width + (int)xleft;\
-    for ( x = (int)xwidth ; x>=0 ; x-- ) *(fb++) = color; \
+    fb = (u16 *)vdp1backframebuffer + y*vdp1width + (int)xleft; fbx = (int)xleft; \
+    for ( x = (int)xwidth ; x>=0 ; x-- ) SET_PIXEL; \
     }  \
     while ( y < v[pEnd].y ) { \
       \
       xwidth += stepRight - stepLeft;\
       xleft += stepLeft;\
       \
-      fb = (u16 *)vdp1backframebuffer + y*vdp1width + (int)xleft;\
-	  for ( x = (int)xwidth ; x>=0 ; x-- ) \
-	  if(mesh) { \
-	      if((x^y)&1) { \
-		     *(fb++) = 1; \
-		  } \
-          else  { \
-             *(fb++) = color; \
-          } \
-	  } else {*(fb++) = color;} \
+      fb = (u16 *)vdp1backframebuffer + y*vdp1width + (int)xleft; fbx = (int)xleft; \
+	  for ( x = (int)xwidth ; x>=0 ; x-- ) SET_PIXEL; \
       y++; \
 	}
 
