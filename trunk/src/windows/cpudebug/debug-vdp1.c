@@ -36,15 +36,9 @@ void UpdateVDP1Debug(HWND hDlg){
          char *string;
          u32 i=0;
 
-		// if(!VDP1DebugHWnd)
-			 return;
-
-		 if(!FrameAdvanceVariable==Paused) {
-		 if(currFrameCounter% 60 == 0) {
-
          // execute yabause until vblank-out
-  //       if (YabauseExec() != 0)
-   //         return FALSE;
+         if (YabauseExec() != 0)
+           return FALSE;
 
          // Build command list
          SendMessage(GetDlgItem(hDlg, IDC_VDP1CMDLB), LB_RESETCONTENT, 0, 0);
@@ -61,8 +55,6 @@ void UpdateVDP1Debug(HWND hDlg){
 
          vdp1texturew = vdp1textureh = 1;
          EnableWindow(GetDlgItem(hDlg, IDC_VDP1SAVEBMPBT), vdp1texture ? TRUE : FALSE);
-		 }
-		 }
 
 }
 
@@ -179,28 +171,8 @@ LRESULT CALLBACK VDP1DebugDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
             }
             case IDC_VDP1REFRESH:
             {
-         char *string;
-         u32 i=0;
+				UpdateVDP1Debug(hDlg);
 
-         // execute yabause until vblank-out
-         if (YabauseExec() != 0)
-           return FALSE;
-
-         // Build command list
-         SendMessage(GetDlgItem(hDlg, IDC_VDP1CMDLB), LB_RESETCONTENT, 0, 0);
-
-         for (;;)
-         {
-            if ((string = Vdp1DebugGetCommandNumberName(i)) == NULL)
-               break;
-
-            SendMessage(GetDlgItem(hDlg, IDC_VDP1CMDLB), LB_ADDSTRING, 0, (LPARAM) _16(string));
-
-            i++;
-         }
-
-         vdp1texturew = vdp1textureh = 1;
-         EnableWindow(GetDlgItem(hDlg, IDC_VDP1SAVEBMPBT), vdp1texture ? TRUE : FALSE);
 
                return TRUE;
             }
