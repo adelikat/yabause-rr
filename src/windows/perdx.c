@@ -660,7 +660,6 @@ int PERDXHandleEvents(void)
    Update_RAM_Search();
    Update_RAM_Watch();
    UpdateVDP2Debug(VDP2DebugHWnd);
-   UpdateVDP1Debug(VDP1DebugHWnd);
    YuiCaptureVideo();
 
    return 0;
