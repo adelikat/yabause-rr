@@ -22,5 +22,6 @@
 
 extern HINSTANCE y_hInstance;
 extern HWND YabWin;
-
+extern HWND VDP2DebugHWnd;
+extern HWND VDP1DebugHWnd;
 #endif

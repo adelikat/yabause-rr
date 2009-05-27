@@ -47,7 +47,8 @@
 #define MENU_PLAY_MOVIE                 142
 #define MENU_STOP_MOVIE                 143
 #define IDM_TOGGLE_OSD                  144
-#define IDM_AUTOLAG                  145
+#define IDM_AUTOLAG                     145
+#define IDC_VDP1REFRESH                 146
 #define IDC_WATCHLIST                   900
 #define IDC_1_BYTE                      902
 #define IDC_2_BYTES                     903
@@ -325,6 +326,7 @@
 #define IDC_VDP2TEXTET                  1109
 #define IDC_VDP1SAVEBMPBT               1110
 #define IDC_USEMINI18NLOG               1111
+#define IDC_VDP1SAVEBMPBT2              1111
 #define IDC_MINI18NLOGFILENAME          1112
 #define IDC_SAVEMD0                     1114
 #define IDC_SAVEMD1                     1115
