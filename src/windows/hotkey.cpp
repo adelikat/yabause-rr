@@ -1584,7 +1584,7 @@ void InitCustomKeys (SCustomKeys *keys)
 	keys->ToggleReadOnly.code = "ToggleReadOnly";
 	keys->ToggleReadOnly.name = L"Toggle Read Only";
 	keys->ToggleReadOnly.page = HOTKEY_PAGE_MOVIE;
-	keys->ToggleReadOnly.key = 'Q';
+	keys->ToggleReadOnly.key = 'NULL';
 
 	keys->PlayMovie.handleKeyDown = HK_PlayMovie;
 	keys->PlayMovie.code = "PlayMovie";
@@ -1596,7 +1596,7 @@ void InitCustomKeys (SCustomKeys *keys)
 	keys->RecordMovie.code = "RecordMovie";
 	keys->RecordMovie.name = L"Record Movie";
 	keys->RecordMovie.page = HOTKEY_PAGE_MOVIE;
-	keys->RecordMovie.key = 'R';
+	keys->RecordMovie.key = 'NULL';
 	keys->RecordMovie.modifiers = CUSTKEY_SHIFT_MASK;
 
 	keys->StopMovie.handleKeyDown = HK_StopMovie;
