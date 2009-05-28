@@ -9,6 +9,7 @@
   * Compilation is broken on other platforms
   * Clean up the savestates / anything else now that the old movie system is gone
   * Resolve these random crash problems
+  * Certain things will cut the fps in half, and it will remain that way for the rest of the session.  If you restart the emulator you'll be back up to normal fps.
   
 ===Medium=== 
 
