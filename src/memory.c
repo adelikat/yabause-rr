@@ -971,6 +971,9 @@ void FormatBackupRam(void *mem, u32 size)
 
 //////////////////////////////////////////////////////////////////////////////
 
+extern int M68k_centicycles;
+
+
 int YabSaveState(const char *filename)
 {
    u32 i;
@@ -1041,6 +1044,8 @@ int YabSaveState(const char *filename)
    ywrite(&check, (void *)&yabsys.CurSH2FreqType, sizeof(int), 1, fp);
    ywrite(&check, (void *)&yabsys.IsPal, sizeof(int), 1, fp);
 
+   ywrite(&check, (void *)&M68k_centicycles, sizeof(int), 1, fp);
+
    VIDCore->GetGlSize(&outputwidth, &outputheight);
 
    totalsize=outputwidth * outputheight * sizeof(u32);
@@ -1082,6 +1087,7 @@ int YabSaveState(const char *filename)
 }
 
 //////////////////////////////////////////////////////////////////////////////
+
 
 int YabLoadState(const char *filename)
 {
@@ -1266,6 +1272,8 @@ int YabLoadState(const char *filename)
    yread(&check, (void *)&yabsys.CycleCountII, sizeof(u32), 1, fp);
    yread(&check, (void *)&yabsys.CurSH2FreqType, sizeof(int), 1, fp);
    yread(&check, (void *)&yabsys.IsPal, sizeof(int), 1, fp);
+
+   yread(&check, (void *)&M68k_centicycles, sizeof(int), 1, fp);
 
    if (headerversion > 1) {
 
