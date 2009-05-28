@@ -510,7 +510,7 @@ void YuiUnPause()
 
 //////////////////////////////////////////////////////////////////////////////
 
-void YuiTempPause()
+extern "C" void YuiTempPause()
 {
 #ifdef USETHREADS
    if (!paused)
@@ -526,7 +526,7 @@ void YuiTempPause()
 
 //////////////////////////////////////////////////////////////////////////////
 
-void YuiTempUnPause()
+extern "C" void YuiTempUnPause()
 {
 #ifdef USETHREADS
    if (!paused)
