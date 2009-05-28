@@ -2312,7 +2312,7 @@ void VIDSoftVdp1ScaledSpriteDraw(void)
 
 #define MESH \
 	 if(mesh) { \
-	 if((x+y1) % 2 != 0) \
+	 if((x^y1)&1) \
 	 dot=0; } 			
 
    for ( ; y1 ; y1-- ) {

@@ -2098,6 +2098,20 @@ void ResetGame()
 extern "C" void HardResetGame()
 {
 	YuiTempPause();
+
+   yinit.percoretype = percoretype;
+   yinit.sh2coretype = sh2coretype;
+   yinit.vidcoretype = vidcoretype;
+   yinit.sndcoretype = sndcoretype;
+   yinit.carttype = carttype;
+   yinit.regionid = regionid;
+   yinit.biospath = biosfilename;
+   yinit.cdpath = cdrompath;
+   yinit.buppath = backupramfilename;
+   yinit.mpegpath = mpegromfilename;
+   yinit.cartpath = cartfilename;
+   yinit.netlinksetting = netlinksetting;
+
 	YabauseInit(&yinit);
 		VideoChangeCore(vidcoretype);
 
