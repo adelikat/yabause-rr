@@ -1,8 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+# Visual C++ Express 2008
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Yabause", "yabause.vcproj", "{6D979AD9-4479-4B63-87C9-1E75979F9327}"
 	ProjectSection(ProjectDependencies) = postProject
+		{EB71F858-B079-4A01-820E-BF7530E67ACE} = {EB71F858-B079-4A01-820E-BF7530E67ACE}
 		{73DE6EBE-F7BA-4723-8179-13D529D5F6C8} = {73DE6EBE-F7BA-4723-8179-13D529D5F6C8}
 	EndProjectSection
 EndProject
@@ -93,8 +94,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		AMDCaProjectFile = C:\svn\yabause-rr\src\windows\CodeAnalyst\yabause.caw
 	EndGlobalSection
 EndGlobal
