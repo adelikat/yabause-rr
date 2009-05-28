@@ -38,6 +38,7 @@ typedef struct
    u8 sm;
    u8 ci;
    u8 data[2352];
+   u8 pad[4];
 } block_struct;
 
 typedef struct
@@ -53,6 +54,7 @@ typedef struct
    u8 cival;
    u8 condtrue;
    u8 condfalse;
+   u8 pad[15];
 } filter_struct;
 
 typedef struct
@@ -71,15 +73,17 @@ typedef struct
   u16 signature;
   u8 filenumber;
   u8 reserved[5];
+  u8 pad[2];
 } xarec_struct;
 
 typedef struct
 {
-  u8 recordsize;
-  u8 xarecordsize;
   u32 lba;
   u32 size;
-  u8 dateyear;
+  xarec_struct xarecord;
+  u16 volumesequencenumber;
+  u8 recordsize;
+  u8 xarecordsize;  u8 dateyear;
   u8 datemonth;
   u8 dateday;
   u8 datehour;
@@ -89,10 +93,8 @@ typedef struct
   u8 flags;
   u8 fileunitsize;
   u8 interleavegapsize;
-  u16 volumesequencenumber;
   u8 namelength;
   char name[32];
-  xarec_struct xarecord;
 } dirrec_struct;
 
 typedef struct
@@ -103,6 +105,7 @@ typedef struct
    u8 vidcon;
    u8 vidlay;
    u8 vidbufdivnum;
+   u8 pad[2];
 } mpegcon_struct;
 
 typedef struct
@@ -113,6 +116,7 @@ typedef struct
    u8 vidstm;
    u8 vidstmid;
    u8 vidchannum;
+   u8 pad[2];
 } mpegstm_struct;
 
 typedef struct
@@ -126,6 +130,7 @@ typedef struct
    u16 CR3;
    u16 CR4;
    u16 MPEGRGB;
+   u8 pad[12];
 } blockregs_struct;
 
 typedef struct {
@@ -196,26 +201,27 @@ typedef struct {
   block_struct workblock;
 
   u32 curdirsect;
-  u32 curdirsize;
-  u32 curdirfidoffset;
-  dirrec_struct fileinfo[MAX_FILES];
-  u32 numfiles;
-
-  const char *mpegpath;
+  u32 curdirsize; //ZEROWARNING: not being savestated
+  u32 curdirfidoffset;  //ZEROWARNING: not being savestated
+  dirrec_struct fileinfo[MAX_FILES];  //ZEROWARNING: not being savestated
+  u32 numfiles; //ZEROWARNING: not being savestated
 
   u32 mpegintmask;
 
-  mpegcon_struct mpegcon[2];
+  mpegcon_struct mpegcon[2];  //ZEROWARNING: this is all wrong in savestate along with other structs
   mpegstm_struct mpegstm[2];
 
   int _command;
   u32 _periodiccycles;
   u32 _periodictiming;
   u32 _commandtiming;
-  CDInterface * cdi;
-
+  
   int carttype;
   int playtype;  
+
+  //emulator configuration variables, not part of internal hardware state
+  CDInterface * cdi;
+  const char *mpegpath;
 } Cs2;
 
 typedef struct {
