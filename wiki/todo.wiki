@@ -1,21 +1,19 @@
 ===High===
 
   * Implement desmume hotkey checking system without freezing gui
-  * The main cvs crashes when open cue iso is used - what is the difference?  This is maybe a problem with c68kexec or differences in compilation between mingw and VS. This may not actually be a problem.
   * The screenshot display when loading a state is broken for gtk pure software, opengl doesn't display correctly due to glzoompixels or whatever.  It needs to save the vidsoft framebuffer for software mode I guess.
   * When resuming, any pressed keys will get stuck and record into the movie.
+  * Gamepad input will randomly stop working, requiring you to enter the input menu to get it restarted
   * The ram search window doesn't display properly the second time you open it in a session
           adelikat: Are you sure this is still valid?  It doesn't happen for me.
-  * Resolve the project file differences between the cvs and the svn - this is causing differences in the way it is compiled resulting in extern "C" needed more often in one codebase than the other
   * Compilation is broken on other platforms
   * Clean up the savestates / anything else now that the old movie system is gone
-  * Resolve the desync problems
+  * Resolve these random crash problems
   
 ===Medium=== 
 
-  * SCSP_FRAMEACCURATE ought to be a runtime option if possible
   * Ram Watch - off by one, 060143EA in ram search ends up being 060143EB in Ram Watch
 ===Low===
 
-  * Fix png dumper
+  * Png dumper
   * Auto-hold
