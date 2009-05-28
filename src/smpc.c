@@ -235,7 +235,7 @@ void SmpcINTBACKStatus(void) {
    SmpcRegs->OREG[6] = ((times.tm_min / 10) << 4) | (times.tm_min % 10);
    SmpcRegs->OREG[7] = ((times.tm_sec / 10) << 4) | (times.tm_sec % 10);
 
-   if(!MovieIsActive()) {
+   if(MovieIsActive()) {
 	   movietime.tm_year=0x62;
 	   movietime.tm_wday=0x04;
 	   movietime.tm_mday=0x01;
