@@ -358,39 +358,11 @@ void YabauseResetButton(void) {
 
 //////////////////////////////////////////////////////////////////////////////
 
-int YabauseExec(void) {
-
-	//automatically advance lag frames if desired
-	if (FrameAdvanceVariable > 0 && LagFrameFlag == 1 && AutoAdvanceLag){ 
-		FrameAdvanceVariable = NeedAdvance; //advance a frame
-		YabauseEmulate();
-		FrameAdvanceVariable = Paused; //pause next time
-		return(0);
-	}
-
-	if (FrameAdvanceVariable == Paused){
-		ScspMuteAudio();
-		return(0);
-	}
-  
-	if (FrameAdvanceVariable == NeedAdvance){  //advance a frame
-		FrameAdvanceVariable = Paused; //pause next time
-		ScspUnMuteAudio();
-		YabauseEmulate();
-	}
-	
-	if (FrameAdvanceVariable == RunNormal ) { //run normally
-		ScspUnMuteAudio();	
-		YabauseEmulate();
-	}
-	return 0;
-}
-
-//////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
 
 int M68k_centicycles;  // Fractional cycle counter for M68k
 
-int YabauseEmulate(void) {
+int YabauseExec(void) {
    int M68k_cycles;              // Integral M68k cycles to execute this time
    
 

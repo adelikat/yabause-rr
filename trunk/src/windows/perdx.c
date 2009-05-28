@@ -654,18 +654,54 @@ int PERDXHandleEvents(void)
 //		tgtime = timeGetTime();
 //	}
 
-   if (YabauseExec() != 0)
+   if (YabauseEmulate() != 0)
       return -1;
-
-   Update_RAM_Search();
-   Update_RAM_Watch();
-   UpdateVDP2Debug(VDP2DebugHWnd);
-   YuiCaptureVideo();
 
    return 0;
 }
 
 //////////////////////////////////////////////////////////////////////////////
+
+void UpdateStuff() {
+
+	Update_RAM_Search();
+   Update_RAM_Watch();
+   UpdateVDP2Debug(VDP2DebugHWnd);
+   YuiCaptureVideo();
+}
+
+int YabauseEmulate(void) {
+
+	//automatically advance lag frames if desired
+	if (FrameAdvanceVariable > 0 && LagFrameFlag == 1 && AutoAdvanceLag){ 
+		FrameAdvanceVariable = NeedAdvance; //advance a frame
+		YabauseExec();
+//		UpdateStuff();
+		FrameAdvanceVariable = Paused; //pause next time
+		return(0);
+	}
+
+	if (FrameAdvanceVariable == Paused){
+		ScspMuteAudio();
+		return(0);
+	}
+  
+	if (FrameAdvanceVariable == NeedAdvance){  //advance a frame
+		FrameAdvanceVariable = Paused; //pause next time
+		ScspUnMuteAudio();
+		YabauseExec();
+		UpdateStuff();
+	}
+	
+	if (FrameAdvanceVariable == RunNormal ) { //run normally
+		ScspUnMuteAudio();	
+		YabauseExec();
+		UpdateStuff();
+	}
+	return 0;
+}
+
+////////////////////////////////////////////////////////////////////////////
 
 int SkipKeyIsPressed=0;
 int DelayFactor = 5;
