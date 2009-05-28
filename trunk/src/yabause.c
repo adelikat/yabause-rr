@@ -388,9 +388,11 @@ int YabauseExec(void) {
 
 //////////////////////////////////////////////////////////////////////////////
 
+int M68k_centicycles;  // Fractional cycle counter for M68k
+
 int YabauseEmulate(void) {
    int M68k_cycles;              // Integral M68k cycles to execute this time
-   static int M68k_centicycles;  // Fractional cycle counter for M68k
+   
 
    int oneframeexec=0;
 

@@ -190,7 +190,7 @@ typedef struct {
   partition_struct partition[MAX_SELECTORS];
 
   partition_struct *datatranspartition;
-  u8 datatranspartitionnum;
+  u8 datatranspartitionnum, datatranspartition_last;
   s32 datatransoffset;
   u32 datanumsecttrans;
   u16 datatranssectpos;

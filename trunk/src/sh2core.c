@@ -1766,7 +1766,7 @@ void SCITransmitByte(UNUSED u8 val) {
 
 int SH2SaveState(SH2_struct *context, FILE *fp)
 {
-   int offset;
+   int offset, i;
    IOCheck_struct check;
 
    // Write header
@@ -1786,7 +1786,8 @@ int SH2SaveState(SH2_struct *context, FILE *fp)
 
    // Write internal variables
    ywrite(&check, (void *)&context->frc, sizeof(context->frc), 1, fp);
-   ywrite(&check, (void *)context->interrupts, sizeof(interrupt_struct), MAX_INTERRUPTS, fp);
+   ywrite(&check, (void *)&context->wdt, sizeof(context->wdt), 1, fp);
+   for(i=0;i<MAX_INTERRUPTS;i++) ywrite(&check, (void *)&context->interrupts[i], sizeof(interrupt_struct), 1, fp);
    ywrite(&check, (void *)&context->NumberOfInterrupts, sizeof(u32), 1, fp);
    ywrite(&check, (void *)context->AddressArray, sizeof(u32), 0x100, fp);
    ywrite(&check, (void *)context->DataArray, sizeof(u8), 0x1000, fp);
@@ -1803,6 +1804,7 @@ int SH2SaveState(SH2_struct *context, FILE *fp)
 
 int SH2LoadState(SH2_struct *context, FILE *fp, UNUSED int version, int size)
 {
+	int i;
    IOCheck_struct check;
 
    if (context->isslave == 1)
@@ -1816,7 +1818,8 @@ int SH2LoadState(SH2_struct *context, FILE *fp, UNUSED int version, int size)
 
    // Read internal variables
    yread(&check, (void *)&context->frc, sizeof(context->frc), 1, fp);
-   yread(&check, (void *)context->interrupts, sizeof(interrupt_struct), MAX_INTERRUPTS, fp);
+   yread(&check, (void *)&context->wdt, sizeof(context->wdt), 1, fp);
+   for(i=0;i<MAX_INTERRUPTS;i++) yread(&check, (void *)&context->interrupts[i], sizeof(interrupt_struct), 1, fp);
    yread(&check, (void *)&context->NumberOfInterrupts, sizeof(u32), 1, fp);
    yread(&check, (void *)context->AddressArray, sizeof(u32), 0x100, fp);
    yread(&check, (void *)context->DataArray, sizeof(u8), 0x1000, fp);

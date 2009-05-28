@@ -29,6 +29,8 @@
 #include "smpc.h"
 #include "yui.h"
 
+int ctr=0;
+
 #define CDB_HIRQ_CMOK      0x0001
 #define CDB_HIRQ_DRDY      0x0002
 #define CDB_HIRQ_CSCT      0x0004
@@ -434,6 +436,8 @@ int Cs2Init(int carttype, int coreid, const char *cdpath, const char *mpegpath, 
    if ((Cs2Area = (Cs2 *) malloc(sizeof(Cs2))) == NULL)
       return -1;
 
+   Cs2Area->datatranspartition = NULL;
+   Cs2Area->datatranspartition_last = 0;
    Cs2Area->carttype = carttype;
    Cs2Area->mpegpath = mpegpath;
    Cs2Area->cdi=NULL;
@@ -1377,7 +1381,7 @@ void Cs2PlayDisc(void) {
   }
 
   // setup play mode here
-#if CDDEBUG
+#ifdef CDDEBUG
   if (pdpmode != 0)
      CDLOG("cs2\t: playDisc: Unsupported play mode = %02X\n", pdpmode);
 #endif
@@ -1893,6 +1897,7 @@ void Cs2GetSectorData(void)
    Cs2Area->datatranstype = 0;
    Cs2Area->datatranspartition = Cs2Area->partition + gsdbufno;
    Cs2Area->datatranspartitionnum = (u8)gsdbufno;
+   Cs2Area->datatranspartition_last = (u8)gsdbufno;
    Cs2Area->datatransoffset = 0;
    Cs2Area->datanumsecttrans = 0;
    Cs2Area->datatranssectpos = (u16)gsdsectoffset;
@@ -1987,7 +1992,7 @@ void Cs2GetThenDeleteSectorData(void)
    Cs2Area->cdwnum = 0;
    Cs2Area->datatranstype = 2;
    Cs2Area->datatranspartition = Cs2Area->partition + gtdsdbufno;
-   Cs2Area->datatranspartitionnum = (u8)gtdsdbufno; //zero 27-may-09
+   Cs2Area->datatranspartition_last = gtdsdbufno;
    Cs2Area->datatransoffset = 0;
    Cs2Area->datanumsecttrans = 0;
    Cs2Area->datatranssectpos = (u16)gtdsdsectoffset;
@@ -3342,7 +3347,7 @@ u8 Cs2GetRegionID(void)
 //////////////////////////////////////////////////////////////////////////////
 
 int Cs2SaveState(FILE * fp) {
-   int offset, i;
+   int offset, i, temp;
    IOCheck_struct check;
 
    // This is mostly kludge, but it will have to do until I have time to rewrite it all
@@ -3351,60 +3356,61 @@ int Cs2SaveState(FILE * fp) {
    //these are written and read in the same order as declared in the struct, so we can be sure
    //everything is included
    ywrite(&check, (void *) &Cs2Area->reg, sizeof(blockregs_struct), 1, fp);
-   ywrite(&check, (void *) &Cs2Area->FAD, 4, 1, fp);
-   ywrite(&check, (void *) &Cs2Area->status, 1, 1, fp);
+   ywrite(&check, (void *) &Cs2Area->FAD, sizeof(u32), 1, fp);
+   ywrite(&check, (void *) &Cs2Area->status, sizeof(u8), 1, fp);
 
-   ywrite(&check, (void *) &Cs2Area->options, 1, 1, fp);
-   ywrite(&check, (void *) &Cs2Area->repcnt, 1, 1, fp);
-   ywrite(&check, (void *) &Cs2Area->ctrladdr, 1, 1, fp);
-   ywrite(&check, (void *) &Cs2Area->track, 1, 1, fp);
-   ywrite(&check, (void *) &Cs2Area->index, 1, 1, fp);
+   ywrite(&check, (void *) &Cs2Area->options, sizeof(u8), 1, fp);
+   ywrite(&check, (void *) &Cs2Area->repcnt, sizeof(u8), 1, fp);
+   ywrite(&check, (void *) &Cs2Area->ctrladdr, sizeof(u8), 1, fp);
+   ywrite(&check, (void *) &Cs2Area->track, sizeof(u8), 1, fp);
+   ywrite(&check, (void *) &Cs2Area->index, sizeof(u8), 1, fp);
 
-   ywrite(&check, (void *)&Cs2Area->actionstatus, 1, 1, fp);
-   ywrite(&check, (void *)&Cs2Area->pictureinfo, 1, 1, fp);
-   ywrite(&check, (void *)&Cs2Area->mpegaudiostatus, 1, 1, fp);
-   ywrite(&check, (void *)&Cs2Area->mpegvideostatus, 2, 1, fp);
-   ywrite(&check, (void *)&Cs2Area->vcounter, 2, 1, fp);
+   ywrite(&check, (void *)&Cs2Area->actionstatus, sizeof(u8), 1, fp);
+   ywrite(&check, (void *)&Cs2Area->pictureinfo, sizeof(u8), 1, fp);
+   ywrite(&check, (void *)&Cs2Area->mpegaudiostatus, sizeof(u8), 1, fp);
+   ywrite(&check, (void *)&Cs2Area->mpegvideostatus, sizeof(u16), 1, fp);
+   ywrite(&check, (void *)&Cs2Area->vcounter, sizeof(u16), 1, fp);
 
-   ywrite(&check, (void *) &Cs2Area->satauth, 2, 1, fp);
-   ywrite(&check, (void *) &Cs2Area->mpgauth, 2, 1, fp);
+   ywrite(&check, (void *) &Cs2Area->satauth, sizeof(u16), 1, fp);
+   ywrite(&check, (void *) &Cs2Area->mpgauth, sizeof(u16), 1, fp);
 
-   ywrite(&check, (void *) &Cs2Area->transfercount, 4, 1, fp);
-   ywrite(&check, (void *) &Cs2Area->cdwnum, 4, 1, fp);
-   ywrite(&check, (void *) Cs2Area->TOC, 4, 102, fp);
-   ywrite(&check, (void *) &Cs2Area->playFAD, 4, 1, fp);
-   ywrite(&check, (void *) &Cs2Area->playendFAD, 4, 1, fp);
-   ywrite(&check, (void *) &Cs2Area->maxrepeat, 4, 1, fp);
-   ywrite(&check, (void *) &Cs2Area->getsectsize, 4, 1, fp);
-   ywrite(&check, (void *) &Cs2Area->putsectsize, 4, 1, fp);
-   ywrite(&check, (void *) &Cs2Area->calcsize, 4, 1, fp);
-   ywrite(&check, (void *) &Cs2Area->infotranstype, 4, 1, fp);
-   ywrite(&check, (void *) &Cs2Area->datatranstype, 4, 1, fp);
-   ywrite(&check, (void *) &Cs2Area->isonesectorstored, 1, 1, fp);
-   ywrite(&check, (void *) &Cs2Area->isdiskchanged, 1, 1, fp);
-   ywrite(&check, (void *) &Cs2Area->isbufferfull, 1, 1, fp);
-   ywrite(&check, (void *) &Cs2Area->speed1x, 1, 1, fp);
-   ywrite(&check, (void *) &Cs2Area->transfileinfo, 1, 12, fp);
-   ywrite(&check, (void *) &Cs2Area->lastbuffer, 1, 1, fp);
+   ywrite(&check, (void *) &Cs2Area->transfercount, sizeof(u32), 1, fp);
+   ywrite(&check, (void *) &Cs2Area->cdwnum, sizeof(u32), 1, fp);
+   ywrite(&check, (void *) &Cs2Area->TOC[0], sizeof(u32), 102, fp);
+   ywrite(&check, (void *) &Cs2Area->playFAD, sizeof(u32), 1, fp);
+   ywrite(&check, (void *) &Cs2Area->playendFAD, sizeof(u32), 1, fp);
+   ywrite(&check, (void *) &Cs2Area->maxrepeat, sizeof(unsigned int), 1, fp);
+   ywrite(&check, (void *) &Cs2Area->getsectsize, sizeof(u32), 1, fp);
+   ywrite(&check, (void *) &Cs2Area->putsectsize, sizeof(u32), 1, fp);
+   ywrite(&check, (void *) &Cs2Area->calcsize, sizeof(u32), 1, fp);
+   ywrite(&check, (void *) &Cs2Area->infotranstype, sizeof(s32), 1, fp);
+   ywrite(&check, (void *) &Cs2Area->datatranstype, sizeof(s32), 1, fp);
+   ywrite(&check, (void *) &Cs2Area->isonesectorstored, sizeof(int), 1, fp);
+   ywrite(&check, (void *) &Cs2Area->isdiskchanged, sizeof(int), 1, fp);
+   ywrite(&check, (void *) &Cs2Area->isbufferfull, sizeof(int), 1, fp);
+   ywrite(&check, (void *) &Cs2Area->speed1x, sizeof(int), 1, fp);
+   ywrite(&check, (void *) &Cs2Area->transfileinfo[0], sizeof(u8), 12, fp);
+   ywrite(&check, (void *) &Cs2Area->lastbuffer, sizeof(u8), 1, fp);
 
    for(i=0;i<MAX_SELECTORS;i++) ywrite(&check, (void *)&Cs2Area->filter[i], sizeof(filter_struct), 1, fp);
    //subsequent pointers get regenerated from the following values
-   ywrite(&check, (void *) &Cs2Area->outconcddevnum, 1, 1, fp);
-   ywrite(&check, (void *) &Cs2Area->outconmpegfbnum, 1, 1, fp);
-   ywrite(&check, (void *) &Cs2Area->outconmpegbufnum, 1, 1, fp);
-   ywrite(&check, (void *) &Cs2Area->outconmpegromnum, 1, 1, fp);
-   ywrite(&check, (void *) &Cs2Area->outconhostnum, 1, 1, fp);
+   ywrite(&check, (void *) &Cs2Area->outconcddevnum, sizeof(u8), 1, fp);
+   ywrite(&check, (void *) &Cs2Area->outconmpegfbnum, sizeof(u8), 1, fp);
+   ywrite(&check, (void *) &Cs2Area->outconmpegbufnum, sizeof(u8), 1, fp);
+   ywrite(&check, (void *) &Cs2Area->outconmpegromnum, sizeof(u8), 1, fp);
+   ywrite(&check, (void *) &Cs2Area->outconhostnum, sizeof(u8), 1, fp);
 
    for (i = 0; i < MAX_SELECTORS; i++)
    {
-      ywrite(&check, (void *)&Cs2Area->partition[i].size, 4, 1, fp);
+      ywrite(&check, (void *)&Cs2Area->partition[i].size, sizeof(s32), 1, fp);
 	  //Cs2Area->partition[i].block get regenerated
-      ywrite(&check, (void *)Cs2Area->partition[i].blocknum, 1, MAX_BLOCKS, fp);
-      ywrite(&check, (void *)&Cs2Area->partition[i].numblocks, 1, 1, fp);
+      ywrite(&check, (void *)&Cs2Area->partition[i].blocknum[0], sizeof(u8), MAX_BLOCKS, fp);
+      ywrite(&check, (void *)&Cs2Area->partition[i].numblocks, sizeof(u8), 1, fp);
    }
 
    //datatranspartition gets regenerated
    ywrite(&check, (void *) &Cs2Area->datatranspartitionnum, 1, 1, fp);
+   ywrite(&check, (void *) &Cs2Area->datatranspartition_last, 1, 1, fp);
    ywrite(&check, (void *) &Cs2Area->datatransoffset, 4, 1, fp);
    ywrite(&check, (void *) &Cs2Area->datanumsecttrans, 4, 1, fp);
    ywrite(&check, (void *) &Cs2Area->datatranssectpos, 2, 1, fp);
@@ -3422,20 +3428,20 @@ int Cs2SaveState(FILE * fp) {
 
    //mpegpath is set up when the game is loaded????
 
-   ywrite(&check, (void *)&Cs2Area->mpegintmask, 4, 1, fp);
+   ywrite(&check, (void *)&Cs2Area->mpegintmask, sizeof(u32), 1, fp);
    ywrite(&check, (void *)&Cs2Area->mpegcon[0], sizeof(mpegcon_struct), 1, fp);
    ywrite(&check, (void *)&Cs2Area->mpegcon[1], sizeof(mpegcon_struct), 1, fp);
    ywrite(&check, (void *)&Cs2Area->mpegstm[0], sizeof(mpegstm_struct), 1, fp);
    ywrite(&check, (void *)&Cs2Area->mpegstm[1], sizeof(mpegstm_struct), 1, fp);
 
   
-   ywrite(&check, (void *) &Cs2Area->_command, 1, 1, fp);
-   ywrite(&check, (void *) &Cs2Area->_periodiccycles, 4, 1, fp);
-   ywrite(&check, (void *) &Cs2Area->_periodictiming, 4, 1, fp);
-   ywrite(&check, (void *) &Cs2Area->_commandtiming, 4, 1, fp);
+   ywrite(&check, (void *) &Cs2Area->_command, sizeof(int), 1, fp);
+   ywrite(&check, (void *) &Cs2Area->_periodiccycles, sizeof(u32), 1, fp);
+   ywrite(&check, (void *) &Cs2Area->_periodictiming, sizeof(u32), 1, fp);
+   ywrite(&check, (void *) &Cs2Area->_commandtiming, sizeof(u32), 1, fp);
 
-   ywrite(&check, (void *) &Cs2Area->carttype, 4, 1, fp);
-   ywrite(&check, (void *) &Cs2Area->playtype, 4, 1, fp);
+   ywrite(&check, (void *) &Cs2Area->carttype, sizeof(int), 1, fp);
+   ywrite(&check, (void *) &Cs2Area->playtype, sizeof(int), 1, fp);
 
    return StateFinishHeader(fp, offset);
 }
@@ -3449,48 +3455,48 @@ int Cs2LoadState(FILE * fp, UNUSED int version, int size) {
    //these are written and read in the same order as declared in the struct, so we can be sure
    //everything is included
    yread(&check, (void *) &Cs2Area->reg, sizeof(blockregs_struct), 1, fp);
-   yread(&check, (void *) &Cs2Area->FAD, 4, 1, fp);
-   yread(&check, (void *) &Cs2Area->status, 1, 1, fp);
+   yread(&check, (void *) &Cs2Area->FAD, sizeof(u32), 1, fp);
+   yread(&check, (void *) &Cs2Area->status, sizeof(u8), 1, fp);
 
-   yread(&check, (void *) &Cs2Area->options, 1, 1, fp);
-   yread(&check, (void *) &Cs2Area->repcnt, 1, 1, fp);
-   yread(&check, (void *) &Cs2Area->ctrladdr, 1, 1, fp);
-   yread(&check, (void *) &Cs2Area->track, 1, 1, fp);
-   yread(&check, (void *) &Cs2Area->index, 1, 1, fp);
+   yread(&check, (void *) &Cs2Area->options, sizeof(u8), 1, fp);
+   yread(&check, (void *) &Cs2Area->repcnt, sizeof(u8), 1, fp);
+   yread(&check, (void *) &Cs2Area->ctrladdr, sizeof(u8), 1, fp);
+   yread(&check, (void *) &Cs2Area->track, sizeof(u8), 1, fp);
+   yread(&check, (void *) &Cs2Area->index, sizeof(u8), 1, fp);
 
-   yread(&check, (void *)&Cs2Area->actionstatus, 1, 1, fp);
-   yread(&check, (void *)&Cs2Area->pictureinfo, 1, 1, fp);
-   yread(&check, (void *)&Cs2Area->mpegaudiostatus, 1, 1, fp);
-   yread(&check, (void *)&Cs2Area->mpegvideostatus, 2, 1, fp);
-   yread(&check, (void *)&Cs2Area->vcounter, 2, 1, fp);
+   yread(&check, (void *)&Cs2Area->actionstatus, sizeof(u8), 1, fp);
+   yread(&check, (void *)&Cs2Area->pictureinfo, sizeof(u8), 1, fp);
+   yread(&check, (void *)&Cs2Area->mpegaudiostatus, sizeof(u8), 1, fp);
+   yread(&check, (void *)&Cs2Area->mpegvideostatus, sizeof(u16), 1, fp);
+   yread(&check, (void *)&Cs2Area->vcounter, sizeof(u16), 1, fp);
 
-   yread(&check, (void *) &Cs2Area->satauth, 2, 1, fp);
-   yread(&check, (void *) &Cs2Area->mpgauth, 2, 1, fp);
+   yread(&check, (void *) &Cs2Area->satauth, sizeof(u16), 1, fp);
+   yread(&check, (void *) &Cs2Area->mpgauth, sizeof(u16), 1, fp);
 
-   yread(&check, (void *) &Cs2Area->transfercount, 4, 1, fp);
-   yread(&check, (void *) &Cs2Area->cdwnum, 4, 1, fp);
-   yread(&check, (void *) Cs2Area->TOC, 4, 102, fp);
-   yread(&check, (void *) &Cs2Area->playFAD, 4, 1, fp);
-   yread(&check, (void *) &Cs2Area->playendFAD, 4, 1, fp);
-   yread(&check, (void *) &Cs2Area->maxrepeat, 4, 1, fp);
-   yread(&check, (void *) &Cs2Area->getsectsize, 4, 1, fp);
-   yread(&check, (void *) &Cs2Area->putsectsize, 4, 1, fp);
-   yread(&check, (void *) &Cs2Area->calcsize, 4, 1, fp);
-   yread(&check, (void *) &Cs2Area->infotranstype, 4, 1, fp);
-   yread(&check, (void *) &Cs2Area->datatranstype, 4, 1, fp);
-   yread(&check, (void *) &Cs2Area->isonesectorstored, 1, 1, fp);
-   yread(&check, (void *) &Cs2Area->isdiskchanged, 1, 1, fp);
-   yread(&check, (void *) &Cs2Area->isbufferfull, 1, 1, fp);
-   yread(&check, (void *) &Cs2Area->speed1x, 1, 1, fp);
-   yread(&check, (void *) &Cs2Area->transfileinfo, 1, 12, fp);
-   yread(&check, (void *) &Cs2Area->lastbuffer, 1, 1, fp);
+   yread(&check, (void *) &Cs2Area->transfercount, sizeof(u32), 1, fp);
+   yread(&check, (void *) &Cs2Area->cdwnum, sizeof(u32), 1, fp);
+   yread(&check, (void *) &Cs2Area->TOC[0], sizeof(u32), 102, fp);
+   yread(&check, (void *) &Cs2Area->playFAD, sizeof(u32), 1, fp);
+   yread(&check, (void *) &Cs2Area->playendFAD, sizeof(u32), 1, fp);
+   yread(&check, (void *) &Cs2Area->maxrepeat, sizeof(unsigned int), 1, fp);
+   yread(&check, (void *) &Cs2Area->getsectsize, sizeof(u32), 1, fp);
+   yread(&check, (void *) &Cs2Area->putsectsize, sizeof(u32), 1, fp);
+   yread(&check, (void *) &Cs2Area->calcsize, sizeof(u32), 1, fp);
+   yread(&check, (void *) &Cs2Area->infotranstype, sizeof(s32), 1, fp);
+   yread(&check, (void *) &Cs2Area->datatranstype, sizeof(s32), 1, fp);
+   yread(&check, (void *) &Cs2Area->isonesectorstored, sizeof(int), 1, fp);
+   yread(&check, (void *) &Cs2Area->isdiskchanged, sizeof(int), 1, fp);
+   yread(&check, (void *) &Cs2Area->isbufferfull, sizeof(int), 1, fp);
+   yread(&check, (void *) &Cs2Area->speed1x, sizeof(int), 1, fp);
+   yread(&check, (void *) &Cs2Area->transfileinfo[0], sizeof(u8), 12, fp);
+   yread(&check, (void *) &Cs2Area->lastbuffer, sizeof(u8), 1, fp);
 
    for(i=0;i<MAX_SELECTORS;i++) yread(&check, (void *)&Cs2Area->filter[i], sizeof(filter_struct), 1, fp);
-   yread(&check, (void *) &Cs2Area->outconcddevnum, 1, 1, fp);
-   yread(&check, (void *) &Cs2Area->outconmpegfbnum, 1, 1, fp);
-   yread(&check, (void *) &Cs2Area->outconmpegbufnum, 1, 1, fp);
-   yread(&check, (void *) &Cs2Area->outconmpegromnum, 1, 1, fp);
-   yread(&check, (void *) &Cs2Area->outconhostnum, 1, 1, fp);
+   yread(&check, (void *) &Cs2Area->outconcddevnum, sizeof(u8), 1, fp);
+   yread(&check, (void *) &Cs2Area->outconmpegfbnum, sizeof(u8), 1, fp);
+   yread(&check, (void *) &Cs2Area->outconmpegbufnum, sizeof(u8), 1, fp);
+   yread(&check, (void *) &Cs2Area->outconmpegromnum, sizeof(u8), 1, fp);
+   yread(&check, (void *) &Cs2Area->outconhostnum, sizeof(u8), 1, fp);
 
    //---------
    //regenerate some pointers
@@ -3513,9 +3519,9 @@ int Cs2LoadState(FILE * fp, UNUSED int version, int size) {
    // Read partition data
    for (i = 0; i < MAX_SELECTORS; i++)
    {
-      yread(&check, (void *)&Cs2Area->partition[i].size, 4, 1, fp);
-      yread(&check, (void *)Cs2Area->partition[i].blocknum, 1, MAX_BLOCKS, fp);
-      yread(&check, (void *)&Cs2Area->partition[i].numblocks, 1, 1, fp);
+      yread(&check, (void *)&Cs2Area->partition[i].size, sizeof(s32), 1, fp);
+      yread(&check, (void *)&Cs2Area->partition[i].blocknum[0], sizeof(u8), MAX_BLOCKS, fp);
+      yread(&check, (void *)&Cs2Area->partition[i].numblocks, sizeof(u8), 1, fp);
 
       for (i2 = 0; i2 < MAX_BLOCKS; i2++)
       {
@@ -3527,11 +3533,12 @@ int Cs2LoadState(FILE * fp, UNUSED int version, int size) {
    }
 
    yread(&check, (void *) &Cs2Area->datatranspartitionnum, 1, 1, fp);
+   yread(&check, (void *) &Cs2Area->datatranspartition_last, 1, 1, fp);
    yread(&check, (void *) &Cs2Area->datatransoffset, 4, 1, fp);
    yread(&check, (void *) &Cs2Area->datanumsecttrans, 4, 1, fp);
    yread(&check, (void *) &Cs2Area->datatranssectpos, 2, 1, fp);
    yread(&check, (void *) &Cs2Area->datasectstotrans, 2, 1, fp);
-   Cs2Area->datatranspartition = Cs2Area->partition + Cs2Area->datatranspartitionnum;
+   Cs2Area->datatranspartition = Cs2Area->partition + Cs2Area->datatranspartition_last;
 
    yread(&check, (void *) &Cs2Area->blockfreespace, 4, 1, fp);
    for(i=0;i<MAX_BLOCKS;i++) yread(&check, (void *)&Cs2Area->block[i], sizeof(block_struct), 1, fp);
@@ -3545,20 +3552,20 @@ int Cs2LoadState(FILE * fp, UNUSED int version, int size) {
 
    //mpegpath is set up when the game is loaded????
 
-   yread(&check, (void *)&Cs2Area->mpegintmask, 4, 1, fp);
+   yread(&check, (void *)&Cs2Area->mpegintmask, sizeof(u32), 1, fp);
    yread(&check, (void *)&Cs2Area->mpegcon[0], sizeof(mpegcon_struct), 1, fp);
    yread(&check, (void *)&Cs2Area->mpegcon[1], sizeof(mpegcon_struct), 1, fp);
    yread(&check, (void *)&Cs2Area->mpegstm[0], sizeof(mpegstm_struct), 1, fp);
    yread(&check, (void *)&Cs2Area->mpegstm[1], sizeof(mpegstm_struct), 1, fp);
 
-   yread(&check, (void *) &Cs2Area->_command, 1, 1, fp);
-   yread(&check, (void *) &Cs2Area->_periodiccycles, 4, 1, fp);
-   yread(&check, (void *) &Cs2Area->_periodictiming, 4, 1, fp);
-   yread(&check, (void *) &Cs2Area->_commandtiming, 4, 1, fp);
+   yread(&check, (void *) &Cs2Area->_command, sizeof(int), 1, fp);
+   yread(&check, (void *) &Cs2Area->_periodiccycles, sizeof(u32), 1, fp);
+   yread(&check, (void *) &Cs2Area->_periodictiming, sizeof(u32), 1, fp);
+   yread(&check, (void *) &Cs2Area->_commandtiming, sizeof(u32), 1, fp);
 
 
-   yread(&check, (void *) &Cs2Area->carttype, 4, 1, fp);
-   yread(&check, (void *) &Cs2Area->playtype, 4, 1, fp);
+   yread(&check, (void *) &Cs2Area->carttype, sizeof(int), 1, fp);
+   yread(&check, (void *) &Cs2Area->playtype, sizeof(int), 1, fp);
 
    return size;
 }
