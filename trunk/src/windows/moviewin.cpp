@@ -546,10 +546,8 @@ void FCEUI_LoadMovie(const char *fname, bool _read_only, bool tasedit, int _paus
 
 	if(movie_readonly)
 		DisplayMessage("Replay started Read-Only.");
-	//	driver->USR_InfoMessage("Replay started Read-Only.");
 	else
 		DisplayMessage("Replay started Read+Write.");
-	//	driver->USR_InfoMessage("Replay started Read+Write.");
 }
 
 static void openRecordingMovie(const char* fname)
@@ -608,7 +606,6 @@ static void openRecordingMovie(const char* fname)
 	BupFormat(0);
 
 	DisplayMessage("Movie recording started.");
-//	driver->USR_InfoMessage("Movie recording started.");
 }
 
  void NDS_setTouchFromMovie(void) {
@@ -643,10 +640,10 @@ static void openRecordingMovie(const char* fname)
 	if(pad & (1 << 12)) PORTDATA1.data[2] &= 0xBF; //l
 	else PORTDATA1.data[2] |= ~0xBF; 
 
-	if(pad & (1 << 10)) PORTDATA1.data[2] &= 0xDF; //d
+	if(pad & (1 << 9)) PORTDATA1.data[2] &= 0xDF; //d
 	else PORTDATA1.data[2] |= ~0xDF; 
 
-	if(pad & (1 << 9)) PORTDATA1.data[2] &= 0xEF; //up
+	if(pad & (1 << 10)) PORTDATA1.data[2] &= 0xEF; //up
 	else PORTDATA1.data[2] |= ~0xEF; 
 
 	if(pad & (1 << 8)) PORTDATA1.data[2] &= 0xF7; //start
@@ -762,8 +759,8 @@ extern "C" void FCEUMOV_AddInputState()
 	pad =
 		(FIX(r)<<12)|
 		(FIX(l)<<11)|
-		(FIX(d)<<10)|
-		(FIX(u)<<9)|
+		(FIX(d)<<9)|
+		(FIX(u)<<10)|
 		(FIX(s)<<8)|
 		(FIX(a)<<7)|
 		(FIX(b)<<6)|
