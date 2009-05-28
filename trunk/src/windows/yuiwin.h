@@ -24,4 +24,6 @@ extern HINSTANCE y_hInstance;
 extern HWND YabWin;
 extern HWND VDP2DebugHWnd;
 extern HWND VDP1DebugHWnd;
+void YuiTempPause();
+void YuiTempUnPause();
 #endif

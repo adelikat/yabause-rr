@@ -322,8 +322,10 @@ LRESULT CALLBACK VDP2DebugDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
                EndDialog(hDlg, TRUE);
                return TRUE;
             case IDC_VDP2VIEWER:
-            {
-               DialogBox(y_hInstance, MAKEINTRESOURCE(IDD_VDP2VIEWER), NULL, (DLGPROC)VDP2ViewerDlgProc);
+				{
+				YuiTempPause();
+				DialogBox(y_hInstance, MAKEINTRESOURCE(IDD_VDP2VIEWER), NULL, (DLGPROC)VDP2ViewerDlgProc);
+				YuiTempUnPause();
                return TRUE;
             }
             default: break;

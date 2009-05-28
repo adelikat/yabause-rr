@@ -11,12 +11,10 @@ extern "C" {
 #include "../memory.h"
 #include "./settings/settings.h"
 #include "./cpudebug/yuidebug.h"
+#include "yuiwin.h"
 }
 #include "windows.h"
 #include "commctrl.h"
-
-extern "C" HWND YabWin;
-extern "C" HINSTANCE y_hInstance;
 
 HWND RamWatchHWnd = NULL;
 
@@ -186,7 +184,9 @@ int InsertWatchHwnd(const struct AddressWatcher *Watch, HWND parent)
 
 	rswatches[WatchCount] = *Watch;
 	rswatches[WatchCount].CurValue = GetCurrentValue(&rswatches[WatchCount]);
+	YuiTempPause();
 	DialogBox(y_hInstance, MAKEINTRESOURCE(IDD_PROMPT), parent, (DLGPROC) PromptWatchNameProc);
+	YuiTempUnPause();
 
 	return WatchCount > prevWatchCount;
 }
@@ -247,11 +247,16 @@ bool AskSave()
 	//returns 0 only if a save was attempted but failed or was cancelled
 	if (RWfileChanged)
 	{
+		YuiTempPause();
 		int answer = MessageBox(MESSAGEBOXPARENT, (LPCWSTR)_16("Save Changes?"), (LPCWSTR)_16("Ram Watch"), MB_YESNOCANCEL);
-		if(answer == IDYES)
-			if(!QuickSaveWatches())
+		if(answer == IDYES) {
+			if(!QuickSaveWatches()) {
+				YuiTempUnPause();
 				return false;
+			}
+		YuiTempUnPause();
 		return (answer != IDCANCEL);
+		}
 	}
 	return true;
 }
@@ -768,6 +773,7 @@ LRESULT CALLBACK EditWatchProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 	switch(uMsg)
 	{
 	case WM_INITDIALOG:
+		YuiTempPause();
 
 		GetWindowRect(YabWin, &r);
 		dx1 = (r.right - r.left) / 2;
@@ -898,6 +904,7 @@ LRESULT CALLBACK EditWatchProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 
 	case WM_CLOSE:
 		EndDialog(hDlg, 0);
+		YuiTempUnPause();
 		return 0;
 		break;
 	}
