@@ -667,6 +667,7 @@ void UpdateStuff() {
 	Update_RAM_Search();
    Update_RAM_Watch();
    UpdateVDP2Debug(VDP2DebugHWnd);
+   UpdateSCSPDebug(SCSPDebugHWnd);
    YuiCaptureVideo();
 }
 

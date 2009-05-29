@@ -24,6 +24,7 @@ extern HINSTANCE y_hInstance;
 extern HWND YabWin;
 extern HWND VDP2DebugHWnd;
 extern HWND VDP1DebugHWnd;
+extern HWND SCSPDebugHWnd;
 void YuiTempPause();
 void YuiTempUnPause();
 extern int AutoAdvanceLag;

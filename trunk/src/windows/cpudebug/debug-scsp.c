@@ -27,6 +27,26 @@
 #include "../resource.h"
 #include "../settings/settings.h"
 #include "yuidebug.h"
+#include "../yuiwin.h"
+
+void UpdateSCSPDebug(HWND hDlg) {
+	int i;
+	char tempstr[2048];
+	u8 cursel=0;
+
+	if (!SCSPDebugHWnd) return;
+
+	// Setup Common Control registers
+	ScspCommonControlRegisterDebugStats(tempstr);
+	SetDlgItemText(hDlg, IDC_SCSPCOMMONREGET, _16(tempstr));
+
+	// Update Sound Slot Info
+	cursel = (u8)SendDlgItemMessage(hDlg, IDC_SCSPSLOTCB, CB_GETCURSEL, 0, 0);
+
+	ScspSlotDebugStats(cursel, tempstr);
+	SetDlgItemText(hDlg, IDC_SCSPSLOTET, _16(tempstr));
+	UpdateWindow(hDlg);
+}
 
 LRESULT CALLBACK SCSPDebugDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
                                   LPARAM lParam)
@@ -39,6 +59,50 @@ LRESULT CALLBACK SCSPDebugDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
    {
       case WM_INITDIALOG:
       {
+		  RECT r;
+		  RECT r2;
+		  int dx1, dy1, dx2, dy2;
+		  int width;
+		  int height;
+		  int width2 ;
+		  GetWindowRect(YabWin, &r);  //Ramwatch window
+		  dx1 = (r.right - r.left) / 2;
+		dy1 = (r.bottom - r.top) / 2;
+
+		GetWindowRect(hDlg, &r2); // Gens window
+		dx2 = (r2.right - r2.left) / 2;
+		dy2 = (r2.bottom - r2.top) / 2;
+
+
+		// push it away from the main window if we can
+		width = (r.right-r.left);
+		height = (r.bottom - r.top);
+		width2 = (r2.right-r2.left); 
+		if(r.left+width2 + width < GetSystemMetrics(SM_CXSCREEN))
+		{
+			r.right += width;
+			r.left += width;
+		}
+		else if((int)r.left - (int)width2 > 0)
+		{
+			r.right -= width2;
+			r.left -= width2;
+		}
+/*
+		//-----------------------------------------------------------------------------------
+		//If user has Save Window Pos selected, override default positioning
+		if (RWSaveWindowPos)	
+		{
+			//If ramwindow is for some reason completely off screen, use default instead 
+			if (ramw_x > (-width*2) || ramw_x < (width*2 + GetSystemMetrics(SM_CYSCREEN))   ) 
+				r.left = ramw_x;	  //This also ignores cases of windows -32000 error codes
+			//If ramwindow is for some reason completely off screen, use default instead 
+			if (ramw_y > (0-height*2) ||ramw_y < (height*2 + GetSystemMetrics(SM_CYSCREEN))	)
+				r.top = ramw_y;		  //This also ignores cases of windows -32000 error codes
+		}
+		//-------------------------------------------------------------------------------------*/
+		SetWindowPos(hDlg, NULL, r.left, r.top, NULL, NULL, SWP_NOSIZE | SWP_NOZORDER | SWP_SHOWWINDOW);
+
          SendDlgItemMessage(hDlg, IDC_SCSPSLOTCB, CB_RESETCONTENT, 0, 0);
 
          for (i = 0; i < 32; i++)
@@ -101,11 +165,13 @@ LRESULT CALLBACK SCSPDebugDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
                SetupOFN(&ofn, OFN_DEFAULTSAVE, hDlg, filter, tempstr2, sizeof(tempstr2)/sizeof(TCHAR));
                ofn.lpstrDefExt = _16("WAV");
 
+			   YuiTempPause();
                if (GetSaveFileName(&ofn))
                {
                   WideCharToMultiByte(CP_ACP, 0, tempstr2, -1, tempstr, sizeof(tempstr), NULL, NULL);
                   ScspSlotDebugAudioSaveWav(cursel, tempstr);
                }
+			   YuiTempUnPause();
 
                return TRUE;
             }
@@ -126,11 +192,13 @@ LRESULT CALLBACK SCSPDebugDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
                SetupOFN(&ofn, OFN_DEFAULTSAVE, hDlg, filter, tempstr2, sizeof(tempstr2)/sizeof(TCHAR));
                ofn.lpstrDefExt = _16("BIN");
 
+			   YuiTempPause();
                if (GetSaveFileName(&ofn))
                {
                   WideCharToMultiByte(CP_ACP, 0, tempstr2, -1, tempstr, sizeof(tempstr), NULL, NULL);
                   ScspSlotDebugSaveRegisters(cursel, tempstr);
                }
+			   YuiTempUnPause();
 
                return TRUE;
             }
@@ -147,7 +215,7 @@ LRESULT CALLBACK SCSPDebugDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
       case WM_CLOSE:
       {
          EndDialog(hDlg, TRUE);
-
+		 SCSPDebugHWnd = NULL;
          return TRUE;
       }
       default: break;
