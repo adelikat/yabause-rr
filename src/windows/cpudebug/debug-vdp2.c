@@ -27,7 +27,6 @@
 #include "../settings/settings.h"
 #include "yuidebug.h"
 #include "../yuiwin.h"
-#include "../../movie.h"
 
 LRESULT CALLBACK VDP2ViewerDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
                                  LPARAM lParam)

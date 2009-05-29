@@ -26,4 +26,8 @@ extern HWND VDP2DebugHWnd;
 extern HWND VDP1DebugHWnd;
 void YuiTempPause();
 void YuiTempUnPause();
+extern int AutoAdvanceLag;
+#define RunNormal   0
+#define Paused      1
+#define NeedAdvance 2
 #endif

@@ -93,6 +93,10 @@ extern yabsys_struct yabsys;
 extern void YuiErrorMsg(const char *string);
 extern void YuiSwapBuffers(void);
 
-int YabauseEmulate(void);
-
+extern int currFrameCounter;
+extern int LagFrameCounter;
+extern char MovieStatus[40];
+extern char InputDisplayString[40];
+extern int FrameAdvanceVariable;
+extern int LagFrameFlag;
 #endif

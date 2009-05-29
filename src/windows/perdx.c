@@ -26,8 +26,8 @@
 #include "../yui.h"
 #include "settings/settings.h"
 #include "resource.h"
-#include "movie.h"
 #include "yuiwin.h"
+#include "../yabause.h"
 
 int PERDXInit(void);
 void PERDXDeInit(void);

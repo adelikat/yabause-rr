@@ -25,9 +25,6 @@
 #include "sh2core.h"
 #include "vdp1.h"
 #include "yabause.h"
-#ifdef MOVIE_RECORDING
-#include "windows/movie.h"
-#endif
 
 char OSDMessage[32] = "";	//adelikat: For showing on screen messages such as savestate loaded/saved
 int OSDMessageTimer = 120;
