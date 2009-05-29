@@ -28,7 +28,6 @@
 extern "C" {
 #include "../peripheral.h"
 #include "../yabause.h"
-#include "../movie.h"
 #include "../cs2.h"
 #include "../vdp2.h"
 #include "../bios.h"
@@ -49,6 +48,7 @@ bool autoMovieBackup = true;
 #define FCEU_PrintError LOG
 
 #define MOVIE_VERSION 1
+#define DESMUME_VERSION_NUMERIC 9
 
 //----movie engine main state
 
@@ -64,8 +64,9 @@ int FrameAdvanceVariable=0;
 int currFrameCounter;
 char MovieStatus[40];
 int LagFrameCounter;
+extern "C" {
 int AutoAdvanceLag;
-
+}
 //////////////////////////////////////////////////////////////////////////////
 
 u32 cur_input_display = 0;

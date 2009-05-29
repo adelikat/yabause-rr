@@ -33,7 +33,6 @@ extern "C" {
 #include "../cs0.h"
 #include "../debug.h"
 #include "../m68kcore.h"
-#include "../movie.h"
 #include "snddx.h"
 #include "cheats.h"
 #include "perdx.h"
@@ -43,6 +42,7 @@ extern "C" {
 #include "disasm.h"
 #include "hexedit.h"
 #include "settings/settings.h"
+#include "yuiwin.h"
 }
 
 #include "resource.h"
@@ -1587,9 +1587,9 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 			break;
             case IDM_SCSPDEBUG:
             {
-               YuiTempPause();
-               DialogBox(y_hInstance, MAKEINTRESOURCE(IDD_SCSPDEBUG), hWnd, (DLGPROC)SCSPDebugDlgProc);
-               YuiTempUnPause();
+            //   YuiTempPause();
+               CreateDialog(y_hInstance, MAKEINTRESOURCE(IDD_SCSPDEBUG), hWnd, (DLGPROC)SCSPDebugDlgProc);
+             //  YuiTempUnPause();
                break;
             }
             case IDM_SMPCDEBUG:

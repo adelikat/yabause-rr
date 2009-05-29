@@ -52,10 +52,6 @@
 #include "vidsoft.h"
 #include "vidogl.h"
 
-#ifdef MOVIE_RECORDING
-#include "windows/movie.h"
-#endif
-
 //////////////////////////////////////////////////////////////////////////////
 
 writebytefunc WriteByteList[0x1000];

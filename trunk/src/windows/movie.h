@@ -10,8 +10,6 @@
 #include <istream>
 #include "settings/settings.h"
 
-#define DESMUME_VERSION_NUMERIC 9
-
 //#include "utils/guid.h"
 //#include "utils/md5.h"
 
@@ -192,7 +190,6 @@ bool FCEUI_MovieGetInfo(std::istream* fp, MOVIE_INFO& info, bool skipFrameCount)
 void FCEUI_SaveMovie(const char *fname, std::wstring author);
 void FCEUI_LoadMovie(const char *fname, bool _read_only, bool tasedit, int _pauseframe);
 void FCEUI_StopMovie();
-extern "C" void FCEUMOV_AddInputState();
 void NDS_setTouchFromMovie(void);
 //void mov_savestate(std::ostream* os);
 //bool mov_loadstate(std::istream* is, int size);
@@ -211,25 +208,14 @@ extern "C" {
 int MovieIsActive();
 void HardResetGame();
 void MakeMovieStateName(const char *filename);
-
-#define RunNormal   0
-#define Paused      1
-#define NeedAdvance 2
+void FCEUMOV_AddInputState();
 
 void PauseOrUnpause(void);
 void MakeMovieStateName(const char *filename);
 char* GetMovieLengthStr();
 
-extern int FrameAdvanceVariable;
-extern int LagFrameCounter;
-extern int LagFrameFlag;
-extern int AutoAdvanceLag;
-extern int currFrameCounter;
-
-extern char MovieStatus[40];
-extern char InputDisplayString[40];
-extern char MovieStatus[40];
 #ifdef __cplusplus
 }
 #endif
 #endif
+

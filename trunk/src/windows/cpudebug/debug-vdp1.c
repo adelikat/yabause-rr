@@ -26,7 +26,6 @@
 #include "../../yabause.h"
 #include "yuidebug.h"
 #include "yuiwin.h"
-#include "../movie.h"
 
 u32 *vdp1texture=NULL;
 int vdp1texturew, vdp1textureh;
