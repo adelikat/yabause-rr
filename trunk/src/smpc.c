@@ -30,7 +30,9 @@
 #include "vdp1.h"
 #include "vdp2.h"
 #include "yabause.h"
-#include "movie.h"
+#ifdef MOVIE_RECORDING
+#include "windows/movie.h"
+#endif
 
 Smpc * SmpcRegs;
 u8 * SmpcRegsT;
