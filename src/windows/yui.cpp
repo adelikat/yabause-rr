@@ -1587,9 +1587,9 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 			break;
             case IDM_SCSPDEBUG:
             {
-            //   YuiTempPause();
-               CreateDialog(y_hInstance, MAKEINTRESOURCE(IDD_SCSPDEBUG), hWnd, (DLGPROC)SCSPDebugDlgProc);
-             //  YuiTempUnPause();
+               YuiTempPause();
+               DialogBox(y_hInstance, MAKEINTRESOURCE(IDD_SCSPDEBUG), hWnd, (DLGPROC)SCSPDebugDlgProc);
+               YuiTempUnPause();
                break;
             }
             case IDM_SMPCDEBUG:
@@ -1886,7 +1886,14 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 		CheckMenuItem(YabMenu, IDM_PAUSE, FrameAdvanceVariable ? MF_CHECKED:MF_UNCHECKED);
 		CheckMenuItem(YabMenu, IDM_TOGGLE_OSD, GetOSDToggle() ? MF_CHECKED:MF_UNCHECKED);
 		CheckMenuItem(YabMenu, IDM_AUTOLAG, AutoAdvanceLag ? MF_CHECKED:MF_UNCHECKED);
-		
+
+		CheckMenuItem(YabMenu, IDM_TOGGLENBG0, (Vdp2External.disptoggle & (1 << 0)) ? MF_CHECKED:MF_UNCHECKED);
+		CheckMenuItem(YabMenu, IDM_TOGGLENBG1, (Vdp2External.disptoggle & (1 << 1)) ? MF_CHECKED:MF_UNCHECKED);
+		CheckMenuItem(YabMenu, IDM_TOGGLENBG2, (Vdp2External.disptoggle & (1 << 2)) ? MF_CHECKED:MF_UNCHECKED);
+		CheckMenuItem(YabMenu, IDM_TOGGLENBG3, (Vdp2External.disptoggle & (1 << 3)) ? MF_CHECKED:MF_UNCHECKED);
+		CheckMenuItem(YabMenu, IDM_TOGGLERBG0, (Vdp2External.disptoggle & (1 << 4)) ? MF_CHECKED:MF_UNCHECKED);
+		CheckMenuItem(YabMenu, IDM_TOGGLEVDP1, (Vdp1Regs->disptoggle == 1) ? MF_CHECKED:MF_UNCHECKED);
+
 		return 0L;
       }
       case WM_EXITMENULOOP:
