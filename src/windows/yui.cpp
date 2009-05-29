@@ -96,6 +96,7 @@ extern HWND RamSearchHWnd;
 
 HWND VDP1DebugHWnd = NULL;
 HWND VDP2DebugHWnd = NULL;
+HWND SCSPDebugHWnd = NULL;
 
 int oldbpp = 0;
 static int redsize = 0;
@@ -1587,9 +1588,9 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 			break;
             case IDM_SCSPDEBUG:
             {
-               YuiTempPause();
-               DialogBox(y_hInstance, MAKEINTRESOURCE(IDD_SCSPDEBUG), hWnd, (DLGPROC)SCSPDebugDlgProc);
-               YuiTempUnPause();
+           //    YuiTempPause();
+               SCSPDebugHWnd=CreateDialog(y_hInstance, MAKEINTRESOURCE(IDD_SCSPDEBUG), hWnd, (DLGPROC)SCSPDebugDlgProc);
+            //   YuiTempUnPause();
                break;
             }
             case IDM_SMPCDEBUG:
