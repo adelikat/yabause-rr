@@ -1,6 +1,8 @@
 #ifndef __MOVIE_H_
 #define __MOVIE_H_
 
+#ifdef __cplusplus
+
 #include <vector>
 #include <map>
 #include <string>
@@ -198,6 +200,36 @@ void LoadFM2_binarychunk(MovieData& movieData, std::istream* fp, int size);
 extern bool movie_readonly;
 void FCEUI_MakeBackupMovie(bool dispMessage);
 void ToggleReadOnly();
-extern "C" int MovieIsActive();
-extern "C" void HardResetGame();
+#endif
+
+//C stuff
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+int MovieIsActive();
+void HardResetGame();
+void MakeMovieStateName(const char *filename);
+
+#define RunNormal   0
+#define Paused      1
+#define NeedAdvance 2
+
+void PauseOrUnpause(void);
+void MakeMovieStateName(const char *filename);
+char* GetMovieLengthStr();
+
+extern int FrameAdvanceVariable;
+extern int LagFrameCounter;
+extern int LagFrameFlag;
+extern int AutoAdvanceLag;
+extern int currFrameCounter;
+
+extern char MovieStatus[40];
+extern char InputDisplayString[40];
+extern char MovieStatus[40];
+#ifdef __cplusplus
+}
+#endif
 #endif

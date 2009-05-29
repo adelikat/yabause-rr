@@ -24,7 +24,7 @@
 #include <fstream>
 //#include "utils/guid.h"
 #include "utils/xstring.h"
-#include "movie.hpp"
+#include "movie.h"
 extern "C" {
 #include "../peripheral.h"
 #include "../yabause.h"
@@ -57,6 +57,16 @@ EMOVIEMODE movieMode = MOVIEMODE_INACTIVE;
 //this should not be set unless we are in MOVIEMODE_RECORD!
 fstream* osRecordingMovie = 0;
 
+//////////////////////////////////////////////////////////////////////////////
+
+int LagFrameFlag;
+int FrameAdvanceVariable=0;
+int currFrameCounter;
+char MovieStatus[40];
+int LagFrameCounter;
+int AutoAdvanceLag;
+
+//////////////////////////////////////////////////////////////////////////////
 
 u32 cur_input_display = 0;
 int pauseframe = -1;
@@ -546,8 +556,10 @@ void FCEUI_LoadMovie(const char *fname, bool _read_only, bool tasedit, int _paus
 
 	if(movie_readonly)
 		DisplayMessage("Replay started Read-Only.");
+	//	driver->USR_InfoMessage("Replay started Read-Only.");
 	else
 		DisplayMessage("Replay started Read+Write.");
+	//	driver->USR_InfoMessage("Replay started Read+Write.");
 }
 
 static void openRecordingMovie(const char* fname)
@@ -606,6 +618,7 @@ static void openRecordingMovie(const char* fname)
 	BupFormat(0);
 
 	DisplayMessage("Movie recording started.");
+//	driver->USR_InfoMessage("Movie recording started.");
 }
 
  void NDS_setTouchFromMovie(void) {
@@ -640,10 +653,10 @@ static void openRecordingMovie(const char* fname)
 	if(pad & (1 << 12)) PORTDATA1.data[2] &= 0xBF; //l
 	else PORTDATA1.data[2] |= ~0xBF; 
 
-	if(pad & (1 << 9)) PORTDATA1.data[2] &= 0xDF; //d
+	if(pad & (1 << 10)) PORTDATA1.data[2] &= 0xDF; //d
 	else PORTDATA1.data[2] |= ~0xDF; 
 
-	if(pad & (1 << 10)) PORTDATA1.data[2] &= 0xEF; //up
+	if(pad & (1 << 9)) PORTDATA1.data[2] &= 0xEF; //up
 	else PORTDATA1.data[2] |= ~0xEF; 
 
 	if(pad & (1 << 8)) PORTDATA1.data[2] &= 0xF7; //start
@@ -759,8 +772,8 @@ extern "C" void FCEUMOV_AddInputState()
 	pad =
 		(FIX(r)<<12)|
 		(FIX(l)<<11)|
-		(FIX(d)<<9)|
-		(FIX(u)<<10)|
+		(FIX(d)<<10)|
+		(FIX(u)<<9)|
 		(FIX(s)<<8)|
 		(FIX(a)<<7)|
 		(FIX(b)<<6)|
@@ -1185,5 +1198,10 @@ extern "C" int MovieIsActive() {
 		return false;
 	
 	return true;
+}
 
+void MakeMovieStateName(const char *filename) {
+
+	if(movieMode != MOVIEMODE_INACTIVE)
+		strcat ((char *)filename, "movie");
 }
