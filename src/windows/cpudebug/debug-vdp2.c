@@ -177,8 +177,10 @@ LRESULT CALLBACK VDP2ViewerDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
 }
 
 void UpdateVDP2Debug(HWND hDlg) {
-	         char tempstr[VDP2_DEBUG_STRING_SIZE];
+	     char tempstr[VDP2_DEBUG_STRING_SIZE];
          int isscrenabled;
+
+		 if (!VDP2DebugHWnd) return;
 
          // is NBG0/RBG1 enabled?
          Vdp2DebugStatsNBG0(tempstr, &isscrenabled);
@@ -334,6 +336,7 @@ LRESULT CALLBACK VDP2DebugDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
       }
       case WM_CLOSE:
       {
+		  VDP2DebugHWnd = NULL;
          EndDialog(hDlg, TRUE);
 
          return TRUE;
