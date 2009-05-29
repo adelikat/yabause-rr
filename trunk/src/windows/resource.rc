@@ -1149,6 +1149,16 @@ BEGIN
         MENUITEM "RAM Search...",               ID_RAM_SEARCH
         MENUITEM "&Cheat List...",              IDM_CHEATLIST
         MENUITEM "Cheat &Search...",            IDM_CHEATSEARCH
+	    POPUP "&View Layers"
+        BEGIN
+            MENUITEM "Normal Scroll 0 (NBG0)", IDM_TOGGLENBG0, CHECKED
+            MENUITEM "Normal Scroll 1 (NBG1)", IDM_TOGGLENBG1, CHECKED
+            MENUITEM "Normal Scroll 2 (NBG2)", IDM_TOGGLENBG2, CHECKED
+            MENUITEM "Normal Scroll 3 (NBG3)", IDM_TOGGLENBG3, CHECKED
+			MENUITEM "Rotation Scroll 0 (RBG0)", IDM_TOGGLERBG0, CHECKED
+			MENUITEM "VDP1", IDM_TOGGLEVDP1, CHECKED
+		END
+       
     END
     POPUP "&Debug"
     BEGIN
