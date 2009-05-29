@@ -68,7 +68,6 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkIncremental="2"
-				IgnoreDefaultLibraryNames="LIBCMTD.lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				RandomizedBaseAddress="1"
