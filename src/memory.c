@@ -40,7 +40,6 @@
 #include "vdp1.h"
 #include "vdp2.h"
 #include "yabause.h"
-#include "movie.h"
 
 #ifdef HAVE_LIBGL
 #define USE_OPENGL
@@ -52,6 +51,10 @@
 
 #include "vidsoft.h"
 #include "vidogl.h"
+
+#ifdef MOVIE_RECORDING
+#include "windows/movie.h"
+#endif
 
 //////////////////////////////////////////////////////////////////////////////
 

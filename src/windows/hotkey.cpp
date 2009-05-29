@@ -23,7 +23,7 @@
 #include "resource.h"
 #include "ramwatch.h"		//In order to call UpdateRamWatch (for loadstate functions)
 #include "ram_search.h"		//In order to call UpdateRamSearch (for loadstate functions)
-#include "movie.hpp"
+#include "movie.h"
 
 #include <commctrl.h>
 extern "C" {

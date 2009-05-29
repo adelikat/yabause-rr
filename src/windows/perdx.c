@@ -26,7 +26,7 @@
 #include "../yui.h"
 #include "settings/settings.h"
 #include "resource.h"
-#include "../movie.h"
+#include "movie.h"
 #include "yuiwin.h"
 
 int PERDXInit(void);

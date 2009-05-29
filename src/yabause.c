@@ -40,7 +40,9 @@
 #include "vdp2.h"
 #include "yui.h"
 #include "bios.h"
-#include "movie.h"
+#ifdef MOVIE_RECORDING
+#include "windows/movie.h"
+#endif
 #ifdef HAVE_LIBSDL
  #ifdef __APPLE__
   #include <SDL/SDL.h>

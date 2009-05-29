@@ -47,7 +47,7 @@ extern "C" {
 
 #include "resource.h"
 #include "ram_search.h"
-#include "movie.hpp"
+#include "movie.h"
 
 #ifdef NOC68K
 #include "../m68kc68k.h"
@@ -94,8 +94,8 @@ int yabwiny = 0;
 psp_struct settingspsp;
 extern HWND RamSearchHWnd;
 
-HWND VDP1DebugHWnd;
-HWND VDP2DebugHWnd;
+HWND VDP1DebugHWnd = NULL;
+HWND VDP2DebugHWnd = NULL;
 
 int oldbpp = 0;
 static int redsize = 0;
@@ -2250,4 +2250,16 @@ void YuiStopAvi()
 {
 	DRV_AviEnd();
 	AVIRecording=0;
+}
+
+void PauseOrUnpause(void) {
+
+	if(FrameAdvanceVariable == RunNormal) {
+		FrameAdvanceVariable=Paused;
+		ScspMuteAudio();
+	}
+	else {
+		FrameAdvanceVariable=RunNormal;	
+		ScspUnMuteAudio();
+	}
 }

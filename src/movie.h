@@ -19,29 +19,4 @@
 #ifndef MOVIE_H
 #define MOVIE_H
 
-#define RunNormal   0
-#define Paused      1
-#define NeedAdvance 2
-
-void PauseOrUnpause(void);
-void MakeMovieStateName(const char *filename);
-char* GetMovieLengthStr();
-
-extern int FrameAdvanceVariable;
-extern int LagFrameCounter;
-extern int LagFrameFlag;
-extern int AutoAdvanceLag;
-
-extern char MovieStatus[40];
-extern char InputDisplayString[40];
-extern char MovieStatus[40];
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-extern int currFrameCounter;
-#ifdef __cplusplus
-}
-#endif
-
 #endif
