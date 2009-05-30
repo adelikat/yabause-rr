@@ -654,10 +654,10 @@ static void openRecordingMovie(const char* fname)
 	if(pad & (1 << 12)) PORTDATA1.data[2] &= 0xBF; //l
 	else PORTDATA1.data[2] |= ~0xBF; 
 
-	if(pad & (1 << 10)) PORTDATA1.data[2] &= 0xDF; //d
+	if(pad & (1 << 9)) PORTDATA1.data[2] &= 0xDF; //d
 	else PORTDATA1.data[2] |= ~0xDF; 
 
-	if(pad & (1 << 9)) PORTDATA1.data[2] &= 0xEF; //up
+	if(pad & (1 << 10)) PORTDATA1.data[2] &= 0xEF; //up
 	else PORTDATA1.data[2] |= ~0xEF; 
 
 	if(pad & (1 << 8)) PORTDATA1.data[2] &= 0xF7; //start
@@ -773,8 +773,8 @@ extern "C" void FCEUMOV_AddInputState()
 	pad =
 		(FIX(r)<<12)|
 		(FIX(l)<<11)|
-		(FIX(d)<<10)|
-		(FIX(u)<<9)|
+		(FIX(d)<<9)|
+		(FIX(u)<<10)|
 		(FIX(s)<<8)|
 		(FIX(a)<<7)|
 		(FIX(b)<<6)|
