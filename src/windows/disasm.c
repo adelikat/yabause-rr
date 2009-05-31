@@ -253,7 +253,7 @@ LRESULT CALLBACK DisasmCtl(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam
          cc->addr = (u32)lParam;
          SetScrollPos(cc->hwnd, SB_VERT, cc->addr >> cc->scrollscale, TRUE);
          InvalidateRect(cc->hwnd, NULL, FALSE);
-         SetFocus(cc->hwnd);
+//         SetFocus(cc->hwnd);
          return 0;
       case DIS_SETPC:
          cc->pc = (u32)lParam;
