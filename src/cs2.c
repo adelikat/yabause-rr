@@ -1409,6 +1409,14 @@ void Cs2SeekDisc(void) {
         Cs2Area->status = CDB_STAT_PAUSE;
      else
      {
+     // FAD Mode
+     Cs2Area->playFAD = (sdFAD & 0xFFFFF);
+
+     Cs2SetupDefaultPlayStats(Cs2FADToTrack(Cs2Area->playFAD), 0);
+
+        // Move pickup to start position
+        Cs2Area->FAD = Cs2Area->playFAD;
+
         CDLOG("cs2\t: seekDisc - FAD Mode not supported\n");
      }
   }
