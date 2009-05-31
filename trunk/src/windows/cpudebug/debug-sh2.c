@@ -89,6 +89,17 @@ void SH2UpdateCodeList(HWND hDlg, u32 addr)
    SendDlgItemMessage(hDlg, IDC_DISASM, DIS_SETPC,0, addr);
 }
 
+void UpdateSH2Debug(HWND hDlg) {
+	sh2regs_struct sh2regs;
+
+	if (!hDlg) return;
+
+	SH2GetRegisters(debugsh, &sh2regs);
+    SH2UpdateRegList(hDlg, &sh2regs);
+    SH2UpdateCodeList(hDlg, sh2regs.PC);
+	UpdateWindow(hDlg);
+}
+
 //////////////////////////////////////////////////////////////////////////////
 
 void SH2BreakpointHandler (SH2_struct *context, u32 addr)
@@ -472,6 +483,7 @@ LRESULT CALLBACK SH2DebugDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
       case WM_CLOSE:
       {
          EndDialog(hDlg, TRUE);
+		 hDlg=NULL;
 
          return TRUE;
       }

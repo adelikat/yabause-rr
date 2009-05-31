@@ -668,6 +668,8 @@ void UpdateStuff() {
    Update_RAM_Watch();
    UpdateVDP2Debug(VDP2DebugHWnd);
    UpdateSCSPDebug(SCSPDebugHWnd);
+   UpdateSH2Debug(MSH2DebugHWnd);
+   UpdateSH2Debug(SSH2DebugHWnd);
    YuiCaptureVideo();
 }
 

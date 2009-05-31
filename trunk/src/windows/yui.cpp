@@ -97,6 +97,8 @@ extern HWND RamSearchHWnd;
 HWND VDP1DebugHWnd = NULL;
 HWND VDP2DebugHWnd = NULL;
 HWND SCSPDebugHWnd = NULL;
+HWND MSH2DebugHWnd = NULL;
+HWND SSH2DebugHWnd = NULL;
 
 int oldbpp = 0;
 static int redsize = 0;
@@ -1536,7 +1538,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
             {
                YuiTempPause();
                debugsh = &MSH2;
-               DialogBox(y_hInstance, MAKEINTRESOURCE(IDD_SH2DEBUG), hWnd, (DLGPROC)SH2DebugDlgProc);
+               MSH2DebugHWnd=CreateDialog(y_hInstance, MAKEINTRESOURCE(IDD_SH2DEBUG), hWnd, (DLGPROC)SH2DebugDlgProc);
                YuiTempUnPause();
                break;
             }
@@ -1544,7 +1546,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
             {
                YuiTempPause();
                debugsh = &SSH2;
-               DialogBox(y_hInstance, MAKEINTRESOURCE(IDD_SH2DEBUG), hWnd, (DLGPROC)SH2DebugDlgProc);
+               SSH2DebugHWnd=CreateDialog(y_hInstance, MAKEINTRESOURCE(IDD_SH2DEBUG), hWnd, (DLGPROC)SH2DebugDlgProc);
                YuiTempUnPause();
                break;
             }
@@ -1893,6 +1895,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 		CheckMenuItem(YabMenu, IDM_TOGGLENBG2, (Vdp2External.disptoggle & (1 << 2)) ? MF_CHECKED:MF_UNCHECKED);
 		CheckMenuItem(YabMenu, IDM_TOGGLENBG3, (Vdp2External.disptoggle & (1 << 3)) ? MF_CHECKED:MF_UNCHECKED);
 		CheckMenuItem(YabMenu, IDM_TOGGLERBG0, (Vdp2External.disptoggle & (1 << 4)) ? MF_CHECKED:MF_UNCHECKED);
+		if(AlreadyStarted)
 		CheckMenuItem(YabMenu, IDM_TOGGLEVDP1, (Vdp1Regs->disptoggle == 1) ? MF_CHECKED:MF_UNCHECKED);
 
 		return 0L;

@@ -25,8 +25,12 @@ extern HWND YabWin;
 extern HWND VDP2DebugHWnd;
 extern HWND VDP1DebugHWnd;
 extern HWND SCSPDebugHWnd;
+extern HWND MSH2DebugHWnd;
+extern HWND SSH2DebugHWnd;
+
 void YuiTempPause();
 void YuiTempUnPause();
+
 extern int AutoAdvanceLag;
 #define RunNormal   0
 #define Paused      1
