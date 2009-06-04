@@ -66,7 +66,7 @@ int ConvertEmulateTypeSelStringToID(HWND hDlg, int id)
 }
 
 //////////////////////////////////////////////////////////////////////////////
-
+char tempstr[256];
 LRESULT CALLBACK InputSettingsDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
                                       LPARAM lParam)
 {
@@ -137,6 +137,10 @@ LRESULT CALLBACK InputSettingsDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
 
          // Go through previous settings and figure out which controls to 
          // enable, etc.
+		 
+		 //this is here to prevent a crash if you visit the input page and don't set up a controller, then visit it again
+		 if (GetPrivateProfileStringA("Peripheral1", "GUID", "", tempstr, MAX_PATH, inifilename) != 0) {
+
          for (j = 0; j < numpads; j++)
          {
             if (paddevice[j].emulatetype != 0)
@@ -157,7 +161,7 @@ LRESULT CALLBACK InputSettingsDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
                EnableWindow(GetDlgItem(hDlg, IDC_PORT1ACFGPB+j), TRUE);            
             }
          }
-
+		 }
          // Setup Tooltips
          hb[0].string = "Use this to select whether to use a multi-tap or direct connection";
          hb[0].hParent = GetDlgItem(hDlg, IDC_PORT1CONNTYPECB);
