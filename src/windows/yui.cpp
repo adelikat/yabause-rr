@@ -2126,6 +2126,8 @@ extern "C" void HardResetGame()
 	YabauseInit(&yinit);
 		VideoChangeCore(vidcoretype);
 
+	PERDXLoadDevices(inifilename);
+
 	if (VIDCore && !VIDCore->IsFullscreen() && usecustomwindowsize)
 		VIDCore->Resize(windowwidth, windowheight, 0);
     YabauseReset();
