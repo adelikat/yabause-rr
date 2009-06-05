@@ -1630,6 +1630,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 				{
 					windowwidth=640;
 					windowheight=448;
+					usecustomwindowsize = 1;
 					VIDCore->Resize(windowwidth, windowheight, 0);
 					break;
 				}
@@ -1637,6 +1638,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 				{
 					windowwidth=960;
 					windowheight=672;
+					usecustomwindowsize = 1;
 					VIDCore->Resize(windowwidth, windowheight, 0);
 					break;
 				}
