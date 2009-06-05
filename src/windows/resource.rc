@@ -1129,6 +1129,7 @@ BEGIN
     BEGIN
         MENUITEM "&Settings",                   IDM_SETTINGS
         MENUITEM "Hotkey Config",               IDM_HOTKEY_CONFIG
+		MENUITEM "Mute Sound",                  IDM_MUTESOUND
         MENUITEM "Toggle OSD",                  IDM_TOGGLE_OSD
 		MENUITEM "Auto-frameskip / Throttle",   IDM_AUTOFRAMESKIP
         MENUITEM "Auto Lag Advance",            IDM_AUTOLAG

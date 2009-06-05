@@ -53,6 +53,7 @@
 #define IDM_WINDOW2X					148
 #define IDM_WINDOW3X					149
 #define IDM_AUTOFRAMESKIP               150
+#define IDM_MUTESOUND                   151
 #define IDC_WATCHLIST                   900
 #define IDC_1_BYTE                      902
 #define IDC_2_BYTES                     903

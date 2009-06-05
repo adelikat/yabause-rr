@@ -107,6 +107,7 @@ static int bluesize = 0;
 static int depthsize = 0;
 
 int AVIRecording = 0;
+int muted;
 
 TCHAR yssfilename[MAX_PATH] = TEXT("\0");
 char ysspath[MAX_PATH] = "\0";
@@ -987,6 +988,10 @@ int YuiInit(LPSTR lpCmdLine)
 	ramw_x = atoi(tempstr);
 	GetPrivateProfileStringA("RamWatch", "Ram_y", "0", tempstr, MAX_PATH, inifilename);
 	ramw_y = atoi(tempstr);
+
+	GetPrivateProfileStringA("Sound", "Muted", "0", tempstr, MAX_PATH, inifilename);
+	muted = atoi(tempstr);
+
 	for(int i = 0; i < MAX_RECENT_WATCHES; i++)
 		{
 			char str[256];
@@ -1180,8 +1185,6 @@ YabauseSetup:
 
    if (GetPrivateProfileStringA("General", "CDROMDrive", "", cdrompath, MAX_PATH, inifilename) != 0) {
 
-	   
-
    if ((ret = YabauseInit(&yinit)) < 0)
    {
       if (ret == -2)
@@ -1227,7 +1230,10 @@ YabauseSetup:
 
    stop = 0;
 
-   ScspSetVolume(sndvolume);
+   if(muted)
+		ScspSetVolume(0);
+   else
+        ScspSetVolume(sndvolume);
 
    if (enableautofskip)
       EnableAutoFrameSkip();
@@ -1689,6 +1695,18 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
                ToggleFPS();
                break;
             }
+			case IDM_MUTESOUND:
+				{
+					if(!muted) {
+						ScspSetVolume(0);
+						muted=1;
+					}
+					else {
+						ScspSetVolume(sndvolume);
+						muted=0;
+					}
+					break;
+				}
             case IDM_SAVESTATEAS:
             {
                WCHAR filter[1024];
@@ -1937,6 +1955,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 		CheckMenuItem(YabMenu, IDM_WINDOW2X, (windowwidth == 640) ? MF_CHECKED:MF_UNCHECKED);
 		CheckMenuItem(YabMenu, IDM_WINDOW3X, (windowwidth == 960) ? MF_CHECKED:MF_UNCHECKED);
 		CheckMenuItem(YabMenu, IDM_AUTOFRAMESKIP, (enableautofskip) ? MF_CHECKED:MF_UNCHECKED);
+		CheckMenuItem(YabMenu, IDM_MUTESOUND, (muted) ? MF_CHECKED:MF_UNCHECKED);
 
 		if(AlreadyStarted)
 		CheckMenuItem(YabMenu, IDM_TOGGLEVDP1, (Vdp1Regs->disptoggle == 1) ? MF_CHECKED:MF_UNCHECKED);
@@ -2148,6 +2167,9 @@ void WriteToINI()
     WritePrivateProfileStringA("Video", "WindowWidth", text, inifilename);
 	sprintf(text, "%1d", windowheight);
     WritePrivateProfileStringA("Video", "WindowHeight", text, inifilename);
+
+    sprintf(text, "%d", muted);
+    WritePrivateProfileStringA("Sound", "Muted", text, inifilename);
 }
 
 //////////////////////////////////////////////////////////////////////////////
