@@ -1619,6 +1619,27 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 
                break;
             }
+			case IDM_WINDOW1X:
+				{
+					windowwidth=320;
+					windowheight=224;
+					VIDCore->Resize(windowwidth, windowheight, 0);
+					break;
+				}
+			case IDM_WINDOW2X:
+				{
+					windowwidth=640;
+					windowheight=448;
+					VIDCore->Resize(windowwidth, windowheight, 0);
+					break;
+				}
+			case IDM_WINDOW3X:
+				{
+					windowwidth=960;
+					windowheight=672;
+					VIDCore->Resize(windowwidth, windowheight, 0);
+					break;
+				}
             case IDM_TOGGLENBG0:
             {
                ToggleNBG0();
@@ -1885,6 +1906,9 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 		EnableMenuItem(YabMenu, ID_RAM_SEARCH,    MF_BYCOMMAND | (AlreadyStarted)      ? MF_ENABLED : MF_GRAYED);
 		EnableMenuItem(YabMenu, IDM_MEMTRANSFER,    MF_BYCOMMAND | (AlreadyStarted)      ? MF_ENABLED : MF_GRAYED);
 		EnableMenuItem(YabMenu, IDM_TOGGLEVDP1,    MF_BYCOMMAND | (AlreadyStarted)      ? MF_ENABLED : MF_GRAYED);
+		EnableMenuItem(YabMenu, IDM_WINDOW1X,    MF_BYCOMMAND | (AlreadyStarted)      ? MF_ENABLED : MF_GRAYED);
+		EnableMenuItem(YabMenu, IDM_WINDOW2X,    MF_BYCOMMAND | (AlreadyStarted)      ? MF_ENABLED : MF_GRAYED);
+		EnableMenuItem(YabMenu, IDM_WINDOW3X,    MF_BYCOMMAND | (AlreadyStarted)      ? MF_ENABLED : MF_GRAYED);
 		
 		CheckMenuItem(YabMenu, IDM_PAUSE, FrameAdvanceVariable ? MF_CHECKED:MF_UNCHECKED);
 		CheckMenuItem(YabMenu, IDM_TOGGLE_OSD, GetOSDToggle() ? MF_CHECKED:MF_UNCHECKED);
@@ -1895,6 +1919,9 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 		CheckMenuItem(YabMenu, IDM_TOGGLENBG2, (Vdp2External.disptoggle & (1 << 2)) ? MF_CHECKED:MF_UNCHECKED);
 		CheckMenuItem(YabMenu, IDM_TOGGLENBG3, (Vdp2External.disptoggle & (1 << 3)) ? MF_CHECKED:MF_UNCHECKED);
 		CheckMenuItem(YabMenu, IDM_TOGGLERBG0, (Vdp2External.disptoggle & (1 << 4)) ? MF_CHECKED:MF_UNCHECKED);
+		CheckMenuItem(YabMenu, IDM_WINDOW1X, (windowwidth == 320) ? MF_CHECKED:MF_UNCHECKED);
+		CheckMenuItem(YabMenu, IDM_WINDOW2X, (windowwidth == 640) ? MF_CHECKED:MF_UNCHECKED);
+		CheckMenuItem(YabMenu, IDM_WINDOW3X, (windowwidth == 960) ? MF_CHECKED:MF_UNCHECKED);
 
 		if(AlreadyStarted)
 		CheckMenuItem(YabMenu, IDM_TOGGLEVDP1, (Vdp1Regs->disptoggle == 1) ? MF_CHECKED:MF_UNCHECKED);
