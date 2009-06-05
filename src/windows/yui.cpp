@@ -1648,6 +1648,14 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 					VIDCore->Resize(windowwidth, windowheight, 0);
 					break;
 				}
+			case IDM_WINDOW4X:
+				{
+					windowwidth=1280;
+					windowheight=896;
+					usecustomwindowsize = 1;
+					VIDCore->Resize(windowwidth, windowheight, 0);
+					break;
+				}
 			case IDM_AUTOFRAMESKIP:
 				{
                if (enableautofskip == 0) {
@@ -1941,6 +1949,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 		EnableMenuItem(YabMenu, IDM_WINDOW1X,    MF_BYCOMMAND | (AlreadyStarted)      ? MF_ENABLED : MF_GRAYED);
 		EnableMenuItem(YabMenu, IDM_WINDOW2X,    MF_BYCOMMAND | (AlreadyStarted)      ? MF_ENABLED : MF_GRAYED);
 		EnableMenuItem(YabMenu, IDM_WINDOW3X,    MF_BYCOMMAND | (AlreadyStarted)      ? MF_ENABLED : MF_GRAYED);
+		EnableMenuItem(YabMenu, IDM_WINDOW4X,    MF_BYCOMMAND | (AlreadyStarted)      ? MF_ENABLED : MF_GRAYED);
 		
 		CheckMenuItem(YabMenu, IDM_PAUSE, FrameAdvanceVariable ? MF_CHECKED:MF_UNCHECKED);
 		CheckMenuItem(YabMenu, IDM_TOGGLE_OSD, GetOSDToggle() ? MF_CHECKED:MF_UNCHECKED);
@@ -1954,6 +1963,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 		CheckMenuItem(YabMenu, IDM_WINDOW1X, (windowwidth == 320) ? MF_CHECKED:MF_UNCHECKED);
 		CheckMenuItem(YabMenu, IDM_WINDOW2X, (windowwidth == 640) ? MF_CHECKED:MF_UNCHECKED);
 		CheckMenuItem(YabMenu, IDM_WINDOW3X, (windowwidth == 960) ? MF_CHECKED:MF_UNCHECKED);
+		CheckMenuItem(YabMenu, IDM_WINDOW4X, (windowwidth == 1280) ? MF_CHECKED:MF_UNCHECKED);
 		CheckMenuItem(YabMenu, IDM_AUTOFRAMESKIP, (enableautofskip) ? MF_CHECKED:MF_UNCHECKED);
 		CheckMenuItem(YabMenu, IDM_MUTESOUND, (muted) ? MF_CHECKED:MF_UNCHECKED);
 
