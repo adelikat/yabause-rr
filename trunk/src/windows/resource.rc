@@ -1138,6 +1138,7 @@ BEGIN
 			MENUITEM "1x",                  IDM_WINDOW1X
 			MENUITEM "2x",                  IDM_WINDOW2X
 			MENUITEM "3x",                  IDM_WINDOW3X
+			MENUITEM "4x",                  IDM_WINDOW4X
 		END
         POPUP "Language", GRAYED
         BEGIN
