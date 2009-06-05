@@ -2203,6 +2203,9 @@ extern "C" void HardResetGame()
 
 	PERDXLoadDevices(inifilename);
 
+	if(muted)
+		ScspSetVolume(0);
+
 	if (VIDCore && !VIDCore->IsFullscreen() && usecustomwindowsize)
 		VIDCore->Resize(windowwidth, windowheight, 0);
     YabauseReset();
