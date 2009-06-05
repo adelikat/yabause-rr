@@ -49,6 +49,9 @@
 #define IDM_TOGGLE_OSD                  144
 #define IDM_AUTOLAG                     145
 #define IDC_VDP1REFRESH                 146
+#define IDM_WINDOW1X					147
+#define IDM_WINDOW2X					148
+#define IDM_WINDOW3X					149
 #define IDC_WATCHLIST                   900
 #define IDC_1_BYTE                      902
 #define IDC_2_BYTES                     903
