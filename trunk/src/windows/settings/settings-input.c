@@ -139,7 +139,7 @@ LRESULT CALLBACK InputSettingsDlgProc(HWND hDlg, UINT uMsg, WPARAM wParam,
          // enable, etc.
 		 
 		 //this is here to prevent a crash if you visit the input page and don't set up a controller, then visit it again
-		 if (GetPrivateProfileStringA("Peripheral1", "GUID", "", tempstr, MAX_PATH, inifilename) != 0) {
+		 if (GetPrivateProfileStringA("Peripheral1A", "GUID", "", tempstr, MAX_PATH, inifilename) != 0) {
 
          for (j = 0; j < numpads; j++)
          {
