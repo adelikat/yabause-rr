@@ -2138,6 +2138,16 @@ void WriteToINI()
 	//extern int fpstoggle;
 	sprintf(text, "%1d", GetOSDToggle());
 	WritePrivateProfileStringA("Video", "OSD Display", text, inifilename);
+
+    if(usecustomwindowsize = 1)
+        WritePrivateProfileStringA("Video", "UseCustomWindowSize", "1", inifilename);
+    else
+        WritePrivateProfileStringA("Video", "UseCustomWindowSize", "0", inifilename);
+
+	sprintf(text, "%1d", windowwidth);
+    WritePrivateProfileStringA("Video", "WindowWidth", text, inifilename);
+	sprintf(text, "%1d", windowheight);
+    WritePrivateProfileStringA("Video", "WindowHeight", text, inifilename);
 }
 
 //////////////////////////////////////////////////////////////////////////////
