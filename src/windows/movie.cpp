@@ -313,12 +313,6 @@ int MovieData::dump(std::ostream *os, bool binary)
 
 	*os << "cdRomPath " << temp << endl;
 
-/*
-	extern char biosfilename[MAX_PATH];
-extern char cdrompath[MAX_PATH];
-extern char backupramfilename[MAX_PATH];
-extern char mpegromfilename[MAX_PATH];
-extern char cartfilename[MAX_PATH];*/
 #endif
 
 //	fwrite("YMV", sizeof("YMV"), 1, fp);
@@ -554,6 +548,7 @@ void FCEUI_LoadMovie(const char *fname, bool _read_only, bool tasedit, int _paus
 	BupFormat(0);
 	freshMovie = true;
 //	ClearAutoHold();
+	LagFrameCounter=0;
 
 	if(movie_readonly)
 		DisplayMessage("Replay started Read-Only.");
@@ -617,6 +612,7 @@ static void openRecordingMovie(const char* fname)
 //	InitMovieTime();
 //	MovieSRAM();
 	BupFormat(0);
+	LagFrameCounter=0;
 
 	DisplayMessage("Movie recording started.");
 //	driver->USR_InfoMessage("Movie recording started.");
