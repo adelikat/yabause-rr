@@ -929,10 +929,10 @@ int YuiInit(LPSTR lpCmdLine)
    GetPrivateProfileStringA("Video", "VideoCore", "-1", tempstr, MAX_PATH, inifilename);
    vidcoretype = atoi(tempstr);
    if (vidcoretype == -1)
-      vidcoretype = VIDCORE_OGL;
+      vidcoretype = VIDCORE_SOFT;
 
    // Grab Auto Frameskip Settings
-   GetPrivateProfileStringA("Video", "AutoFrameSkip", "0", tempstr, MAX_PATH, inifilename);
+   GetPrivateProfileStringA("Video", "AutoFrameSkip", "1", tempstr, MAX_PATH, inifilename);
    enableautofskip = atoi(tempstr);
 
    // Grab Full Screen Settings
