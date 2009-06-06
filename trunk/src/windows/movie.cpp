@@ -487,7 +487,8 @@ void FCEUI_StopMovie()
 	curMovieFilename[0] = 0;
 	freshMovie = false;
 }
-
+#ifndef INT_MAX#define INT_MAX 2147483647
+#endif
 
 //begin playing an existing movie
 void FCEUI_LoadMovie(const char *fname, bool _read_only, bool tasedit, int _pauseframe)
@@ -528,8 +529,11 @@ void FCEUI_LoadMovie(const char *fname, bool _read_only, bool tasedit, int _paus
 //	extern bool _HACK_DONT_STOPMOVIE;
 //	_HACK_DONT_STOPMOVIE = true;
 //	NDS_Reset();
+#ifdef WIN32
 	HardResetGame();
-//	YabauseReset();
+#else
+	YabauseReset();
+#endif
 //	_HACK_DONT_STOPMOVIE = false;
 	////WE NEED TO LOAD A SAVESTATE
 	//if(currMovieData.savestate.size() != 0)
@@ -594,8 +598,11 @@ static void openRecordingMovie(const char* fname)
 //	extern bool _HACK_DONT_STOPMOVIE;
 //	_HACK_DONT_STOPMOVIE = true;
 //	NDS_Reset();
+#ifdef WIN32
 	HardResetGame();
-	//YabauseReset();
+#else
+	YabauseReset();
+#endif
 //	_HACK_DONT_STOPMOVIE = false;
 
 	//todo ?
@@ -684,7 +691,6 @@ static void openRecordingMovie(const char* fname)
 	else PORTDATA1.data[3] |= ~0x7F;
 }
 
- 
  //the main interaction point between the emulator and the movie system.
  //either dumps the current joystick state or loads one state from the movie
 extern "C" void FCEUMOV_AddInputState()

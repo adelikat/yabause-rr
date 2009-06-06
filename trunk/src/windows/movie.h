@@ -8,8 +8,7 @@
 #include <string>
 #include <ostream>
 #include <istream>
-#include "settings/settings.h"
-
+#include "../../core.h"
 //#include "utils/guid.h"
 //#include "utils/md5.h"
 

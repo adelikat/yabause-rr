@@ -21,7 +21,7 @@
 
 #include "readwrite.h"
 //#include "types.h"
-#include "settings/settings.h"
+#include "../core.h"
 
 # define LE_TO_LOCAL_16(x) ((((x)&0xff)<<8)|(((x)>>8)&0xff))
 # define LE_TO_LOCAL_64(x) (x)

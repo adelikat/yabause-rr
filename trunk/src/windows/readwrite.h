@@ -1,8 +1,7 @@
 #ifndef _READWRITE_H_
 #define _READWRITE_H_
 
-//#include "types.h"
-#include "settings/settings.h"
+#include "../../core.h"
 #include <iostream>
 #include <cstdio>
 
