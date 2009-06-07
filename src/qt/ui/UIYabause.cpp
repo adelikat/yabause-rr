@@ -256,6 +256,22 @@ void UIYabause::on_aFileOpenISO_triggered()
 	}
 }
 
+void UIYabause::on_mFile_aboutToShow()
+{
+
+	if(MovieIsActive()) {
+	aFilePlayMovie->setEnabled(false);
+	aFileRecordMovie->setEnabled(false);
+	aFileStopMovie->setEnabled(true);
+	}
+
+	else {
+	aFilePlayMovie->setEnabled(true);
+	aFileRecordMovie->setEnabled(true);
+	aFileStopMovie->setEnabled(false);
+	}
+}
+
 void UIYabause::on_aFilePlayMovie_triggered()
 {
 	YabauseLocker locker( mYabauseThread );
