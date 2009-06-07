@@ -178,6 +178,10 @@
     <addaction name="separator" />
     <addaction name="aFileScreenshot" />
     <addaction name="separator" />
+    <addaction name="aFilePlayMovie" />
+    <addaction name="aFileRecordMovie" />
+    <addaction name="aFileStopMovie" />
+    <addaction name="separator" />
     <addaction name="aFileQuit" />
    </widget>
    <widget class="QMenu" name="mView" >
@@ -745,6 +749,21 @@
    </property>
    <property name="shortcut" >
     <string>Ctrl+C</string>
+   </property>
+  </action>
+  <action name="aFilePlayMovie" >
+   <property name="text" >
+    <string>Play Movie...</string>
+   </property>
+  </action>
+  <action name="aFileRecordMovie" >
+   <property name="text" >
+    <string>Record Movie...</string>
+   </property>
+  </action>
+  <action name="aFileStopMovie" >
+   <property name="text" >
+    <string>Stop Movie...</string>
    </property>
   </action>
   <action name="aHelpEmuCompatibility" >

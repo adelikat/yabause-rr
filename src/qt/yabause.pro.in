@@ -109,4 +109,7 @@ SOURCES	+= main.cpp \
 	ui/UIWaitInput.cpp \
 	ui/UIBackupRam.cpp \
 	ui/UIPortManager.cpp \
-	ui/UIPadSetting.cpp
+	ui/UIPadSetting.cpp \
+	../windows/movie.cpp \
+	../windows/utils/xstring.cpp \
+	../windows/utils/readwrite.cpp

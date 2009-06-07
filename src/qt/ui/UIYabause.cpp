@@ -256,6 +256,42 @@ void UIYabause::on_aFileOpenISO_triggered()
 	}
 }
 
+void UIYabause::on_aFilePlayMovie_triggered()
+{
+	YabauseLocker locker( mYabauseThread );
+	if ( mYabauseThread->init() == -1 )
+	{
+		CommonDialogs::information( QtYabause::translate( "Yabause is not initialized, can't open movie." ) );
+		return;
+	}
+	const QString fn = CommonDialogs::getOpenFileName( QtYabause::settings()->value( "Recents/ISOs" ).toString(), QtYabause::translate( "Select your Movie file" ), QtYabause::translate( "YMV files (*.ymv)" ) );
+	if ( !fn.isEmpty() )
+	{
+		FCEUI_LoadMovie(fn.toAscii().constData(), true, 0, 99999999);
+	}
+}
+
+void UIYabause::on_aFileRecordMovie_triggered()
+{
+	YabauseLocker locker( mYabauseThread );
+	const QString fn = CommonDialogs::getSaveFileName( QtYabause::settings()->value( "General/SaveStates", QApplication::applicationDirPath() ).toString(), QtYabause::translate( "Choose a file to save your movie" ), QtYabause::translate( "Yabause Movie (*.ymv)" ) );
+	if ( fn.isNull() )
+		return;
+	std::wstring author = L"temp\n";
+	FCEUI_SaveMovie(fn.toAscii().constData(), author);
+}
+
+void UIYabause::on_aFileStopMovie_triggered()
+{
+	YabauseLocker locker( mYabauseThread );
+	if ( mYabauseThread->init() == -1 )
+	{
+		CommonDialogs::information( QtYabause::translate( "Yabause is not initialized, can't stop movie." ) );
+		return;
+	}
+	FCEUI_StopMovie();
+}
+
 void UIYabause::on_aFileOpenCDRom_triggered()
 {
 	YabauseLocker locker( mYabauseThread );
