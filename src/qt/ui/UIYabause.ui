@@ -769,7 +769,7 @@
   </action>
   <action name="aFileStopMovie" >
    <property name="text" >
-    <string>Stop Movie...</string>
+    <string>Stop Movie</string>
    </property>
    <property name="icon" >
     <iconset resource="../resources/resources.qrc" >:/actions/icons/actions/button_cancel.png</iconset>
