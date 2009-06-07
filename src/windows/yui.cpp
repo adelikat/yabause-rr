@@ -484,6 +484,7 @@ extern "C" void YuiCaptureVideo(void)
 	SwapBuffers(YabHDC);
 
 	DRV_AviVideoUpdate((const u16*)buf, YabWin);
+	free(buf);
 }
 
 //////////////////////////////////////////////////////////////////////////////
