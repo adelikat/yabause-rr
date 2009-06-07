@@ -33,13 +33,7 @@ extern "C" {
 #include "../bios.h"
 }
 
-
-//#include "NDSSystem.h"
-#include "readwrite.h"
-
-//#include "debug.h"
-//#include "rtc.h"
-//#include "common.h"
+#include "utils\readwrite.h"
 
 using namespace std;
 bool freshMovie = false;	  //True when a movie loads, false when movie is altered.  Used to determine if a movie has been altered since opening
