@@ -92,6 +92,9 @@ protected slots:
 	void on_aFileSaveStateAs_triggered();
 	void on_aFileLoadStateAs_triggered();
 	void on_aFileScreenshot_triggered();
+	void on_aFilePlayMovie_triggered();
+	void on_aFileRecordMovie_triggered();
+	void on_aFileStopMovie_triggered();
 	void on_aFileQuit_triggered();
 	// emulation menu
 	void on_aEmulationRun_triggered();
