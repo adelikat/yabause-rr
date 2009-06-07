@@ -755,15 +755,24 @@
    <property name="text" >
     <string>Play Movie...</string>
    </property>
+   <property name="icon" >
+    <iconset resource="../resources/resources.qrc" >:/actions/icons/actions/play.png</iconset>
+   </property>
   </action>
   <action name="aFileRecordMovie" >
    <property name="text" >
     <string>Record Movie...</string>
    </property>
+   <property name="icon" >
+    <iconset resource="../resources/resources.qrc" >:/actions/icons/actions/save_state.png</iconset>
+   </property>
   </action>
   <action name="aFileStopMovie" >
    <property name="text" >
     <string>Stop Movie...</string>
+   </property>
+   <property name="icon" >
+    <iconset resource="../resources/resources.qrc" >:/actions/icons/actions/button_cancel.png</iconset>
    </property>
   </action>
   <action name="aHelpEmuCompatibility" >
