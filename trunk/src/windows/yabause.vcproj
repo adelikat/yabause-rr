@@ -772,10 +772,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\readwrite.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\snddx.c"
 					>
 					<FileConfiguration
@@ -1044,6 +1040,14 @@
 					</File>
 					<File
 						RelativePath=".\utils\md5.h"
+						>
+					</File>
+					<File
+						RelativePath=".\utils\readwrite.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\utils\readwrite.h"
 						>
 					</File>
 					<File
