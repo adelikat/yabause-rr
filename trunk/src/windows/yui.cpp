@@ -1338,7 +1338,8 @@ extern "C" void StartGame(){
 
 	if(!AlreadyStarted) {
 
-	YabauseInit(&yinit);
+	HardResetGame();
+
 	paused=false;
 	VideoChangeCore(vidcoretype);
 
@@ -2208,8 +2209,13 @@ extern "C" void HardResetGame()
    yinit.mpegpath = mpegromfilename;
    yinit.cartpath = cartfilename;
    yinit.netlinksetting = netlinksetting;
+   
+   if (IsPathCdrom(cdrompath))
+	  yinit.cdcoretype = CDCORE_SPTI;
+   else
+	  yinit.cdcoretype = CDCORE_ISO;
 
-	YabauseInit(&yinit);
+   YabauseInit(&yinit);
 		VideoChangeCore(vidcoretype);
 
 	PERDXLoadDevices(inifilename);
@@ -2220,6 +2226,7 @@ extern "C" void HardResetGame()
 	if (VIDCore && !VIDCore->IsFullscreen() && usecustomwindowsize)
 		VIDCore->Resize(windowwidth, windowheight, 0);
     YabauseReset();
+
     YuiTempUnPause();
 }
 
