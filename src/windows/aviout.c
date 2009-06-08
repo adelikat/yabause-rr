@@ -205,8 +205,8 @@ static int avi_open(const char* filename, const BITMAPINFOHEADER* pbmih, const W
 
 		memset(&avi_file->avi_video_header, 0, sizeof(AVISTREAMINFO));
 		avi_file->avi_video_header.fccType = streamtypeVIDEO;
-		avi_file->avi_video_header.dwScale = 65536*256;
-		avi_file->avi_video_header.dwRate = (int)(59.8261*65536*256);
+		avi_file->avi_video_header.dwScale = 1;
+		avi_file->avi_video_header.dwRate = 60;
 		avi_file->avi_video_header.dwSuggestedBufferSize = avi_file->bitmap_format.biSizeImage;
 		if(FAILED(AVIFileCreateStream(avi_file->avi_file, &avi_file->streams[VIDEO_STREAM], &avi_file->avi_video_header)))
 			break;
